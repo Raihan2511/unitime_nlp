@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences term="Fal" year="2010" campus="woebegon" dateFormat="yyyy/M/d" timeFormat="HHmm" created="Wed Mar 08 08:56:15 CET 2017">
+
+<instructor externalId="TEACHER_X_ID" firstName="X" lastName="Teacher" department="0101">
+    
+    <!-- TIME PREFERENCES: Monday-Wednesday only -->
+    <timePref level="R">
+        <!-- Allow Monday, Tuesday, Wednesday (leave neutral or preferred) -->
+        <pref level="1" day="M" start="0800" stop="1700"/>  <!-- Preferred Mon 8AM-5PM -->
+        <pref level="1" day="T" start="0800" stop="1700"/>  <!-- Preferred Tue 8AM-5PM -->
+        <pref level="1" day="W" start="0800" stop="1700"/>  <!-- Preferred Wed 8AM-5PM -->
+        
+        <!-- Prohibit Thursday and Friday entirely -->
+        <pref level="P" day="R" start="0000" stop="2400"/>  <!-- Prohibited Thursday all day -->
+        <pref level="P" day="F" start="0000" stop="2400"/>  <!-- Prohibited Friday all day -->
+    </timePref>
+    
+    <!-- ROOM GROUP PREFERENCES -->
+    <groupPref group="Chemistry Labs" level="R"/>              <!-- Required -->
+    <groupPref group="Classroom" level="1"/>                   <!-- Preferred -->
+    <groupPref group="Hall of Music" level="0"/>               <!-- Neutral -->
+    <groupPref group="Biology Labs" department="0101" level="-1"/> <!-- Discouraged -->
+    <groupPref group="Computing Labs" department="0101" level="P"/> <!-- Prohibited -->
+    
+    <!-- ROOM PREFERENCES -->
+    <roomPref building="EDUC" room="101" level="R"/>   <!-- Required -->
+    <roomPref building="EDUC" room="102" level="2"/>   <!-- Strongly Preferred -->
+    <roomPref building="EDUC" room="103" level="1"/>   <!-- Preferred -->
+    <roomPref building="EDUC" room="104" level="0"/>   <!-- Neutral -->
+    <roomPref building="EDUC" room="105" level="-1"/>  <!-- Discouraged -->
+    <roomPref building="EDUC" room="106" level="-2"/>  <!-- Strongly Discouraged -->
+    <roomPref building="THTR" room="101" level="P"/>   <!-- Prohibited -->
+    
+    <!-- BUILDING PREFERENCES -->
+    <buildingPref building="EDUC" level="2"/>   <!-- Strongly Preferred -->
+    <buildingPref building="THTR" level="-2"/>  <!-- Strongly Discouraged -->
+    
+    <!-- ROOM FEATURE PREFERENCES -->
+    <featurePref feature="Audio Recording" level="R"/>          <!-- Required -->
+    <featurePref feature="Chalkboard < 20 Ft." level="2"/>     <!-- Strongly Preferred -->
+    <featurePref feature="Chalkboard >= 20 Ft." level="1"/>    <!-- Preferred -->
+    <featurePref feature="Computer" level="0"/>                <!-- Neutral -->
+    <featurePref feature="Computer Projection" level="-1"/>    <!-- Discouraged -->
+    <featurePref feature="Fixed Seating" level="-2"/>          <!-- Strongly Discouraged -->
+    <featurePref feature="Theater Seats" level="P"/>           <!-- Prohibited -->
+    
+    <!-- DISTRIBUTION PREFERENCES -->
+    <distributionPref type="BTB_TIME" structure="AllClasses" level="R"/>        <!-- Back-To-Back Required -->
+    <distributionPref type="SAME_ROOM" structure="AllClasses" level="2"/>       <!-- Same Room Strongly Preferred -->
+    <distributionPref type="SAME_DAYS" structure="AllClasses" level="1"/>       <!-- Same Days Preferred -->
+    <distributionPref type="MAX_HRS_DAY(5)" structure="AllClasses" level="-1"/> <!-- At Most 5 Hours A Day Discouraged -->
+    <distributionPref type="MAX_HRS_DAY(6)" structure="AllClasses" level="-2"/> <!-- At Most 6 Hours A Day Strongly Discouraged -->
+    <distributionPref type="MIN_ROOM_USE" structure="AllClasses" level="1"/>    <!-- Minimize Number Of Rooms Used Preferred -->
+    
+    <!-- TEACHING LOAD PREFERENCES -->
+    <teachingPref maxLoad="12.0" level="0"/>  <!-- Maximum 12 hours teaching load -->
+    
+    <!-- COURSE PREFERENCES -->
+    <coursePref subject="MATH" course="101" level="2"/>   <!-- Strongly Preferred to teach MATH 101 -->
+    <coursePref subject="PHYS" course="201" level="-2"/>  <!-- Strongly Discouraged from PHYS 201 -->
+    
+    <!-- UNAVAILABLE DATES -->
+    <unavailableDate date="2010/11/25"/>  <!-- Thanksgiving -->
+    <unavailableDate date="2010/11/26"/>  <!-- Day after Thanksgiving -->
+    <unavailableDate date="2010/12/24"/>  <!-- Christmas Eve -->
+    <unavailableDate date="2010/12/31"/>  <!-- New Year's Eve -->
+    
+</instructor>
+
+</preferences>

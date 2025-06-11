@@ -1,0 +1,23 @@
+# This file is used to install the necessary Python packages for the NLP project.
+transformers
+torch
+torchvision
+torchtext
+torchmetrics
+sentence-transformers
+sentencepiece
+numpy
+datasets
+peft
+tensorboard
+# Additional packages for specific tasks
+scikit-learn
+scipy
+# Optional: For visualization and plotting
+matplotlib
+# Optional: For data manipulation
+pandas    
+  
+accelerate
+wandb
+flask
