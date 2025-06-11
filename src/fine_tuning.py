@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 from collections import Counter
 
 class UniTimeFlanT5Trainer:
-    def __init__(self, model_name="google/flan-t5-base"):  # Changed to base for better XML handling
+    def __init__(self, model_name="google/flan-t5-small"):  # Changed to base for better XML handling
         self.model_name = model_name
         self.tokenizer = T5Tokenizer.from_pretrained(model_name)
         self.model = T5ForConditionalGeneration.from_pretrained(model_name)
@@ -82,7 +82,7 @@ class UniTimeFlanT5Trainer:
         # Tokenize inputs with longer max length for XML
         model_inputs = self.tokenizer(
             enhanced_inputs, 
-            max_length=768,  # Increased for XML complexity
+            max_length=512,  # Increased for XML complexity
             truncation=True, 
             padding="max_length"
         )
@@ -91,7 +91,7 @@ class UniTimeFlanT5Trainer:
         with self.tokenizer.as_target_tokenizer():
             labels = self.tokenizer(
                 targets, 
-                max_length=768,  # Increased for XML complexity
+                max_length=512,  # Increased for XML complexity
                 truncation=True, 
                 padding="max_length"
             )
@@ -202,7 +202,8 @@ class UniTimeFlanT5Trainer:
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=val_dataset,
-            tokenizer=self.tokenizer,
+            # tokenizer=self.tokenizer,
+            processing_class=self.tokenizer,  # updated
             data_collator=data_collator,
         )
         
