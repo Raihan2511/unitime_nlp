@@ -3,21 +3,30 @@ from datasets import Dataset
 import json
 
 def convert_to_flan_t5_format(examples):
-    """Convert our dataset to FLAN-T5 input-output format"""
     inputs = []
     targets = []
     
     for example in examples:
-        # Create instruction-based input
-        input_text = f"Convert this scheduling request to structured format: {example['input']}"
+        # More specific prompts based on type
+        if 'type' in example:
+            type_specific_prompt = {
+                'reservations': 'Create XML reservation',
+                'course_offering': 'Generate XML course offering',
+                'preferences': 'Create XML instructor preferences',
+                'course_timetable': 'Generate XML course timetable'
+            }
+            prompt_prefix = type_specific_prompt.get(example['type'], 'Convert to XML')
+            input_text = f"{prompt_prefix}: {example['input']}"
+        else:
+            input_text = f"Convert this university scheduling request to XML format: {example['input']}"
         
-        # Create JSON output as target
-        target_text = json.dumps(example['output'], ensure_ascii=False)
+        target_text = example['output']  # Keep XML as-is
         
         inputs.append(input_text)
         targets.append(target_text)
     
     return {"input": inputs, "target": targets}
+
 
 def prepare_datasets():
     # Load generated data

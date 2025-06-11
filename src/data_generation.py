@@ -295,33 +295,6 @@ class UniTimeDatasetGenerator:
         random.shuffle(complete_data)
         
         return complete_data
-
-    def save_dataset(self, data, filename="unitime_complete_dataset.json"):
-        """Save dataset to JSON file"""
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        
-        print(f"Dataset saved to {filename}")
-        print(f"Total samples: {len(data)}")
-        
-        # Print statistics
-        type_counts = {}
-        for item in data:
-            dtype = item['type']
-            type_counts[dtype] = type_counts.get(dtype, 0) + 1
-        
-        print("\nDataset composition:")
-        for dtype, count in type_counts.items():
-            print(f"  {dtype}: {count} samples ({count/len(data)*100:.1f}%)")
-
-    # def create_train_test_split(self, data, train_ratio=0.8):
-    #     """Split dataset into train and test sets"""
-    #     random.shuffle(data)
-    #     split_idx = int(len(data) * train_ratio)
-        
-    #     train_data = data[:split_idx]
-    #     test_data = data[split_idx:]
-        
     #     return train_data, test_data
     def create_train_val_test_split(self, data, train_ratio=0.8, val_ratio=0.1, test_ratio=0.1):
         """
@@ -354,12 +327,6 @@ if __name__ == "__main__":
     print("Creating train/validation/test split...")
     train_data, val_data, test_data = generator.create_train_val_test_split(complete_dataset)
 
-
-    # Save datasets
-    # generator.save_dataset(train_data, "unitime_train_dataset.json")
-    # generator.save_dataset(test_data, "unitime_test_dataset.json")
-    # generator.save_dataset(complete_dataset, "unitime_complete_dataset.json")
-    
     print("\nDataset generation completed!")
     print(f"Training samples: {len(train_data)}")
     print(f"Testing samples: {len(test_data)}")
@@ -374,7 +341,7 @@ if __name__ == "__main__":
     with open("data/processed/val_dataset.json", "w") as f:
         json.dump(val_data, f, indent=2,ensure_ascii=False)
 
-    with open("data/processed/test_datas/et.json", "w") as f:
+    with open("data/processed/test_dataset.json", "w") as f:
         json.dump(test_data, f, indent=2,ensure_ascii=False)
 
     with open("data/processed/complete_dataset.json", "w") as f:
