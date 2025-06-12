@@ -95,9 +95,12 @@ def run_complete_pipeline():
     print("\n🧪 Step 4: Testing inference...")
     try:
         test_inputs = [
-            "Professor Smith strongly prefers CS101 and CS102",
-            "Dr. Jones dislikes teaching on Fridays",
-            "Room 101 is available Monday through Wednesday"
+            # "Professor Smith strongly prefers CS101 and CS102",
+            "Create preference for Dr. Smith for courses CS101 and CS102 with strong preference",
+            # "Dr. Jones dislikes teaching on Fridays",
+            "Dr. Jones is unavailable to teach on Friday",
+            # "Room 101 is available Monday through Wednesday"
+            "Room 101 is available on Monday, Tuesday, and Wednesday"
         ]
         
         from src.evaluation import UniTimeNLPEvaluator

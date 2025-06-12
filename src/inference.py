@@ -7,7 +7,7 @@ import json
 app = Flask(__name__)
 
 class UniTimeNLPService:
-    def __init__(self, model_path="models/flan_t5_unitime"):
+    def __init__(self, model_path="models/flan_t5_unitime_xml"):
         self.tokenizer = T5Tokenizer.from_pretrained(model_path)
         self.model = T5ForConditionalGeneration.from_pretrained(model_path)
         self.model.eval()

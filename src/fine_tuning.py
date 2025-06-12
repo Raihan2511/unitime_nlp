@@ -99,6 +99,54 @@ class UniTimeFlanT5Trainer:
         model_inputs["labels"] = labels["input_ids"]
         return model_inputs
 
+
+    # def preprocess_function(self, examples):
+    #     """Enhanced preprocessing for XML data"""
+    #     inputs = examples["input"]
+    #     targets = examples["target"]
+        
+    #     # Create more specific prompts based on the task type
+    #     enhanced_inputs = []
+    #     for inp in inputs:
+    #         enhanced_input = f"Convert this university scheduling request to XML format: {inp}"
+    #         enhanced_inputs.append(enhanced_input)
+        
+    #     # Tokenize inputs with longer max length for XML
+    #     model_inputs = self.tokenizer(
+    #         enhanced_inputs, 
+    #         max_length=512,
+    #         truncation=True,
+    #         padding="max_length"
+    #     )
+        
+    #     # Tokenize XML targets
+    #     with self.tokenizer.as_target_tokenizer():
+    #         labels = self.tokenizer(
+    #             targets, 
+    #             max_length=512,
+    #             truncation=True,
+    #             padding="max_length"
+    #         )
+        
+    #     model_inputs["labels"] = labels["input_ids"]
+        
+    #     # 🔍 Print token lengths for debugging
+    #     for i in range(len(enhanced_inputs)):
+    #         input_tokens = self.tokenizer.tokenize(enhanced_inputs[i])
+    #         target_tokens = self.tokenizer.tokenize(targets[i])
+            
+    #         print(f"\n📏 Sample {i + 1}")
+    #         print(f"Input text: {enhanced_inputs[i][:80]}...")
+    #         print(f"➡️ Input tokens: {len(input_tokens)}")
+    #         print(f"Target text: {targets[i][:80]}...")
+    #         print(f"➡️ Target tokens: {len(target_tokens)}")
+            
+    #         if len(input_tokens) > 512 or len(target_tokens) > 512:
+    #             print("⚠️ Warning: Token length exceeds 512! May be truncated.")
+
+    #     return model_inputs
+
+
     def validate_xml_samples(self, dataset, num_samples=5):
         """Validate XML structure in samples"""
         print(f"\n🔍 Validating XML structure in {num_samples} samples:")
@@ -166,7 +214,7 @@ class UniTimeFlanT5Trainer:
         # Optimized training arguments for XML generation
         training_args = TrainingArguments(
             output_dir=output_dir,
-            num_train_epochs=1,  # More epochs for complex XML structure
+            num_train_epochs=10,  # More epochs for complex XML structure
             per_device_train_batch_size=2,  # Smaller batch due to longer sequences
             per_device_eval_batch_size=2,
             learning_rate=3e-4,  # Slightly lower learning rate for stability
