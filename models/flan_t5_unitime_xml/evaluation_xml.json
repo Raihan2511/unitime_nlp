@@ -1,0 +1,1005 @@
+{
+  "xml_accuracy": 0.0,
+  "mismatches": [
+    {
+      "input": "Create course offering ENG401 ENG Course with Dr. Anderson on Tuesday from 9:00 AM to 10:00 AM in room GYM103 with limit 30 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"9547\" offered=\"true\">course id=\"231\" subject=\"ENG\" courseNbr=\"401\" title=\"ENG Course\">class id=\"33818\" suffix=\"1\" type=\"LEC\" limit=\"30\">time days=\"T\" startTime=\"0900\" endTime=\"1000\"/>room building=\"GYM\" roomNbr=\"103\"/>instructor id=\"59\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/> </class> </course> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"4476\" offered=\"true\"><course id=\"319\" subject=\"ENG\" courseNbr=\"401\" title=\"ENG Course\"><class id=\"86570\" suffix=\"1\" type=\"SEM\" limit=\"30\"><time days=\"T\" startTime=\"0900\" endTime=\"1000\"/><room building=\"GYM\" roomNbr=\"103\"/><instructor id=\"50\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Schedule ENG499 ENG Course with Prof. Martinez on Monday from 10:00 AM to 11:00 AM in room EDUC302, class ID 58255",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"58255\" name=\"ENG Course\" subject=\"ENG\" courseNbr=\"499\" type=\"SEM\" suffix=\"1\">time days=\"M\" startTime=\"1000\" endTime=\"1100\"/>room building=\"EDUC\" roomNbr=\"302\"/>instructor id=\"46\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"58255\" name=\"ENG Course\" subject=\"ENG\" courseNbr=\"499\" type=\"LAB\" suffix=\"1\"><time days=\"M\" startTime=\"1000\" endTime=\"1100\"/><room building=\"EDUC\" roomNbr=\"302\"/><instructor id=\"100\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Instructor Dr. Rodriguez strongly avoids room EDUC101",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Dr.\" lastName=\"Rodriguez\">roomPref building=\"EDUC\" room=\"101\" level=\"-2\"/>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor firstName=\"Dr.\" lastName=\"Rodriguez\"><roomPref building=\"EDUC\" room=\"101\" level=\"-2\"/></instructor></preferences>"
+    },
+    {
+      "input": "Reserve 10 seats in ENG402 for CS majors with JR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ENG\" courseNbr=\"402\" limit=\"10\" type=\"curriculum\">academicClassification code=\"JR\"/>major code=\"CS\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ENG\" courseNbr=\"402\" limit=\"10\" type=\"curriculum\"><academicClassification code=\"JR\"/><major code=\"CS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Instructor Prof. Johnson strongly prefers room ENG302",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Prof.\" lastName=\"Johnson\">roomPref building=\"ENG\" room=\"302\" level=\"2\"/> </preferences>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor firstName=\"Prof.\" lastName=\"Johnson\"><roomPref building=\"ENG\" room=\"302\" level=\"2\"/></instructor></preferences>"
+    },
+    {
+      "input": "Schedule ENG301 ENG Course with Prof. Johnson on Monday Tuesday Wednesday Thursday Friday from 5:00 PM to 6:00 PM in room SCI102, class ID 48451",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"48451\" name=\"ENG Course\" subject=\"ENG\" courseNbr=\"301\" type=\"STU\" suffix=\"1\">time days=\"MTWRF\" startTime=\"1700\" endTime=\"1800\"/>room building=\"SCI\" roomNbr=\"102\"/>instructor id=\"18\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"48451\" name=\"ENG Course\" subject=\"ENG\" courseNbr=\"301\" type=\"REC\" suffix=\"1\"><time days=\"MTWRF\" startTime=\"1700\" endTime=\"1800\"/><room building=\"SCI\" roomNbr=\"102\"/><instructor id=\"3\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Department 0103 avoids room GYM203",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0103\">roomPref building=\"GYM\" room=\"203\" level=\"-2\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0103\"><roomPref building=\"GYM\" room=\"203\" level=\"-1\"/></department></preferences>"
+    },
+    {
+      "input": "Reserve 30 seats in ART201 section 3 for veterans student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ART\" courseNbr=\"201\" limit=\"30\" type=\"group\">class suffix=\"3\"/>studentGroup code=\"VETERANS\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ART\" courseNbr=\"201\" limit=\"30\" type=\"group\"><class suffix=\"3\"/><studentGroup code=\"VETERANS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Instructor Dr. Miller is neutral about room ENG101",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Dr.\" lastName=\"Miller\">roomPref building=\"ENG\" room=\"101\" level=\"0\"/> </class> </reservations>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor firstName=\"Dr.\" lastName=\"Miller\"><roomPref building=\"ENG\" room=\"101\" level=\"0\"/></instructor></preferences>"
+    },
+    {
+      "input": "Create course offering HIST499 HIST Course with Dr. Jones on Friday from 5:00 PM to 6:00 PM in room LIB203 with limit 30 students",
+      "predicted": "HIST Courses subject=\"HIST\" courseNbr=\"499\" title=\"HIST Course\">class id=\"55728\" suffix=\"1\" type=\"LEC\" limit=\"30\">time days=\"F\" startTime=\"1700\" endTime=\"1800\"/>room building=\"LIB\" roomNbr=\"203\"/>instructor id=\"39\" fname=\"Dr.\" lname=\"Jones\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"5610\" offered=\"true\"><course id=\"219\" subject=\"HIST\" courseNbr=\"499\" title=\"HIST Course\"><class id=\"45189\" suffix=\"1\" type=\"LEC\" limit=\"30\"><time days=\"F\" startTime=\"1700\" endTime=\"1800\"/><room building=\"LIB\" roomNbr=\"203\"/><instructor id=\"45\" fname=\"Dr.\" lname=\"Jones\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Schedule ECON202 ECON Course with Prof. Johnson on Wednesday Friday from 5:00 PM to 6:00 PM in room THTR301, class ID 23629",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"23629\" name=\"ECON Course\" subject=\"ECON\" courseNbr=\"202\" type=\"LEC\" suffix=\"1\">time days=\"WF\" startTime=\"1700\" endTime=\"1800\"/>room building=\"THTR\" roomNbr=\"301\"/>instructor id=\"28\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"23629\" name=\"ECON Course\" subject=\"ECON\" courseNbr=\"202\" type=\"SEM\" suffix=\"1\"><time days=\"WF\" startTime=\"1700\" endTime=\"1800\"/><room building=\"THTR\" roomNbr=\"301\"/><instructor id=\"79\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Instructor Dr. Miller from department 0102 avoids teaching on Monday from 7:00 PM to 8:00 PM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"773\" firstName=\"Dr.\" lastName=\"Miller\" department=\"0102\">timePref level=\"R\">pref level=\"-2\" day=\"M\" start=\"1900\" stop=\"2000\"/> </preferences>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"115\" firstName=\"Dr.\" lastName=\"Miller\" department=\"0102\"><timePref level=\"R\"><pref level=\"-1\" day=\"M\" start=\"1900\" stop=\"2000\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "Instructor Dr. Jones prohibits room SCI101",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Dr.\" lastName=\"Jones\">roomPref building=\"SCI\" room=\"101\" level=\"-2\"/>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor firstName=\"Dr.\" lastName=\"Jones\"><roomPref building=\"SCI\" room=\"101\" level=\"P\"/></instructor></preferences>"
+    },
+    {
+      "input": "Reserve 5 seats in CS201 for HIST majors with JR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"CS\" courseNbr=\"201\" limit=\"5\" type=\"curriculum\">academicClassification code=\"JR\"/>major code=\"HIST\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"CS\" courseNbr=\"201\" limit=\"5\" type=\"curriculum\"><academicClassification code=\"JR\"/><major code=\"HIST\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 15 seats in PSYC202 for student with ID STU26227 until 2024-12-01",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"PSYC\" courseNbr=\"202\" limit=\"15\" expire=\"2024-12-01\" type=\"individual\">student externalId=\"STU26227\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"PSYC\" courseNbr=\"202\" limit=\"15\" expire=\"2024-12-01\" type=\"individual\"><student externalId=\"STU26227\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 15 seats in PSYC402 section 1 for transfer student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"PSYC\" courseNbr=\"402\" limit=\"15\" type=\"group\">class suffix=\"1\"/>studentGroup code=\"TRANSFER\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"PSYC\" courseNbr=\"402\" limit=\"15\" type=\"group\"><class suffix=\"1\"/><studentGroup code=\"TRANSFER\"/></reservation></reservations>"
+    },
+    {
+      "input": "Instructor Professor Davis from department 0104 prefers teaching on Thursday from 4:00 PM to 5:00 PM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"472\" firstName=\"Professor\" lastName=\"Davis\" department=\"0104\">timePref level=\"R\">pref level=\"1\" day=\"R\" start=\"1600\" stop=\"1700\"/> </reservation> </reservations>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"852\" firstName=\"Professor\" lastName=\"Davis\" department=\"0104\"><timePref level=\"R\"><pref level=\"1\" day=\"R\" start=\"1600\" stop=\"1700\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "Create course offering CHEM201 CHEM Course with Professor Davis on Wednesday from 4:00 PM to 5:00 PM in room THTR203 with limit 35 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"892\" offered=\"true\">course id=\"890\" subject=\"CHEM\" courseNbr=\"201\" title=\"CHEM Course\">class id=\"7272\" suffix=\"1\" type=\"LEC\" limit=\"35\">time days=\"W\" startTime=\"1600\" endTime=\"1700\"/>room building=\"THTR\" roomNbr=\"203\"/>instructor id=\"8\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/> </class> </course> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"7249\" offered=\"true\"><course id=\"122\" subject=\"CHEM\" courseNbr=\"201\" title=\"CHEM Course\"><class id=\"64228\" suffix=\"1\" type=\"SEM\" limit=\"35\"><time days=\"W\" startTime=\"1600\" endTime=\"1700\"/><room building=\"THTR\" roomNbr=\"203\"/><instructor id=\"76\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Instructor Professor Davis from department 0103 prefers teaching on Tuesday from 8:00 AM to 9:00 AM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"773\" firstName=\"Professor\" lastName=\"Davis\" department=\"0103\">timePref level=\"R\">pref level=\"-1\" day=\"T\" start=\"0800\" stop=\"0900\"/> </reservation> </reservations>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"158\" firstName=\"Professor\" lastName=\"Davis\" department=\"0103\"><timePref level=\"R\"><pref level=\"1\" day=\"T\" start=\"0800\" stop=\"0900\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "Schedule ART402 ART Course with Dr. Rodriguez on Monday Wednesday Friday from 10:00 AM to 11:00 AM in room SCI101, class ID 46539",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"46539\" name=\"ART Course\" subject=\"ART\" courseNbr=\"402\" type=\"STU\" suffix=\"1\">time days=\"MWF\" startTime=\"1000\" endTime=\"1100\"/>room building=\"SCI\" roomNbr=\"101\"/>instructor id=\"13\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"46539\" name=\"ART Course\" subject=\"ART\" courseNbr=\"402\" type=\"SEM\" suffix=\"1\"><time days=\"MWF\" startTime=\"1000\" endTime=\"1100\"/><room building=\"SCI\" roomNbr=\"101\"/><instructor id=\"76\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Schedule ART302 ART Course with Dr. Williams on Wednesday from 7:00 PM to 8:00 PM in room B301, class ID 71008",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"71008\" name=\"ART Course\" subject=\"ART\" courseNbr=\"302\" type=\"SEM\" suffix=\"1\">time days=\"W\" startTime=\"1900\" endTime=\"2000\"/>room building=\"B\" roomNbr=\"301\"/>instructor id=\"18\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"71008\" name=\"ART Course\" subject=\"ART\" courseNbr=\"302\" type=\"LEC\" suffix=\"1\"><time days=\"W\" startTime=\"1900\" endTime=\"2000\"/><room building=\"B\" roomNbr=\"301\"/><instructor id=\"70\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Instructor Dr. Smith strongly avoids room SCI103",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Dr.\" lastName=\"Smith\">roomPref building=\"SCI\" room=\"103\" level=\"-2\"/> </preferences>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor firstName=\"Dr.\" lastName=\"Smith\"><roomPref building=\"SCI\" room=\"103\" level=\"-2\"/></instructor></preferences>"
+    },
+    {
+      "input": "Instructor Dr. Jones from department 0102 strongly prefers teaching on weekdays from 8:00 AM to 9:00 AM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"392\" firstName=\"Dr.\" lastName=\"Jones\" department=\"0102\">timePref level=\"R\">pref level=\"2\" day=\"MTWRF\" start=\"0800\" stop=\"0900\"/> </reservation> </reservations>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"206\" firstName=\"Dr.\" lastName=\"Jones\" department=\"0102\"><timePref level=\"R\"><pref level=\"2\" day=\"MTWRF\" start=\"0800\" stop=\"0900\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "Create course offering CHEM401 CHEM Course with Professor Taylor on Wednesday from 10:00 AM to 11:00 AM in room C301 with limit 40 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"6687\" offered=\"true\">course id=\"687\" subject=\"CHEM\" courseNbr=\"401\" title=\"CHEM Course\">class id=\"44828\" suffix=\"1\" type=\"LEC\" limit=\"40\">time days=\"W\" startTime=\"1000\" endTime=\"1100\"/>room building=\"C\" roomNbr=\"301\"/>instructor id=\"56\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/> </class> </course> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"9201\" offered=\"true\"><course id=\"984\" subject=\"CHEM\" courseNbr=\"401\" title=\"CHEM Course\"><class id=\"25238\" suffix=\"1\" type=\"SEM\" limit=\"40\"><time days=\"W\" startTime=\"1000\" endTime=\"1100\"/><room building=\"C\" roomNbr=\"301\"/><instructor id=\"42\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Schedule MATH201 Calculus II with Dr. Jones on Monday Wednesday Friday from 4:00 PM to 5:00 PM in room ENG203, class ID 83973",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"83973\" name=\"Calculus II\" subject=\"MATH\" courseNbr=\"201\" type=\"STU\" suffix=\"1\">time days=\"MWF\" startTime=\"1600\" endTime=\"1700\"/>room building=\"ENG\" roomNbr=\"203\"/>instructor id=\"93\" fname=\"Dr.\" lname=\"Jones\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"83973\" name=\"Calculus II\" subject=\"MATH\" courseNbr=\"201\" type=\"LAB\" suffix=\"1\"><time days=\"MWF\" startTime=\"1600\" endTime=\"1700\"/><room building=\"ENG\" roomNbr=\"203\"/><instructor id=\"6\" fname=\"Dr.\" lname=\"Jones\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Reserve 25 seats in CS402 for CHEM majors with JR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"CS\" courseNbr=\"402\" limit=\"25\" type=\"curriculum\">academicClassification code=\"JR\"/>major code=\"CHEM\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"CS\" courseNbr=\"402\" limit=\"25\" type=\"curriculum\"><academicClassification code=\"JR\"/><major code=\"CHEM\"/></reservation></reservations>"
+    },
+    {
+      "input": "Department 0100 avoids room ENG201",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0100\">roomPref building=\"ENG\" room=\"201\" level=\"-2\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0100\"><roomPref building=\"ENG\" room=\"201\" level=\"-1\"/></department></preferences>"
+    },
+    {
+      "input": "Create course offering PSYC201 PSYC Course with Professor Brown on Wednesday Friday from 9:00 AM to 10:00 AM in room THTR101 with limit 25 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"5967\" offered=\"true\">course id=\"690\" subject=\"PSYC\" courseNbr=\"201\" title=\"PSYC Course\">class id=\"57818\" suffix=\"1\" type=\"LEC\" limit=\"25\">time days=\"WF\" startTime=\"0900\" endTime=\"1000\"/>room building=\"THTR\" roomNbr=\"101\"/>instructor id=\"75\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/> </class> </course> </offerings> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"6434\" offered=\"true\"><course id=\"158\" subject=\"PSYC\" courseNbr=\"201\" title=\"PSYC Course\"><class id=\"37394\" suffix=\"1\" type=\"SEM\" limit=\"25\"><time days=\"WF\" startTime=\"0900\" endTime=\"1000\"/><room building=\"THTR\" roomNbr=\"101\"/><instructor id=\"37\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 15 seats in CS101 section 2 for honors student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"CS\" courseNbr=\"101\" limit=\"15\" type=\"group\">class suffix=\"2\"/>studentGroup code=\"HONORS\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"CS\" courseNbr=\"101\" limit=\"15\" type=\"group\"><class suffix=\"2\"/><studentGroup code=\"HONORS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Instructor Professor Brown from department 0102 is neutral about teaching on Monday from 9:00 AM to 10:00 AM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"462\" firstName=\"Professor\" lastName=\"Brown\" department=\"0102\">timePref level=\"R\">pref level=\"0\" day=\"M\" start=\"0900\" stop=\"1000\"/> </reservation> </reservations>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"111\" firstName=\"Professor\" lastName=\"Brown\" department=\"0102\"><timePref level=\"R\"><pref level=\"0\" day=\"M\" start=\"0900\" stop=\"1000\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "ENG401 lecture and lab should have same days constraint with strongly avoids level",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0101\">distributionPref type=\"SAME_DAYS\" structure=\"Progressive\" level=\"-2\">subpart subject=\"ENG\" course=\"401\" type=\"Lec\"/>subpart subject=\"ENG\" course=\"401\" type=\"Lab\"/>/distributionPref>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0103\"><distributionPref type=\"SAME_DAYS\" structure=\"Progressive\" level=\"-2\"><subpart subject=\"ENG\" course=\"401\" type=\"Lec\"/><subpart subject=\"ENG\" course=\"401\" type=\"Lab\"/></distributionPref></department></preferences>"
+    },
+    {
+      "input": "Schedule BIOL101 Introduction to Biology with Dr. Anderson on Wednesday Friday from 12:00 PM to 1:00 PM in room B202, class ID 86593",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"86593\" name=\"Introduction to Biology\" subject=\"BIOL\" courseNbr=\"101\" type=\"IND\" suffix=\"1\">time days=\"WF\" startTime=\"1200\" endTime=\"1300\"/>room building=\"B\" roomNbr=\"202\"/>instructor id=\"28\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"86593\" name=\"Introduction to Biology\" subject=\"BIOL\" courseNbr=\"101\" type=\"SEM\" suffix=\"1\"><time days=\"WF\" startTime=\"1200\" endTime=\"1300\"/><room building=\"B\" roomNbr=\"202\"/><instructor id=\"68\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Create course offering MATH401 MATH Course with Dr. Anderson on Tuesday from 3:00 PM to 4:00 PM in room ENG103 with limit 35 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"369\" offered=\"true\">course id=\"659\" subject=\"MATH\" courseNbr=\"401\" title=\"MATH Course\">class id=\"3782\" suffix=\"1\" type=\"LEC\" limit=\"35\">time days=\"T\" startTime=\"1500\" endTime=\"1600\"/>room building=\"ENG\" roomNbr=\"103\"/>instructor id=\"46\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"4720\" offered=\"true\"><course id=\"790\" subject=\"MATH\" courseNbr=\"401\" title=\"MATH Course\"><class id=\"37864\" suffix=\"1\" type=\"SEM\" limit=\"35\"><time days=\"T\" startTime=\"1500\" endTime=\"1600\"/><room building=\"ENG\" roomNbr=\"103\"/><instructor id=\"2\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Schedule CHEM301 CHEM Course with Dr. Miller as arranged time with minimum 2 hours per week, class ID 74168",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"74168\" name=\"CHEM Course\" subject=\"CHEM\" courseNbr=\"301\" type=\"STU\" suffix=\"1\">arrangeTime minPerWeek=\"2\"/>instructor id=\"8\" fname=\"Dr.\" lname=\"Miller\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"74168\" name=\"CHEM Course\" subject=\"CHEM\" courseNbr=\"301\" type=\"LAB\" suffix=\"1\"><arrangeTime minPerWeek=\"2\"/><instructor id=\"42\" fname=\"Dr.\" lname=\"Miller\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Create course offering BIOL401 BIOL Course with Professor Brown on Tuesday Thursday from 9:00 AM to 10:00 AM in room C301 with limit 25 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"9598\" offered=\"true\">course id=\"318\" subject=\"BIOL\" courseNbr=\"401\" title=\"BIOL Course\">class id=\"69283\" suffix=\"1\" type=\"LEC\" limit=\"25\">time days=\"TR\" startTime=\"0900\" endTime=\"1000\"/>room building=\"C\" roomNbr=\"301\"/>instructor id=\"56\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"2548\" offered=\"true\"><course id=\"318\" subject=\"BIOL\" courseNbr=\"401\" title=\"BIOL Course\"><class id=\"37859\" suffix=\"1\" type=\"LEC\" limit=\"25\"><time days=\"TR\" startTime=\"0900\" endTime=\"1000\"/><room building=\"C\" roomNbr=\"301\"/><instructor id=\"94\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Create course offering MATH402 MATH Course with Dr. Williams on Tuesday from 5:00 PM to 6:00 PM in room SCI202 with limit 50 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering title=\"MATH Course\" subject=\"MATH\" courseNbr=\"402\" title=\"MATH Course\">class id=\"43679\" suffix=\"1\" type=\"SEM\" limit=\"50\">time days=\"T\" startTime=\"1700\" endTime=\"1800\"/>room building=\"SCI\" roomNbr=\"202\"/>instructor id=\"13\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/> </class> </course> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"5558\" offered=\"true\"><course id=\"838\" subject=\"MATH\" courseNbr=\"402\" title=\"MATH Course\"><class id=\"61375\" suffix=\"1\" type=\"LEC\" limit=\"50\"><time days=\"T\" startTime=\"1700\" endTime=\"1800\"/><room building=\"SCI\" roomNbr=\"202\"/><instructor id=\"65\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Department 0102 is neutral about room SCI302",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0102\">roomPref building=\"SCI\" room=\"302\" level=\"0\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0102\"><roomPref building=\"SCI\" room=\"302\" level=\"0\"/></department></preferences>"
+    },
+    {
+      "input": "Schedule MATH301 MATH Course with Prof. Martinez on Thursday from 1:00 PM to 2:00 PM in room SCI201, class ID 90814",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"90814\" name=\"MATH Course\" subject=\"MATH\" courseNbr=\"301\" type=\"STU\" suffix=\"1\">time days=\"R\" startTime=\"1300\" endTime=\"1400\"/>room building=\"SCI\" roomNbr=\"201\"/>instructor id=\"18\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"90814\" name=\"MATH Course\" subject=\"MATH\" courseNbr=\"301\" type=\"REC\" suffix=\"1\"><time days=\"R\" startTime=\"1300\" endTime=\"1400\"/><room building=\"SCI\" roomNbr=\"201\"/><instructor id=\"5\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Department 0102 avoids room B103",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0102\">roomPref building=\"B\" room=\"103\" level=\"-2\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0102\"><roomPref building=\"B\" room=\"103\" level=\"-1\"/></department></preferences>"
+    },
+    {
+      "input": "Schedule ART401 ART Course with Prof. Martinez on Wednesday Friday from 2:00 PM to 3:00 PM in room THTR201, class ID 83356",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"83356\" name=\"ART Course\" subject=\"ART\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\">time days=\"WF\" startTime=\"1400\" endTime=\"1500\"/>room building=\"THTR\" roomNbr=\"201\"/>instructor id=\"76\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/> </class> </course> </offerings>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"83356\" name=\"ART Course\" subject=\"ART\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\"><time days=\"WF\" startTime=\"1400\" endTime=\"1500\"/><room building=\"THTR\" roomNbr=\"201\"/><instructor id=\"64\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Schedule PHYS499 PHYS Course with Dr. Anderson on Monday from 6:00 PM to 7:00 PM in room B201, class ID 90338",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"90338\" name=\"PHYS Course\" subject=\"PHYS\" courseNbr=\"499\" type=\"SEM\" suffix=\"1\">time days=\"M\" startTime=\"1800\" endTime=\"1900\"/>room building=\"B\" roomNbr=\"201\"/>instructor id=\"76\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"90338\" name=\"PHYS Course\" subject=\"PHYS\" courseNbr=\"499\" type=\"STU\" suffix=\"1\"><time days=\"M\" startTime=\"1800\" endTime=\"1900\"/><room building=\"B\" roomNbr=\"201\"/><instructor id=\"29\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "ECON402 lecture and lab should have same room constraint with requires level",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0102\">distributionPref type=\"SAME_ROOM\" structure=\"Progressive\" level=\"1\">subpart subject=\"ECON\" course=\"402\" type=\"Lec\"/>subpart subject=\"ECON\" course=\"402\" type=\"Lab\"/>/distributionPref>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0104\"><distributionPref type=\"SAME_ROOM\" structure=\"Progressive\" level=\"R\"><subpart subject=\"ECON\" course=\"402\" type=\"Lec\"/><subpart subject=\"ECON\" course=\"402\" type=\"Lab\"/></distributionPref></department></preferences>"
+    },
+    {
+      "input": "Schedule ENG499 ENG Course with Prof. Johnson on Wednesday Friday from 4:00 PM to 5:00 PM in room EDUC203, class ID 28306",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"28306\" name=\"ENG Course\" subject=\"ENG\" courseNbr=\"499\" type=\"LEC\" suffix=\"1\">time days=\"WF\" startTime=\"1600\" endTime=\"1700\"/>room building=\"EDUC\" roomNbr=\"203\"/>instructor id=\"13\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"28306\" name=\"ENG Course\" subject=\"ENG\" courseNbr=\"499\" type=\"LEC\" suffix=\"1\"><time days=\"WF\" startTime=\"1600\" endTime=\"1700\"/><room building=\"EDUC\" roomNbr=\"203\"/><instructor id=\"44\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Schedule CS201 Algorithms with Dr. Anderson on Thursday from 6:00 PM to 7:00 PM in room THTR302, class ID 90740",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"90740\" name=\"Algorithms\" subject=\"CS\" courseNbr=\"201\" type=\"SEM\" suffix=\"1\">time days=\"R\" startTime=\"1800\" endTime=\"1900\"/>room building=\"THTR\" roomNbr=\"302\"/>instructor id=\"66\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"90740\" name=\"Algorithms\" subject=\"CS\" courseNbr=\"201\" type=\"SEM\" suffix=\"1\"><time days=\"R\" startTime=\"1800\" endTime=\"1900\"/><room building=\"THTR\" roomNbr=\"302\"/><instructor id=\"31\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Schedule BIOL401 BIOL Course with Professor Davis as arranged time with minimum 1 hours per week, class ID 26409",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"26409\" name=\"BIOL Course\" subject=\"BIOL\" courseNbr=\"401\" type=\"STU\" suffix=\"1\">arrangeTime minPerWeek=\"1\"/>instructor id=\"13\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"26409\" name=\"BIOL Course\" subject=\"BIOL\" courseNbr=\"401\" type=\"LAB\" suffix=\"1\"><arrangeTime minPerWeek=\"1\"/><instructor id=\"46\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "HIST401 lecture and lab should have max hrs day(6) constraint with strongly prefers level",
+      "predicted": "references term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0103\">distributionPref type=\"MAX_HRS_DAY(6)\" structure=\"Progressive\" level=\"2\">subpart subject=\"HIST\" course=\"401\" type=\"Lec\"/>subpart subject=\"HIST\" course=\"401\" type=\"Lab\"/>/distributionPref>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0103\"><distributionPref type=\"MAX_HRS_DAY(6)\" structure=\"Progressive\" level=\"2\"><subpart subject=\"HIST\" course=\"401\" type=\"Lec\"/><subpart subject=\"HIST\" course=\"401\" type=\"Lab\"/></distributionPref></department></preferences>"
+    },
+    {
+      "input": "Department 0104 strongly prefers room C201",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0104\">roomPref building=\"C\" room=\"201\" level=\"2\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0104\"><roomPref building=\"C\" room=\"201\" level=\"2\"/></department></preferences>"
+    },
+    {
+      "input": "Create course offering CHEM202 CHEM Course with Dr. Miller on Tuesday from 10:00 AM to 11:00 AM in room THTR301 with limit 25 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"6790\" offered=\"true\">course id=\"170\" subject=\"CHEM\" courseNbr=\"202\" title=\"CHEM Course\">class id=\"5902\" suffix=\"1\" type=\"LEC\" limit=\"25\">time days=\"T\" startTime=\"1000\" endTime=\"1100\"/>room building=\"THTR\" roomNbr=\"301\"/>instructor id=\"50\" fname=\"Dr.\" lname=\"Miller\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"6258\" offered=\"true\"><course id=\"936\" subject=\"CHEM\" courseNbr=\"202\" title=\"CHEM Course\"><class id=\"13650\" suffix=\"1\" type=\"LEC\" limit=\"25\"><time days=\"T\" startTime=\"1000\" endTime=\"1100\"/><room building=\"THTR\" roomNbr=\"301\"/><instructor id=\"60\" fname=\"Dr.\" lname=\"Miller\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 15 seats in MATH201 for ENG majors with SR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"MATH\" courseNbr=\"201\" limit=\"15\" type=\"curriculum\">academicClassification code=\"SR\"/>major code=\"ENG\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"MATH\" courseNbr=\"201\" limit=\"15\" type=\"curriculum\"><academicClassification code=\"SR\"/><major code=\"ENG\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 10 seats in HIST402 for HIST majors with FR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"HIST\" courseNbr=\"402\" limit=\"10\" type=\"curriculum\">academicClassification code=\"FR\"/>major code=\"HIST\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"HIST\" courseNbr=\"402\" limit=\"10\" type=\"curriculum\"><academicClassification code=\"FR\"/><major code=\"HIST\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering PSYC402 PSYC Course with Dr. Smith on Wednesday from 9:00 AM to 10:00 AM in room EDUC203 with limit 25 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"9569\" offered=\"true\">course id=\"903\" subject=\"PSYC\" courseNbr=\"402\" title=\"PSYC Course\">class id=\"41366\" suffix=\"1\" type=\"LEC\" limit=\"25\">time days=\"W\" startTime=\"0900\" endTime=\"1000\"/>room building=\"EDUC\" roomNbr=\"203\"/>instructor id=\"35\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"7073\" offered=\"true\"><course id=\"878\" subject=\"PSYC\" courseNbr=\"402\" title=\"PSYC Course\"><class id=\"87271\" suffix=\"1\" type=\"SEM\" limit=\"25\"><time days=\"W\" startTime=\"0900\" endTime=\"1000\"/><room building=\"EDUC\" roomNbr=\"203\"/><instructor id=\"77\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 25 seats in ENG499 for student with ID STU11975 until 2024-12-01",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ENG\" courseNbr=\"499\" limit=\"25\" expire=\"2024-12-01\" type=\"individual\">student externalId=\"STU11975\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ENG\" courseNbr=\"499\" limit=\"25\" expire=\"2024-12-01\" type=\"individual\"><student externalId=\"STU11975\"/></reservation></reservations>"
+    },
+    {
+      "input": "Department 0101 prefers room EDUC102",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0101\">roomPref building=\"EDUC\" room=\"102\" level=\"1\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0101\"><roomPref building=\"EDUC\" room=\"102\" level=\"1\"/></department></preferences>"
+    },
+    {
+      "input": "Department 0102 is neutral about room ENG202",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0102\">roomPref building=\"ENG\" room=\"202\" level=\"0\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0102\"><roomPref building=\"ENG\" room=\"202\" level=\"0\"/></department></preferences>"
+    },
+    {
+      "input": "Department 0101 strongly avoids room GYM301",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0101\">roomPref building=\"GYM\" room=\"301\" level=\"-2\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0101\"><roomPref building=\"GYM\" room=\"301\" level=\"-2\"/></department></preferences>"
+    },
+    {
+      "input": "Department 0101 prefers room LIB201",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0101\">roomPref building=\"LIB\" room=\"201\" level=\"1\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0101\"><roomPref building=\"LIB\" room=\"201\" level=\"1\"/></department></preferences>"
+    },
+    {
+      "input": "Reserve 30 seats in ART401 section 3 for athletes student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ART\" courseNbr=\"401\" limit=\"30\" type=\"group\">class suffix=\"3\"/>studentGroup code=\"ATHLETES\"/> </reservation> </reservations>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ART\" courseNbr=\"401\" limit=\"30\" type=\"group\"><class suffix=\"3\"/><studentGroup code=\"ATHLETES\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering CHEM302 CHEM Course with Prof. Johnson on Tuesday from 2:00 PM to 3:00 PM in room A201 with limit 25 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"682\" offered=\"true\">course id=\"336\" subject=\"CHEM\" courseNbr=\"302\" title=\"CHEM Course\">class id=\"22028\" suffix=\"1\" type=\"LEC\" limit=\"25\">time days=\"T\" startTime=\"1400\" endTime=\"1500\"/>room building=\"A\" roomNbr=\"201\"/>instructor id=\"50\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"8248\" offered=\"true\"><course id=\"522\" subject=\"CHEM\" courseNbr=\"302\" title=\"CHEM Course\"><class id=\"63343\" suffix=\"1\" type=\"LEC\" limit=\"25\"><time days=\"T\" startTime=\"1400\" endTime=\"1500\"/><room building=\"A\" roomNbr=\"201\"/><instructor id=\"88\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Create course offering HIST202 HIST Course with Dr. Rodriguez on Friday from 2:00 PM to 3:00 PM in room ENG103 with limit 40 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"592\" offered=\"true\">course id=\"490\" subject=\"HIST\" courseNbr=\"202\" title=\"HIST Course\">class id=\"7592\" suffix=\"1\" type=\"SEM\" limit=\"40\">time days=\"F\" startTime=\"1400\" endTime=\"1500\"/>room building=\"ENG\" roomNbr=\"103\"/>instructor id=\"26\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"7035\" offered=\"true\"><course id=\"645\" subject=\"HIST\" courseNbr=\"202\" title=\"HIST Course\"><class id=\"42035\" suffix=\"1\" type=\"SEM\" limit=\"40\"><time days=\"F\" startTime=\"1400\" endTime=\"1500\"/><room building=\"ENG\" roomNbr=\"103\"/><instructor id=\"69\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Instructor Prof. Johnson strongly prefers room B301",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Prof.\" lastName=\"Johnson\">roomPref building=\"B\" room=\"301\" level=\"2\"/> </preferences>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor firstName=\"Prof.\" lastName=\"Johnson\"><roomPref building=\"B\" room=\"301\" level=\"2\"/></instructor></preferences>"
+    },
+    {
+      "input": "Schedule ECON499 ECON Course with Dr. Williams on Tuesday Thursday from 12:00 PM to 1:00 PM in room B103, class ID 98870",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"98870\" name=\"ECON Course\" subject=\"ECON\" courseNbr=\"499\" type=\"SEM\" suffix=\"1\">time days=\"TR\" startTime=\"1200\" endTime=\"1300\"/>room building=\"B\" roomNbr=\"103\"/>instructor id=\"80\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"98870\" name=\"ECON Course\" subject=\"ECON\" courseNbr=\"499\" type=\"LAB\" suffix=\"1\"><time days=\"TR\" startTime=\"1200\" endTime=\"1300\"/><room building=\"B\" roomNbr=\"103\"/><instructor id=\"51\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Schedule HIST102 HIST Course with Dr. Jones on Monday from 2:00 PM to 3:00 PM in room ENG102, class ID 11010",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"11010\" name=\"HIST Course\" subject=\"HIST\" courseNbr=\"102\" type=\"STU\" suffix=\"1\">time days=\"M\" startTime=\"1400\" endTime=\"1500\"/>room building=\"ENG\" roomNbr=\"102\"/>instructor id=\"50\" fname=\"Dr.\" lname=\"Jones\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"11010\" name=\"HIST Course\" subject=\"HIST\" courseNbr=\"102\" type=\"IND\" suffix=\"1\"><time days=\"M\" startTime=\"1400\" endTime=\"1500\"/><room building=\"ENG\" roomNbr=\"102\"/><instructor id=\"37\" fname=\"Dr.\" lname=\"Jones\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Instructor Dr. Jones from department 0102 strongly prefers teaching on Thursday from 9:00 AM to 10:00 AM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"803\" firstName=\"Dr.\" lastName=\"Jones\" department=\"0102\">timePref level=\"R\">pref level=\"2\" day=\"R\" start=\"0900\" stop=\"1000\"/>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"204\" firstName=\"Dr.\" lastName=\"Jones\" department=\"0102\"><timePref level=\"R\"><pref level=\"2\" day=\"R\" start=\"0900\" stop=\"1000\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "Schedule BIOL499 BIOL Course with Dr. Smith on Monday Tuesday Wednesday Thursday Friday from 9:00 AM to 10:00 AM in room SCI101, class ID 86885",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"86885\" name=\"BIOL Course\" subject=\"BIOL\" courseNbr=\"499\" type=\"SEM\" suffix=\"1\">time days=\"MTWRF\" startTime=\"0900\" endTime=\"1000\"/>room building=\"SCI\" roomNbr=\"101\"/>instructor id=\"80\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"86885\" name=\"BIOL Course\" subject=\"BIOL\" courseNbr=\"499\" type=\"SEM\" suffix=\"1\"><time days=\"MTWRF\" startTime=\"0900\" endTime=\"1000\"/><room building=\"SCI\" roomNbr=\"101\"/><instructor id=\"29\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Department 0104 avoids room ENG101",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0104\">roomPref building=\"ENG\" room=\"101\" level=\"-1\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0104\"><roomPref building=\"ENG\" room=\"101\" level=\"-1\"/></department></preferences>"
+    },
+    {
+      "input": "Create course offering ENG401 ENG Course with Professor Brown on Monday from 4:00 PM to 5:00 PM in room LIB201 with limit 25 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"6979\" offered=\"true\">course id=\"697\" subject=\"ENG\" courseNbr=\"401\" title=\"ENG Course\">class id=\"69357\" suffix=\"1\" type=\"LEC\" limit=\"25\">time days=\"M\" startTime=\"1600\" endTime=\"1700\"/>room building=\"LIB\" roomNbr=\"201\"/>instructor id=\"18\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"1284\" offered=\"true\"><course id=\"125\" subject=\"ENG\" courseNbr=\"401\" title=\"ENG Course\"><class id=\"95888\" suffix=\"1\" type=\"LEC\" limit=\"25\"><time days=\"M\" startTime=\"1600\" endTime=\"1700\"/><room building=\"LIB\" roomNbr=\"201\"/><instructor id=\"93\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Create course offering MATH101 College Algebra with Professor Davis on Monday Wednesday from 2:00 PM to 3:00 PM in room GYM201 with limit 25 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"8018\" offered=\"true\">course id=\"490\" subject=\"MATH\" courseNbr=\"101\" title=\"College Algebra\">class id=\"93828\" suffix=\"1\" type=\"SEM\" limit=\"25\">time days=\"MW\" startTime=\"1400\" endTime=\"1500\"/>room building=\"GYM\" roomNbr=\"201\"/>instructor id=\"18\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"5952\" offered=\"true\"><course id=\"629\" subject=\"MATH\" courseNbr=\"101\" title=\"College Algebra\"><class id=\"76997\" suffix=\"1\" type=\"LEC\" limit=\"25\"><time days=\"MW\" startTime=\"1400\" endTime=\"1500\"/><room building=\"GYM\" roomNbr=\"201\"/><instructor id=\"59\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 5 seats in BIOL401 for PHYS majors with JR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"BIOL\" courseNbr=\"401\" limit=\"5\" type=\"curriculum\">academicClassification code=\"JR\"/>major code=\"PHYS\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"BIOL\" courseNbr=\"401\" limit=\"5\" type=\"curriculum\"><academicClassification code=\"JR\"/><major code=\"PHYS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering ECON402 ECON Course with Dr. Smith on Monday Tuesday Wednesday Thursday Friday from 5:00 PM to 6:00 PM in room ENG201 with limit 35 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"692\" offered=\"true\">course id=\"568\" subject=\"ECON\" courseNbr=\"402\" title=\"ECON Course\">class id=\"68683\" suffix=\"1\" type=\"LEC\" limit=\"35\">time days=\"MTWRF\" startTime=\"1700\" endTime=\"1800\"/>room building=\"ENG\" roomNbr=\"201\"/>instructor id=\"80\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"5264\" offered=\"true\"><course id=\"899\" subject=\"ECON\" courseNbr=\"402\" title=\"ECON Course\"><class id=\"83265\" suffix=\"1\" type=\"SEM\" limit=\"35\"><time days=\"MTWRF\" startTime=\"1700\" endTime=\"1800\"/><room building=\"ENG\" roomNbr=\"201\"/><instructor id=\"26\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Create course offering PHYS102 General Physics II with Prof. Johnson on Monday Tuesday Wednesday Thursday Friday from 3:00 PM to 4:00 PM in room SCI202 with limit 25 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"932\" offered=\"true\">course id=\"890\" subject=\"PHYS\" courseNbr=\"102\" title=\"General Physics II\">class id=\"3792\" suffix=\"1\" type=\"LEC\" limit=\"25\">time days=\"MTWRF\" startTime=\"1500\" endTime=\"1600\"/>room building=\"SCI\" roomNbr=\"202\"/>instructor id=\"13\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </course> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"3524\" offered=\"true\"><course id=\"289\" subject=\"PHYS\" courseNbr=\"102\" title=\"General Physics II\"><class id=\"90660\" suffix=\"1\" type=\"SEM\" limit=\"25\"><time days=\"MTWRF\" startTime=\"1500\" endTime=\"1600\"/><room building=\"SCI\" roomNbr=\"202\"/><instructor id=\"75\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Create course offering ENG201 ENG Course with Prof. Martinez on Monday Wednesday from 2:00 PM to 3:00 PM in room A301 with limit 40 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"772\" offered=\"true\">course id=\"220\" subject=\"ENG\" courseNbr=\"201\" title=\"ENG Course\">class id=\"41825\" suffix=\"1\" type=\"LEC\" limit=\"40\">time days=\"MW\" startTime=\"1400\" endTime=\"1500\"/>room building=\"A\" roomNbr=\"301\"/>instructor id=\"13\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/> </class> </course> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"9018\" offered=\"true\"><course id=\"892\" subject=\"ENG\" courseNbr=\"201\" title=\"ENG Course\"><class id=\"75736\" suffix=\"1\" type=\"LEC\" limit=\"40\"><time days=\"MW\" startTime=\"1400\" endTime=\"1500\"/><room building=\"A\" roomNbr=\"301\"/><instructor id=\"62\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 20 seats in ART401 for ART majors with SR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ART\" courseNbr=\"401\" limit=\"20\" type=\"curriculum\">academicClassification code=\"SR\"/>major code=\"ART\"/> </reservation> </reservations>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ART\" courseNbr=\"401\" limit=\"20\" type=\"curriculum\"><academicClassification code=\"SR\"/><major code=\"ART\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 10 seats in BIOL302 for ART majors with FR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"BIOL\" courseNbr=\"302\" limit=\"10\" type=\"curriculum\">academicClassification code=\"FR\"/>major code=\"ART\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"BIOL\" courseNbr=\"302\" limit=\"10\" type=\"curriculum\"><academicClassification code=\"FR\"/><major code=\"ART\"/></reservation></reservations>"
+    },
+    {
+      "input": "Schedule CHEM302 CHEM Course with Prof. Garcia on Wednesday Friday from 12:00 PM to 1:00 PM in room LIB301, class ID 72745",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"72745\" name=\"CHEM Course\" subject=\"CHEM\" courseNbr=\"302\" type=\"IND\" suffix=\"1\">time days=\"WF\" startTime=\"1200\" endTime=\"1300\"/>room building=\"LIB\" roomNbr=\"301\"/>instructor id=\"90\" fname=\"Prof.\" lname=\"Garcia\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"72745\" name=\"CHEM Course\" subject=\"CHEM\" courseNbr=\"302\" type=\"REC\" suffix=\"1\"><time days=\"WF\" startTime=\"1200\" endTime=\"1300\"/><room building=\"LIB\" roomNbr=\"301\"/><instructor id=\"39\" fname=\"Prof.\" lname=\"Garcia\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Create course offering ENG201 ENG Course with Prof. Johnson on Tuesday Thursday from 10:00 AM to 11:00 AM in room A102 with limit 30 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"9569\" offered=\"true\">course id=\"453\" subject=\"ENG\" courseNbr=\"201\" title=\"ENG Course\">class id=\"69352\" suffix=\"1\" type=\"LEC\" limit=\"30\">time days=\"TR\" startTime=\"1000\" endTime=\"1100\"/>room building=\"A\" roomNbr=\"102\"/>instructor id=\"8\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"7573\" offered=\"true\"><course id=\"121\" subject=\"ENG\" courseNbr=\"201\" title=\"ENG Course\"><class id=\"40159\" suffix=\"1\" type=\"SEM\" limit=\"30\"><time days=\"TR\" startTime=\"1000\" endTime=\"1100\"/><room building=\"A\" roomNbr=\"102\"/><instructor id=\"56\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 20 seats in MATH101 section 2 for honors student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"MATH\" courseNbr=\"101\" limit=\"20\" type=\"group\">class suffix=\"2\"/>studentGroup code=\"HONORS\"/> </reservation>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"MATH\" courseNbr=\"101\" limit=\"20\" type=\"group\"><class suffix=\"2\"/><studentGroup code=\"HONORS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Department 0103 strongly avoids room C203",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0103\">roomPref building=\"C\" room=\"203\" level=\"-2\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0103\"><roomPref building=\"C\" room=\"203\" level=\"-2\"/></department></preferences>"
+    },
+    {
+      "input": "Schedule MATH201 Calculus II with Professor Davis on Wednesday from 4:00 PM to 5:00 PM in room ENG102, class ID 11897",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"11897\" name=\"Calculus II\" subject=\"MATH\" courseNbr=\"201\" type=\"STU\" suffix=\"1\">time days=\"W\" startTime=\"1600\" endTime=\"1700\"/>room building=\"ENG\" roomNbr=\"102\"/>instructor id=\"90\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"11897\" name=\"Calculus II\" subject=\"MATH\" courseNbr=\"201\" type=\"REC\" suffix=\"1\"><time days=\"W\" startTime=\"1600\" endTime=\"1700\"/><room building=\"ENG\" roomNbr=\"102\"/><instructor id=\"15\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Reserve 25 seats in ENG101 for student with ID STU82467 until 2024-12-01",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ENG\" courseNbr=\"101\" limit=\"25\" expire=\"2024-12-01\" type=\"individual\">student externalId=\"STU82467\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ENG\" courseNbr=\"101\" limit=\"25\" expire=\"2024-12-01\" type=\"individual\"><student externalId=\"STU82467\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 25 seats in HIST302 for CS majors with GR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"HIST\" courseNbr=\"302\" limit=\"25\" type=\"curriculum\">academicClassification code=\"GR\"/>major code=\"CS\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"HIST\" courseNbr=\"302\" limit=\"25\" type=\"curriculum\"><academicClassification code=\"GR\"/><major code=\"CS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Schedule ENG102 ENG Course with Professor Taylor on Wednesday Friday from 3:00 PM to 4:00 PM in room THTR103, class ID 31098",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"31098\" name=\"ENG Course\" subject=\"ENG\" courseNbr=\"102\" type=\"IND\" suffix=\"1\">time days=\"WF\" startTime=\"1500\" endTime=\"1600\"/>room building=\"THTR\" roomNbr=\"103\"/>instructor id=\"2\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"31098\" name=\"ENG Course\" subject=\"ENG\" courseNbr=\"102\" type=\"LAB\" suffix=\"1\"><time days=\"WF\" startTime=\"1500\" endTime=\"1600\"/><room building=\"THTR\" roomNbr=\"103\"/><instructor id=\"8\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Create course offering ART202 ART Course with Prof. Martinez on Monday Tuesday Wednesday Thursday Friday from 3:00 PM to 4:00 PM in room C201 with limit 35 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"6868\" offered=\"true\">course id=\"762\" subject=\"ART\" courseNbr=\"202\" title=\"ART Course\">class id=\"3463\" suffix=\"1\" type=\"LEC\" limit=\"35\">time days=\"MTWRF\" startTime=\"1500\" endTime=\"1600\"/>room building=\"C\" roomNbr=\"201\"/>instructor id=\"35\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"3863\" offered=\"true\"><course id=\"240\" subject=\"ART\" courseNbr=\"202\" title=\"ART Course\"><class id=\"54369\" suffix=\"1\" type=\"SEM\" limit=\"35\"><time days=\"MTWRF\" startTime=\"1500\" endTime=\"1600\"/><room building=\"C\" roomNbr=\"201\"/><instructor id=\"50\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Create course offering CS401 CS Course with Prof. Martinez on Friday from 1:00 PM to 2:00 PM in room B203 with limit 40 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"436\" offered=\"true\">course id=\"463\" subject=\"CS\" courseNbr=\"401\" title=\"CS Course\">class id=\"3452\" suffix=\"1\" type=\"LEC\" limit=\"40\">time days=\"F\" startTime=\"1300\" endTime=\"1400\"/>room building=\"B\" roomNbr=\"203\"/>instructor id=\"13\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"2616\" offered=\"true\"><course id=\"818\" subject=\"CS\" courseNbr=\"401\" title=\"CS Course\"><class id=\"26997\" suffix=\"1\" type=\"LEC\" limit=\"40\"><time days=\"F\" startTime=\"1300\" endTime=\"1400\"/><room building=\"B\" roomNbr=\"203\"/><instructor id=\"37\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 10 seats in BIOL301 for HIST majors with GR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"BIOL\" courseNbr=\"301\" limit=\"10\" type=\"curriculum\">academicClassification code=\"GR\"/>major code=\"HIST\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"BIOL\" courseNbr=\"301\" limit=\"10\" type=\"curriculum\"><academicClassification code=\"GR\"/><major code=\"HIST\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering ART302 ART Course with Dr. Anderson on Tuesday Thursday from 10:00 AM to 11:00 AM in room EDUC203 with limit 40 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"327\" offered=\"true\">course id=\"249\" subject=\"ART\" courseNbr=\"302\" title=\"ART Course\">class id=\"96472\" suffix=\"1\" type=\"LEC\" limit=\"40\">time days=\"TR\" startTime=\"1000\" endTime=\"1100\"/>room building=\"EDUC\" roomNbr=\"203\"/>instructor id=\"44\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"4509\" offered=\"true\"><course id=\"506\" subject=\"ART\" courseNbr=\"302\" title=\"ART Course\"><class id=\"93486\" suffix=\"1\" type=\"SEM\" limit=\"40\"><time days=\"TR\" startTime=\"1000\" endTime=\"1100\"/><room building=\"EDUC\" roomNbr=\"203\"/><instructor id=\"12\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Instructor Prof. Martinez is neutral about room SCI101",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Prof.\" lastName=\"Martinez\">roomPref building=\"SCI\" room=\"101\" level=\"0\"/> </class> </timetable>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor firstName=\"Prof.\" lastName=\"Martinez\"><roomPref building=\"SCI\" room=\"101\" level=\"0\"/></instructor></preferences>"
+    },
+    {
+      "input": "Schedule ECON302 ECON Course with Professor Taylor as arranged time with minimum 2 hours per week, class ID 29529",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"29529\" name=\"ECON Course\" subject=\"ECON\" courseNbr=\"302\" type=\"STU\" suffix=\"1\">arrangeTime minPerWeek=\"2\"/>instructor id=\"59\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/> </class> </course> </offerings> </offering>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"29529\" name=\"ECON Course\" subject=\"ECON\" courseNbr=\"302\" type=\"LEC\" suffix=\"1\"><arrangeTime minPerWeek=\"2\"/><instructor id=\"66\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Reserve 10 seats in CS302 section 2 for veterans student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"CS\" courseNbr=\"302\" limit=\"10\" type=\"group\">class suffix=\"2\"/>studentGroup code=\"VETERANS\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"CS\" courseNbr=\"302\" limit=\"10\" type=\"group\"><class suffix=\"2\"/><studentGroup code=\"VETERANS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering ECON302 ECON Course with Professor Davis on Wednesday Friday from 12:00 PM to 1:00 PM in room C102 with limit 40 students",
+      "predicted": "ECON Courses subject=\"ECON\" courseNbr=\"302\" title=\"ECON Course\">class id=\"56181\" suffix=\"1\" type=\"LEC\" limit=\"40\">time days=\"WF\" startTime=\"1200\" endTime=\"1300\"/>room building=\"C\" roomNbr=\"102\"/>instructor id=\"13\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"9638\" offered=\"true\"><course id=\"415\" subject=\"ECON\" courseNbr=\"302\" title=\"ECON Course\"><class id=\"22415\" suffix=\"1\" type=\"LEC\" limit=\"40\"><time days=\"WF\" startTime=\"1200\" endTime=\"1300\"/><room building=\"C\" roomNbr=\"102\"/><instructor id=\"93\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Department 0102 avoids room EDUC101",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0102\">roomPref building=\"EDUC\" room=\"101\" level=\"-1\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0102\"><roomPref building=\"EDUC\" room=\"101\" level=\"-1\"/></department></preferences>"
+    },
+    {
+      "input": "Create course offering ECON202 ECON Course with Dr. Rodriguez on Wednesday Friday from 1:00 PM to 2:00 PM in room SCI103 with limit 40 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"892\" offered=\"true\">course id=\"962\" subject=\"ECON\" courseNbr=\"202\" title=\"ECON Course\">class id=\"56918\" suffix=\"1\" type=\"SEM\" limit=\"40\">time days=\"WF\" startTime=\"1300\" endTime=\"1400\"/>room building=\"SCI\" roomNbr=\"103\"/>instructor id=\"56\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"1059\" offered=\"true\"><course id=\"866\" subject=\"ECON\" courseNbr=\"202\" title=\"ECON Course\"><class id=\"80413\" suffix=\"1\" type=\"LEC\" limit=\"40\"><time days=\"WF\" startTime=\"1300\" endTime=\"1400\"/><room building=\"SCI\" roomNbr=\"103\"/><instructor id=\"38\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 25 seats in BIOL302 for PHYS majors with SO classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"BIOL\" courseNbr=\"302\" limit=\"25\" type=\"curriculum\">academicClassification code=\"SO\"/>major code=\"PHYS\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"BIOL\" courseNbr=\"302\" limit=\"25\" type=\"curriculum\"><academicClassification code=\"SO\"/><major code=\"PHYS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Schedule BIOL102 BIOL Course with Prof. Johnson on Monday from 1:00 PM to 2:00 PM in room ENG302, class ID 23502",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"23502\" name=\"BIOL Course\" subject=\"BIOL\" courseNbr=\"102\" type=\"LAB\" suffix=\"1\">time days=\"M\" startTime=\"1300\" endTime=\"1400\"/>room building=\"ENG\" roomNbr=\"302\"/>instructor id=\"50\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"23502\" name=\"BIOL Course\" subject=\"BIOL\" courseNbr=\"102\" type=\"SEM\" suffix=\"1\"><time days=\"M\" startTime=\"1300\" endTime=\"1400\"/><room building=\"ENG\" roomNbr=\"302\"/><instructor id=\"48\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Create course offering ECON499 ECON Course with Dr. Rodriguez on Thursday from 9:00 AM to 10:00 AM in room A203 with limit 35 students",
+      "predicted": "ECON Courses subject=\"ECON\" courseNbr=\"499\" title=\"ECON Course\">class id=\"21836\" suffix=\"1\" type=\"LEC\" limit=\"35\">time days=\"R\" startTime=\"0900\" endTime=\"1000\"/>room building=\"A\" roomNbr=\"203\"/>instructor id=\"28\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/> </class> </course> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"8547\" offered=\"true\"><course id=\"660\" subject=\"ECON\" courseNbr=\"499\" title=\"ECON Course\"><class id=\"70169\" suffix=\"1\" type=\"SEM\" limit=\"35\"><time days=\"R\" startTime=\"0900\" endTime=\"1000\"/><room building=\"A\" roomNbr=\"203\"/><instructor id=\"76\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Department 0104 avoids room A101",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0104\">roomPref building=\"A\" room=\"101\" level=\"-1\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0104\"><roomPref building=\"A\" room=\"101\" level=\"-1\"/></department></preferences>"
+    },
+    {
+      "input": "Create course offering ENG102 ENG Course with Dr. Rodriguez on Monday Wednesday from 7:00 PM to 8:00 PM in room C103 with limit 25 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"352\" offered=\"true\">course id=\"648\" subject=\"ENG\" courseNbr=\"102\" title=\"ENG Course\">class id=\"3672\" suffix=\"1\" type=\"LEC\" limit=\"25\">time days=\"MW\" startTime=\"1900\" endTime=\"2000\"/>room building=\"C\" roomNbr=\"103\"/>instructor id=\"13\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"6718\" offered=\"true\"><course id=\"346\" subject=\"ENG\" courseNbr=\"102\" title=\"ENG Course\"><class id=\"31473\" suffix=\"1\" type=\"SEM\" limit=\"25\"><time days=\"MW\" startTime=\"1900\" endTime=\"2000\"/><room building=\"C\" roomNbr=\"103\"/><instructor id=\"93\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Schedule PSYC401 PSYC Course with Prof. Martinez on Monday Wednesday Friday from 3:00 PM to 4:00 PM in room ENG203, class ID 95724",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"95724\" name=\"PSYC Course\" subject=\"PSYC\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\">time days=\"MWF\" startTime=\"1500\" endTime=\"1600\"/>room building=\"ENG\" roomNbr=\"203\"/>instructor id=\"60\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"95724\" name=\"PSYC Course\" subject=\"PSYC\" courseNbr=\"401\" type=\"REC\" suffix=\"1\"><time days=\"MWF\" startTime=\"1500\" endTime=\"1600\"/><room building=\"ENG\" roomNbr=\"203\"/><instructor id=\"17\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Department 0100 prohibits room A301",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0100\">roomPref building=\"A\" room=\"301\" level=\"-2\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0100\"><roomPref building=\"A\" room=\"301\" level=\"P\"/></department></preferences>"
+    },
+    {
+      "input": "Schedule ART101 ART Course with Prof. Johnson on Monday Tuesday Wednesday Thursday Friday from 7:00 PM to 8:00 PM in room GYM101, class ID 92367",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"92367\" name=\"ART Course\" subject=\"ART\" courseNbr=\"101\" type=\"SEM\" suffix=\"1\">time days=\"MTWRF\" startTime=\"1900\" endTime=\"2000\"/>room building=\"GYM\" roomNbr=\"101\"/>instructor id=\"28\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"92367\" name=\"ART Course\" subject=\"ART\" courseNbr=\"101\" type=\"IND\" suffix=\"1\"><time days=\"MTWRF\" startTime=\"1900\" endTime=\"2000\"/><room building=\"GYM\" roomNbr=\"101\"/><instructor id=\"6\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Create course offering HIST401 HIST Course with Prof. Martinez on Monday Tuesday Wednesday Thursday Friday from 6:00 PM to 7:00 PM in room GYM102 with limit 35 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"9559\" offered=\"true\">course id=\"135\" subject=\"HIST\" courseNbr=\"401\" title=\"HIST Course\">class id=\"75591\" suffix=\"1\" type=\"SEM\" limit=\"35\">time days=\"MTWRF\" startTime=\"1800\" endTime=\"1900\"/>room building=\"GYM\" roomNbr=\"102\"/>instructor id=\"50\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"5272\" offered=\"true\"><course id=\"646\" subject=\"HIST\" courseNbr=\"401\" title=\"HIST Course\"><class id=\"43335\" suffix=\"1\" type=\"LEC\" limit=\"35\"><time days=\"MTWRF\" startTime=\"1800\" endTime=\"1900\"/><room building=\"GYM\" roomNbr=\"102\"/><instructor id=\"32\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Schedule MATH401 MATH Course with Prof. Johnson on Monday Tuesday Wednesday Thursday Friday from 7:00 PM to 8:00 PM in room THTR203, class ID 12896",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"12896\" name=\"MATH Course\" subject=\"MATH\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\">time days=\"MTWRF\" startTime=\"1900\" endTime=\"2000\"/>room building=\"THTR\" roomNbr=\"203\"/>instructor id=\"13\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"12896\" name=\"MATH Course\" subject=\"MATH\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\"><time days=\"MTWRF\" startTime=\"1900\" endTime=\"2000\"/><room building=\"THTR\" roomNbr=\"203\"/><instructor id=\"3\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Schedule CS401 CS Course with Dr. Williams on Wednesday from 3:00 PM to 4:00 PM in room ENG201, class ID 59998",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"59998\" name=\"CS Course\" subject=\"CS\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\">time days=\"W\" startTime=\"1500\" endTime=\"1600\"/>room building=\"ENG\" roomNbr=\"201\"/>instructor id=\"13\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"59998\" name=\"CS Course\" subject=\"CS\" courseNbr=\"401\" type=\"IND\" suffix=\"1\"><time days=\"W\" startTime=\"1500\" endTime=\"1600\"/><room building=\"ENG\" roomNbr=\"201\"/><instructor id=\"17\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Instructor Dr. Rodriguez from department 0101 is neutral about teaching on Wednesday from 10:00 AM to 11:00 AM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"687\" firstName=\"Dr.\" lastName=\"Rodriguez\" department=\"0101\">timePref level=\"R\">pref level=\"0\" day=\"W\" start=\"1000\" stop=\"1100\"/> </reservation> </reservations>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"484\" firstName=\"Dr.\" lastName=\"Rodriguez\" department=\"0101\"><timePref level=\"R\"><pref level=\"0\" day=\"W\" start=\"1000\" stop=\"1100\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "Department 0100 strongly avoids room SCI201",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0100\">roomPref building=\"SCI\" room=\"201\" level=\"-2\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0100\"><roomPref building=\"SCI\" room=\"201\" level=\"-2\"/></department></preferences>"
+    },
+    {
+      "input": "Reserve 10 seats in ART101 section 2 for transfer student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ART\" courseNbr=\"101\" limit=\"10\" type=\"group\">class suffix=\"2\"/>studentGroup code=\"TRANSFER\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ART\" courseNbr=\"101\" limit=\"10\" type=\"group\"><class suffix=\"2\"/><studentGroup code=\"TRANSFER\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 20 seats in ART201 section 1 for honors student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ART\" courseNbr=\"201\" limit=\"20\" type=\"group\">class suffix=\"1\"/>studentGroup code=\"HONORS\"/> </reservation>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ART\" courseNbr=\"201\" limit=\"20\" type=\"group\"><class suffix=\"1\"/><studentGroup code=\"HONORS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Schedule CS101 Introduction to Programming with Dr. Rodriguez on Monday from 5:00 PM to 6:00 PM in room EDUC301, class ID 12846",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Dr.\" lastName=\"Rodriguez\">timePref level=\"R\">pref level=\"1\" day=\"M\" start=\"1700\" stop=\"1800\"/> </class> </reservations>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"12846\" name=\"Introduction to Programming\" subject=\"CS\" courseNbr=\"101\" type=\"LAB\" suffix=\"1\"><time days=\"M\" startTime=\"1700\" endTime=\"1800\"/><room building=\"EDUC\" roomNbr=\"301\"/><instructor id=\"21\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Create course offering ECON102 ECON Course with Dr. Williams on Friday from 1:00 PM to 2:00 PM in room ENG201 with limit 35 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"9659\" offered=\"true\">course id=\"346\" subject=\"ECON\" courseNbr=\"102\" title=\"ECON Course\">class id=\"3462\" suffix=\"1\" type=\"SEM\" limit=\"35\">time days=\"F\" startTime=\"1300\" endTime=\"1400\"/>room building=\"ENG\" roomNbr=\"201\"/>instructor id=\"13\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/> </class> </course> </offering> </offering> </offering>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"7570\" offered=\"true\"><course id=\"347\" subject=\"ECON\" courseNbr=\"102\" title=\"ECON Course\"><class id=\"96154\" suffix=\"1\" type=\"SEM\" limit=\"35\"><time days=\"F\" startTime=\"1300\" endTime=\"1400\"/><room building=\"ENG\" roomNbr=\"201\"/><instructor id=\"17\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Schedule BIOL301 BIOL Course with Professor Taylor as arranged time with minimum 1 hours per week, class ID 17254",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"17254\" name=\"BIOL Course\" subject=\"BIOL\" courseNbr=\"301\" type=\"STU\" suffix=\"1\">arrangeTime minPerWeek=\"1\"/>instructor id=\"47\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"17254\" name=\"BIOL Course\" subject=\"BIOL\" courseNbr=\"301\" type=\"SEM\" suffix=\"1\"><arrangeTime minPerWeek=\"1\"/><instructor id=\"100\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Create course offering ENG499 ENG Course with Dr. Rodriguez on Thursday from 12:00 PM to 1:00 PM in room EDUC101 with limit 50 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"7574\" offered=\"true\">course id=\"499\" subject=\"ENG\" courseNbr=\"499\" title=\"ENG Course\">class id=\"59592\" suffix=\"1\" type=\"LEC\" limit=\"50\">time days=\"R\" startTime=\"1200\" endTime=\"1300\"/>room building=\"EDUC\" roomNbr=\"101\"/>instructor id=\"59\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"5555\" offered=\"true\"><course id=\"394\" subject=\"ENG\" courseNbr=\"499\" title=\"ENG Course\"><class id=\"54568\" suffix=\"1\" type=\"SEM\" limit=\"50\"><time days=\"R\" startTime=\"1200\" endTime=\"1300\"/><room building=\"EDUC\" roomNbr=\"101\"/><instructor id=\"33\" fname=\"Dr.\" lname=\"Rodriguez\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Create course offering CHEM402 CHEM Course with Prof. Johnson on Monday Tuesday Wednesday Thursday Friday from 4:00 PM to 5:00 PM in room THTR203 with limit 30 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"318\" offered=\"true\">course id=\"908\" subject=\"CHEM\" courseNbr=\"402\" title=\"CHEM Course\">class id=\"96220\" suffix=\"1\" type=\"LEC\" limit=\"30\">time days=\"MTWRF\" startTime=\"1600\" endTime=\"1700\"/>room building=\"THTR\" roomNbr=\"203\"/>instructor id=\"28\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"9395\" offered=\"true\"><course id=\"308\" subject=\"CHEM\" courseNbr=\"402\" title=\"CHEM Course\"><class id=\"23630\" suffix=\"1\" type=\"SEM\" limit=\"30\"><time days=\"MTWRF\" startTime=\"1600\" endTime=\"1700\"/><room building=\"THTR\" roomNbr=\"203\"/><instructor id=\"12\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Instructor Dr. Williams from department 0102 prohibits teaching on Monday from 5:00 PM to 6:00 PM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"282\" firstName=\"Dr.\" lastName=\"Williams\" department=\"0102\">timePref level=\"R\">pref level=\"R\" day=\"M\" start=\"1700\" stop=\"1800\"/> </preferences>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"848\" firstName=\"Dr.\" lastName=\"Williams\" department=\"0102\"><timePref level=\"R\"><pref level=\"P\" day=\"M\" start=\"1700\" stop=\"1800\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "MATH201 lecture and lab should have precedence constraint with avoids level",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0101\">distributionPref type=\"PRECEDENCE\" structure=\"Progressive\" level=\"-1\">subpart subject=\"MATH\" course=\"201\" type=\"Lec\"/>subpart subject=\"MATH\" course=\"201\" type=\"Lab\"/>/distributionPref>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0104\"><distributionPref type=\"PRECEDENCE\" structure=\"Progressive\" level=\"-1\"><subpart subject=\"MATH\" course=\"201\" type=\"Lec\"/><subpart subject=\"MATH\" course=\"201\" type=\"Lab\"/></distributionPref></department></preferences>"
+    },
+    {
+      "input": "CS201 lecture and lab should have same room constraint with prefers level",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0101\">distributionPref type=\"SAME_ROOM\" structure=\"Progressive\" level=\"1\">subpart subject=\"CS\" course=\"201\" type=\"Lec\"/>subpart subject=\"CS\" course=\"201\" type=\"Lab\"/>/distributionPref>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0102\"><distributionPref type=\"SAME_ROOM\" structure=\"Progressive\" level=\"1\"><subpart subject=\"CS\" course=\"201\" type=\"Lec\"/><subpart subject=\"CS\" course=\"201\" type=\"Lab\"/></distributionPref></department></preferences>"
+    },
+    {
+      "input": "Department 0100 prefers room SCI302",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0100\">roomPref building=\"SCI\" room=\"302\" level=\"1\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0100\"><roomPref building=\"SCI\" room=\"302\" level=\"1\"/></department></preferences>"
+    },
+    {
+      "input": "Create course offering CHEM401 CHEM Course with Professor Brown on Monday from 11:00 AM to 12:00 PM in room A101 with limit 25 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"4759\" offered=\"true\">course id=\"502\" subject=\"CHEM\" courseNbr=\"401\" title=\"CHEM Course\">class id=\"90803\" suffix=\"1\" type=\"LEC\" limit=\"25\">time days=\"M\" startTime=\"1100\" endTime=\"1200\"/>room building=\"A\" roomNbr=\"101\"/>instructor id=\"18\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"5149\" offered=\"true\"><course id=\"886\" subject=\"CHEM\" courseNbr=\"401\" title=\"CHEM Course\"><class id=\"93594\" suffix=\"1\" type=\"SEM\" limit=\"25\"><time days=\"M\" startTime=\"1100\" endTime=\"1200\"/><room building=\"A\" roomNbr=\"101\"/><instructor id=\"84\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Instructor Professor Davis from department 0101 prohibits teaching on Friday from 1:00 PM to 2:00 PM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"903\" firstName=\"Professor\" lastName=\"Davis\" department=\"0101\">timePref level=\"R\">pref level=\"1\" day=\"F\" start=\"1300\" stop=\"1400\"/> </reservation> </reservations>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"864\" firstName=\"Professor\" lastName=\"Davis\" department=\"0101\"><timePref level=\"R\"><pref level=\"P\" day=\"F\" start=\"1300\" stop=\"1400\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "Reserve 5 seats in ART401 section 3 for international student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ART\" courseNbr=\"401\" limit=\"5\" type=\"group\">class suffix=\"3\"/>studentGroup code=\"INTERNATIONAL\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ART\" courseNbr=\"401\" limit=\"5\" type=\"group\"><class suffix=\"3\"/><studentGroup code=\"INTERNATIONAL\"/></reservation></reservations>"
+    },
+    {
+      "input": "Schedule ECON401 ECON Course with Dr. Williams as arranged time with minimum 1 hours per week, class ID 29948",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"29948\" name=\"ECON Course\" subject=\"ECON\" courseNbr=\"401\" type=\"STU\" suffix=\"1\">arrangeTime minPerWeek=\"1\"/>instructor id=\"13\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"29948\" name=\"ECON Course\" subject=\"ECON\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\"><arrangeTime minPerWeek=\"1\"/><instructor id=\"57\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Schedule CHEM402 CHEM Course with Dr. Anderson as arranged time with minimum 5 hours per week, class ID 27289",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">class id=\"27289\" name=\"CHEM Course\" subject=\"CHEM\" courseNbr=\"402\" type=\"STU\" suffix=\"1\">arrangeTime minPerWeek=\"5\"/>instructor id=\"13\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"27289\" name=\"CHEM Course\" subject=\"CHEM\" courseNbr=\"402\" type=\"REC\" suffix=\"1\"><arrangeTime minPerWeek=\"5\"/><instructor id=\"38\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Create course offering BIOL301 BIOL Course with Dr. Williams on Monday from 3:00 PM to 4:00 PM in room ENG103 with limit 20 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"7967\" offered=\"true\">course id=\"901\" subject=\"BIOL\" courseNbr=\"301\" title=\"BIOL Course\">class id=\"44836\" suffix=\"1\" type=\"LEC\" limit=\"20\">time days=\"M\" startTime=\"1500\" endTime=\"1600\"/>room building=\"ENG\" roomNbr=\"103\"/>instructor id=\"18\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"3327\" offered=\"true\"><course id=\"860\" subject=\"BIOL\" courseNbr=\"301\" title=\"BIOL Course\"><class id=\"24576\" suffix=\"1\" type=\"LEC\" limit=\"20\"><time days=\"M\" startTime=\"1500\" endTime=\"1600\"/><room building=\"ENG\" roomNbr=\"103\"/><instructor id=\"7\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Department 0104 prefers room SCI301",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0104\">roomPref building=\"SCI\" room=\"301\" level=\"2\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0104\"><roomPref building=\"SCI\" room=\"301\" level=\"1\"/></department></preferences>"
+    },
+    {
+      "input": "Reserve 5 seats in CS499 for student with ID STU61645 until 2024-12-01",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"CS\" courseNbr=\"499\" limit=\"5\" expire=\"2024-12-01\" type=\"individual\">student externalId=\"STU61645\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"CS\" courseNbr=\"499\" limit=\"5\" expire=\"2024-12-01\" type=\"individual\"><student externalId=\"STU61645\"/></reservation></reservations>"
+    },
+    {
+      "input": "Schedule PSYC102 PSYC Course with Dr. Miller on Friday from 10:00 AM to 11:00 AM in room LIB102, class ID 66010",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"66010\" name=\"PSYC Course\" subject=\"PSYC\" courseNbr=\"102\" type=\"SEM\" suffix=\"1\">time days=\"F\" startTime=\"1000\" endTime=\"1100\"/>room building=\"LIB\" roomNbr=\"102\"/>instructor id=\"85\" fname=\"Dr.\" lname=\"Miller\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"66010\" name=\"PSYC Course\" subject=\"PSYC\" courseNbr=\"102\" type=\"SEM\" suffix=\"1\"><time days=\"F\" startTime=\"1000\" endTime=\"1100\"/><room building=\"LIB\" roomNbr=\"102\"/><instructor id=\"83\" fname=\"Dr.\" lname=\"Miller\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Schedule ART401 ART Course with Professor Davis on Wednesday Friday from 11:00 AM to 12:00 PM in room GYM102, class ID 58402",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"58402\" name=\"ART Course\" subject=\"ART\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\">time days=\"WF\" startTime=\"1100\" endTime=\"1200\"/>room building=\"GYM\" roomNbr=\"102\"/>instructor id=\"80\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"58402\" name=\"ART Course\" subject=\"ART\" courseNbr=\"401\" type=\"REC\" suffix=\"1\"><time days=\"WF\" startTime=\"1100\" endTime=\"1200\"/><room building=\"GYM\" roomNbr=\"102\"/><instructor id=\"64\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Reserve 10 seats in ART202 section 3 for veterans student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ART\" courseNbr=\"202\" limit=\"10\" type=\"group\">class suffix=\"3\"/>studentGroup code=\"VETERANS\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ART\" courseNbr=\"202\" limit=\"10\" type=\"group\"><class suffix=\"3\"/><studentGroup code=\"VETERANS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Schedule MATH102 Calculus I with Dr. Smith on Wednesday from 7:00 PM to 8:00 PM in room ENG101, class ID 38087",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"38087\" name=\"Calculus I\" subject=\"MATH\" courseNbr=\"102\" type=\"SEM\" suffix=\"1\">time days=\"W\" startTime=\"1900\" endTime=\"2000\"/>room building=\"ENG\" roomNbr=\"101\"/>instructor id=\"90\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"38087\" name=\"Calculus I\" subject=\"MATH\" courseNbr=\"102\" type=\"LAB\" suffix=\"1\"><time days=\"W\" startTime=\"1900\" endTime=\"2000\"/><room building=\"ENG\" roomNbr=\"101\"/><instructor id=\"25\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Reserve 5 seats in CHEM202 section 1 for honors student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"CHEM\" courseNbr=\"202\" limit=\"5\" type=\"group\">class suffix=\"1\"/>studentGroup code=\"HONORS\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"CHEM\" courseNbr=\"202\" limit=\"5\" type=\"group\"><class suffix=\"1\"/><studentGroup code=\"HONORS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering ECON402 ECON Course with Dr. Miller on Wednesday Friday from 4:00 PM to 5:00 PM in room GYM201 with limit 50 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"8568\" offered=\"true\">course id=\"596\" subject=\"ECON\" courseNbr=\"402\" title=\"ECON Course\">class id=\"34668\" suffix=\"1\" type=\"LEC\" limit=\"50\">time days=\"WF\" startTime=\"1600\" endTime=\"1700\"/>room building=\"GYM\" roomNbr=\"201\"/>instructor id=\"59\" fname=\"Dr.\" lname=\"Miller\" lead=\"true\"/> </class> </course> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"8753\" offered=\"true\"><course id=\"901\" subject=\"ECON\" courseNbr=\"402\" title=\"ECON Course\"><class id=\"87897\" suffix=\"1\" type=\"LEC\" limit=\"50\"><time days=\"WF\" startTime=\"1600\" endTime=\"1700\"/><room building=\"GYM\" roomNbr=\"201\"/><instructor id=\"95\" fname=\"Dr.\" lname=\"Miller\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 20 seats in ECON402 for HIST majors with FR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ECON\" courseNbr=\"402\" limit=\"20\" type=\"curriculum\">academicClassification code=\"FR\"/>major code=\"HIST\"/> </reservation> </reservations>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ECON\" courseNbr=\"402\" limit=\"20\" type=\"curriculum\"><academicClassification code=\"FR\"/><major code=\"HIST\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering CHEM102 CHEM Course with Dr. Anderson on Wednesday Friday from 7:00 PM to 8:00 PM in room EDUC302 with limit 35 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"803\" offered=\"true\">course id=\"249\" subject=\"CHEM\" courseNbr=\"102\" title=\"CHEM Course\">class id=\"61827\" suffix=\"1\" type=\"LEC\" limit=\"35\">time days=\"WF\" startTime=\"1900\" endTime=\"2000\"/>room building=\"EDUC\" roomNbr=\"302\"/>instructor id=\"60\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"6233\" offered=\"true\"><course id=\"575\" subject=\"CHEM\" courseNbr=\"102\" title=\"CHEM Course\"><class id=\"59011\" suffix=\"1\" type=\"LEC\" limit=\"35\"><time days=\"WF\" startTime=\"1900\" endTime=\"2000\"/><room building=\"EDUC\" roomNbr=\"302\"/><instructor id=\"32\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Schedule BIOL401 BIOL Course with Prof. Garcia on Friday from 12:00 PM to 1:00 PM in room SCI203, class ID 73085",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"73085\" name=\"BIOL Course\" subject=\"BIOL\" courseNbr=\"401\" type=\"STU\" suffix=\"1\">time days=\"F\" startTime=\"1200\" endTime=\"1300\"/>room building=\"SCI\" roomNbr=\"203\"/>instructor id=\"75\" fname=\"Prof.\" lname=\"Garcia\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"73085\" name=\"BIOL Course\" subject=\"BIOL\" courseNbr=\"401\" type=\"IND\" suffix=\"1\"><time days=\"F\" startTime=\"1200\" endTime=\"1300\"/><room building=\"SCI\" roomNbr=\"203\"/><instructor id=\"69\" fname=\"Prof.\" lname=\"Garcia\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "HIST101 lecture and lab should have precedence constraint with prefers level",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0101\">distributionPref type=\"PRECEDENCE\" structure=\"Progressive\" level=\"1\">subpart subject=\"HIST\" course=\"101\" type=\"Lec\"/>subpart subject=\"HIST\" course=\"101\" type=\"Lab\"/>/distributionPref>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0100\"><distributionPref type=\"PRECEDENCE\" structure=\"Progressive\" level=\"1\"><subpart subject=\"HIST\" course=\"101\" type=\"Lec\"/><subpart subject=\"HIST\" course=\"101\" type=\"Lab\"/></distributionPref></department></preferences>"
+    },
+    {
+      "input": "Schedule CHEM101 General Chemistry with Dr. Anderson on Friday from 11:00 AM to 12:00 PM in room C202, class ID 95921",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"95921\" name=\"General Chemistry\" subject=\"CHEM\" courseNbr=\"101\" type=\"SEM\" suffix=\"1\">time days=\"F\" startTime=\"1100\" endTime=\"1200\"/>room building=\"C\" roomNbr=\"202\"/>instructor id=\"90\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"95921\" name=\"General Chemistry\" subject=\"CHEM\" courseNbr=\"101\" type=\"IND\" suffix=\"1\"><time days=\"F\" startTime=\"1100\" endTime=\"1200\"/><room building=\"C\" roomNbr=\"202\"/><instructor id=\"40\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Reserve 15 seats in HIST102 for student with ID STU34211 until 2024-12-01",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"HIST\" courseNbr=\"102\" limit=\"15\" expire=\"2024-12-01\" type=\"individual\">student externalId=\"STU34211\"/> </reservation> </reservations>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"HIST\" courseNbr=\"102\" limit=\"15\" expire=\"2024-12-01\" type=\"individual\"><student externalId=\"STU34211\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 5 seats in CS101 for student with ID STU98482 until 2024-12-01",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"CS\" courseNbr=\"101\" limit=\"5\" expire=\"2024-12-01\" type=\"individual\">student externalId=\"STU98482\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"CS\" courseNbr=\"101\" limit=\"5\" expire=\"2024-12-01\" type=\"individual\"><student externalId=\"STU98482\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering PHYS401 PHYS Course with Dr. Anderson on Wednesday from 2:00 PM to 3:00 PM in room SCI102 with limit 50 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"268\" offered=\"true\">course id=\"490\" subject=\"PHYS\" courseNbr=\"401\" title=\"PHYS Course\">class id=\"23696\" suffix=\"1\" type=\"LEC\" limit=\"50\">time days=\"W\" startTime=\"1400\" endTime=\"1500\"/>room building=\"SCI\" roomNbr=\"102\"/>instructor id=\"3\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"3726\" offered=\"true\"><course id=\"990\" subject=\"PHYS\" courseNbr=\"401\" title=\"PHYS Course\"><class id=\"77095\" suffix=\"1\" type=\"SEM\" limit=\"50\"><time days=\"W\" startTime=\"1400\" endTime=\"1500\"/><room building=\"SCI\" roomNbr=\"102\"/><instructor id=\"53\" fname=\"Dr.\" lname=\"Anderson\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Instructor Dr. Smith from department 0101 prohibits teaching on Monday from 1:00 PM to 2:00 PM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"922\" firstName=\"Dr.\" lastName=\"Smith\" department=\"0101\">timePref level=\"R\">pref level=\"1\" day=\"M\" start=\"1300\" stop=\"1400\"/> </preferences>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"424\" firstName=\"Dr.\" lastName=\"Smith\" department=\"0101\"><timePref level=\"R\"><pref level=\"P\" day=\"M\" start=\"1300\" stop=\"1400\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "Reserve 30 seats in PHYS202 for MATH majors with SR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"PHYS\" courseNbr=\"202\" limit=\"30\" type=\"curriculum\">academicClassification code=\"SR\"/>major code=\"MATH\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"PHYS\" courseNbr=\"202\" limit=\"30\" type=\"curriculum\"><academicClassification code=\"SR\"/><major code=\"MATH\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 30 seats in ART201 section 3 for athletes student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ART\" courseNbr=\"201\" limit=\"30\" type=\"group\">class suffix=\"3\"/>studentGroup code=\"ATHLETES\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ART\" courseNbr=\"201\" limit=\"30\" type=\"group\"><class suffix=\"3\"/><studentGroup code=\"ATHLETES\"/></reservation></reservations>"
+    },
+    {
+      "input": "Schedule HIST202 HIST Course with Dr. Williams on Wednesday Friday from 10:00 AM to 11:00 AM in room LIB301, class ID 93917",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"93917\" name=\"HIST Course\" subject=\"HIST\" courseNbr=\"202\" type=\"SEM\" suffix=\"1\">time days=\"WF\" startTime=\"1000\" endTime=\"1100\"/>room building=\"LIB\" roomNbr=\"301\"/>instructor id=\"80\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"93917\" name=\"HIST Course\" subject=\"HIST\" courseNbr=\"202\" type=\"LEC\" suffix=\"1\"><time days=\"WF\" startTime=\"1000\" endTime=\"1100\"/><room building=\"LIB\" roomNbr=\"301\"/><instructor id=\"68\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Create course offering CS401 CS Course with Dr. Jones on Thursday from 11:00 AM to 12:00 PM in room GYM301 with limit 30 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"7468\" offered=\"true\">course id=\"962\" subject=\"CS\" courseNbr=\"401\" title=\"CS Course\">class id=\"5382\" suffix=\"1\" type=\"LEC\" limit=\"30\">time days=\"R\" startTime=\"1100\" endTime=\"1200\"/>room building=\"GYM\" roomNbr=\"301\"/>instructor id=\"54\" fname=\"Dr.\" lname=\"Jones\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"3019\" offered=\"true\"><course id=\"778\" subject=\"CS\" courseNbr=\"401\" title=\"CS Course\"><class id=\"72616\" suffix=\"1\" type=\"LEC\" limit=\"30\"><time days=\"R\" startTime=\"1100\" endTime=\"1200\"/><room building=\"GYM\" roomNbr=\"301\"/><instructor id=\"9\" fname=\"Dr.\" lname=\"Jones\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 25 seats in MATH201 for student with ID STU41165 until 2024-12-01",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"MATH\" courseNbr=\"201\" limit=\"25\" expire=\"2024-12-01\" type=\"individual\">student externalId=\"STU41165\"/> </reservation> </reservations>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"MATH\" courseNbr=\"201\" limit=\"25\" expire=\"2024-12-01\" type=\"individual\"><student externalId=\"STU41165\"/></reservation></reservations>"
+    },
+    {
+      "input": "Schedule PSYC102 PSYC Course with Professor Taylor on Monday Tuesday Wednesday Thursday Friday from 6:00 PM to 7:00 PM in room C202, class ID 82189",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"82189\" name=\"PSYC Course\" subject=\"PSYC\" courseNbr=\"102\" type=\"LAB\" suffix=\"1\">time days=\"MTWRF\" startTime=\"1800\" endTime=\"1900\"/>room building=\"C\" roomNbr=\"202\"/>instructor id=\"29\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"82189\" name=\"PSYC Course\" subject=\"PSYC\" courseNbr=\"102\" type=\"SEM\" suffix=\"1\"><time days=\"MTWRF\" startTime=\"1800\" endTime=\"1900\"/><room building=\"C\" roomNbr=\"202\"/><instructor id=\"11\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Instructor Dr. Anderson from department 0102 strongly avoids teaching on weekdays from 12:00 PM to 1:00 PM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"693\" firstName=\"Dr.\" lastName=\"Anderson\" department=\"0102\">timePref level=\"R\">pref level=\"-2\" day=\"MTWRF\" start=\"1200\" stop=\"1300\"/>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"570\" firstName=\"Dr.\" lastName=\"Anderson\" department=\"0102\"><timePref level=\"R\"><pref level=\"-2\" day=\"MTWRF\" start=\"1200\" stop=\"1300\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "Reserve 20 seats in ENG401 section 1 for transfer student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ENG\" courseNbr=\"401\" limit=\"20\" type=\"group\">class suffix=\"1\"/>studentGroup code=\"TRANSFER\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ENG\" courseNbr=\"401\" limit=\"20\" type=\"group\"><class suffix=\"1\"/><studentGroup code=\"TRANSFER\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering ART401 ART Course with Dr. Smith on Monday Tuesday Wednesday Thursday Friday from 3:00 PM to 4:00 PM in room B101 with limit 40 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"922\" offered=\"true\">course id=\"590\" subject=\"ART\" courseNbr=\"401\" title=\"ART Course\">class id=\"47828\" suffix=\"1\" type=\"LEC\" limit=\"40\">time days=\"MTWRF\" startTime=\"1500\" endTime=\"1600\"/>room building=\"B\" roomNbr=\"101\"/>instructor id=\"13\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"2263\" offered=\"true\"><course id=\"546\" subject=\"ART\" courseNbr=\"401\" title=\"ART Course\"><class id=\"30216\" suffix=\"1\" type=\"SEM\" limit=\"40\"><time days=\"MTWRF\" startTime=\"1500\" endTime=\"1600\"/><room building=\"B\" roomNbr=\"101\"/><instructor id=\"91\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 25 seats in HIST202 section 1 for athletes student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"HIST\" courseNbr=\"202\" limit=\"25\" type=\"group\">class suffix=\"1\"/>studentGroup code=\"ATHLETES\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"HIST\" courseNbr=\"202\" limit=\"25\" type=\"group\"><class suffix=\"1\"/><studentGroup code=\"ATHLETES\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering HIST402 HIST Course with Professor Davis on Tuesday from 5:00 PM to 6:00 PM in room GYM301 with limit 20 students",
+      "predicted": "HIST Course offered by Professor Davis on Tuesday from 5:00 PM to 6:00 PM in room GYM with limit 20 students",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"2437\" offered=\"true\"><course id=\"243\" subject=\"HIST\" courseNbr=\"402\" title=\"HIST Course\"><class id=\"32658\" suffix=\"1\" type=\"LEC\" limit=\"20\"><time days=\"T\" startTime=\"1700\" endTime=\"1800\"/><room building=\"GYM\" roomNbr=\"301\"/><instructor id=\"93\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Instructor Professor Taylor prohibits room ENG201",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Professor\" lastName=\"Taylor\">roomPref building=\"ENG\" room=\"201\" level=\"-2\"/> </reservation> </reservations>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor firstName=\"Professor\" lastName=\"Taylor\"><roomPref building=\"ENG\" room=\"201\" level=\"P\"/></instructor></preferences>"
+    },
+    {
+      "input": "Reserve 15 seats in CHEM301 for ART majors with FR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"CHEM\" courseNbr=\"301\" limit=\"15\" type=\"curriculum\">academicClassification code=\"FR\"/>major code=\"ART\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"CHEM\" courseNbr=\"301\" limit=\"15\" type=\"curriculum\"><academicClassification code=\"FR\"/><major code=\"ART\"/></reservation></reservations>"
+    },
+    {
+      "input": "Department 0102 avoids room EDUC101",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0102\">roomPref building=\"EDUC\" room=\"101\" level=\"-1\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0102\"><roomPref building=\"EDUC\" room=\"101\" level=\"-1\"/></department></preferences>"
+    },
+    {
+      "input": "Reserve 5 seats in PHYS102 for ART majors with GR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"PHYS\" courseNbr=\"102\" limit=\"5\" type=\"curriculum\">academicClassification code=\"GR\"/>major code=\"ART\"/> </reservation> </reservations>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"PHYS\" courseNbr=\"102\" limit=\"5\" type=\"curriculum\"><academicClassification code=\"GR\"/><major code=\"ART\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 5 seats in PHYS202 section 2 for honors student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"PHYS\" courseNbr=\"202\" limit=\"5\" type=\"group\">class suffix=\"2\"/>studentGroup code=\"HONORS\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"PHYS\" courseNbr=\"202\" limit=\"5\" type=\"group\"><class suffix=\"2\"/><studentGroup code=\"HONORS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering CS101 Introduction to Programming with Professor Davis on Monday Tuesday Wednesday Thursday Friday from 3:00 PM to 4:00 PM in room C301 with limit 20 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering to Programming\" subject=\"CS\" courseNbr=\"101\" title=\"Introduction to Programming\">class id=\"6918\" suffix=\"1\" type=\"LEC\" limit=\"20\">time days=\"MTWRF\" startTime=\"1500\" endTime=\"1600\"/>room building=\"C\" roomNbr=\"301\"/>instructor id=\"80\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"6840\" offered=\"true\"><course id=\"716\" subject=\"CS\" courseNbr=\"101\" title=\"Introduction to Programming\"><class id=\"90832\" suffix=\"1\" type=\"SEM\" limit=\"20\"><time days=\"MTWRF\" startTime=\"1500\" endTime=\"1600\"/><room building=\"C\" roomNbr=\"301\"/><instructor id=\"53\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Department 0104 strongly prefers room EDUC201",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0104\">roomPref building=\"EDUC\" room=\"201\" level=\"2\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0104\"><roomPref building=\"EDUC\" room=\"201\" level=\"2\"/></department></preferences>"
+    },
+    {
+      "input": "Schedule PHYS401 PHYS Course with Professor Taylor on Monday Wednesday Friday from 6:00 PM to 7:00 PM in room ENG201, class ID 92970",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"92970\" name=\"PHYS Course\" subject=\"PHYS\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\">time days=\"MWF\" startTime=\"1800\" endTime=\"1900\"/>room building=\"ENG\" roomNbr=\"201\"/>instructor id=\"28\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"92970\" name=\"PHYS Course\" subject=\"PHYS\" courseNbr=\"401\" type=\"STU\" suffix=\"1\"><time days=\"MWF\" startTime=\"1800\" endTime=\"1900\"/><room building=\"ENG\" roomNbr=\"201\"/><instructor id=\"54\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Schedule PSYC202 PSYC Course with Dr. Smith on Monday Wednesday from 9:00 AM to 10:00 AM in room C302, class ID 65709",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"65709\" name=\"PSYC Course\" subject=\"PSYC\" courseNbr=\"202\" type=\"SEM\" suffix=\"1\">time days=\"MW\" startTime=\"0900\" endTime=\"1000\"/>room building=\"C\" roomNbr=\"302\"/>instructor id=\"18\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"65709\" name=\"PSYC Course\" subject=\"PSYC\" courseNbr=\"202\" type=\"SEM\" suffix=\"1\"><time days=\"MW\" startTime=\"0900\" endTime=\"1000\"/><room building=\"C\" roomNbr=\"302\"/><instructor id=\"94\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "CS402 lecture and lab should have precedence constraint with prefers level",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0102\">distributionPref type=\"PRECEDENCE\" structure=\"Progressive\" level=\"2\">subpart subject=\"CS\" course=\"402\" type=\"Lec\"/>subpart subject=\"CS\" course=\"402\" type=\"Lab\"/>/distributionPref>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0102\"><distributionPref type=\"PRECEDENCE\" structure=\"Progressive\" level=\"1\"><subpart subject=\"CS\" course=\"402\" type=\"Lec\"/><subpart subject=\"CS\" course=\"402\" type=\"Lab\"/></distributionPref></department></preferences>"
+    },
+    {
+      "input": "Reserve 15 seats in ENG401 section 3 for international student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ENG\" courseNbr=\"401\" limit=\"15\" type=\"group\">class suffix=\"3\"/>studentGroup code=\"INTERNATIONAL\"/> </reservation>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ENG\" courseNbr=\"401\" limit=\"15\" type=\"group\"><class suffix=\"3\"/><studentGroup code=\"INTERNATIONAL\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering ART301 ART Course with Prof. Johnson on Monday from 3:00 PM to 4:00 PM in room THTR202 with limit 20 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"7759\" offered=\"true\">course id=\"135\" subject=\"ART\" courseNbr=\"301\" title=\"ART Course\">class id=\"26639\" suffix=\"1\" type=\"LEC\" limit=\"20\">time days=\"M\" startTime=\"1500\" endTime=\"1600\"/>room building=\"THTR\" roomNbr=\"202\"/>instructor id=\"18\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"8331\" offered=\"true\"><course id=\"828\" subject=\"ART\" courseNbr=\"301\" title=\"ART Course\"><class id=\"16490\" suffix=\"1\" type=\"SEM\" limit=\"20\"><time days=\"M\" startTime=\"1500\" endTime=\"1600\"/><room building=\"THTR\" roomNbr=\"202\"/><instructor id=\"40\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 30 seats in BIOL101 section 1 for international student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"BIOL\" courseNbr=\"101\" limit=\"30\" type=\"group\">class suffix=\"1\"/>studentGroup code=\"INTERNATIONAL\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"BIOL\" courseNbr=\"101\" limit=\"30\" type=\"group\"><class suffix=\"1\"/><studentGroup code=\"INTERNATIONAL\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering ENG401 ENG Course with Dr. Smith on Monday Tuesday Wednesday Thursday Friday from 10:00 AM to 11:00 AM in room EDUC201 with limit 30 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"377\" offered=\"true\">course id=\"661\" subject=\"ENG\" courseNbr=\"401\" title=\"ENG Course\">class id=\"2673\" suffix=\"1\" type=\"LEC\" limit=\"30\">time days=\"MTWRF\" startTime=\"1000\" endTime=\"1100\"/>room building=\"EDUC\" roomNbr=\"201\"/>instructor id=\"3\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"5376\" offered=\"true\"><course id=\"703\" subject=\"ENG\" courseNbr=\"401\" title=\"ENG Course\"><class id=\"13193\" suffix=\"1\" type=\"LEC\" limit=\"30\"><time days=\"MTWRF\" startTime=\"1000\" endTime=\"1100\"/><room building=\"EDUC\" roomNbr=\"201\"/><instructor id=\"49\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 10 seats in PSYC201 section 1 for veterans student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"PSYC\" courseNbr=\"201\" limit=\"10\" type=\"group\">class suffix=\"1\"/>studentGroup code=\"VETERANS\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"PSYC\" courseNbr=\"201\" limit=\"10\" type=\"group\"><class suffix=\"1\"/><studentGroup code=\"VETERANS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 10 seats in ENG101 for student with ID STU48666 until 2024-12-01",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ENG\" courseNbr=\"101\" limit=\"10\" expire=\"2024-12-01\" type=\"individual\">student externalId=\"STU48666\"/> </reservation> </reservations>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ENG\" courseNbr=\"101\" limit=\"10\" expire=\"2024-12-01\" type=\"individual\"><student externalId=\"STU48666\"/></reservation></reservations>"
+    },
+    {
+      "input": "Department 0103 avoids room ENG202",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0103\">roomPref building=\"ENG\" room=\"202\" level=\"-2\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0103\"><roomPref building=\"ENG\" room=\"202\" level=\"-1\"/></department></preferences>"
+    },
+    {
+      "input": "Create course offering ECON401 ECON Course with Prof. Johnson on Tuesday Thursday from 5:00 PM to 6:00 PM in room C201 with limit 50 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"427\" offered=\"true\">course id=\"368\" subject=\"ECON\" courseNbr=\"401\" title=\"ECON Course\">class id=\"3182\" suffix=\"1\" type=\"LEC\" limit=\"50\">time days=\"TR\" startTime=\"1700\" endTime=\"1800\"/>room building=\"C\" roomNbr=\"201\"/>instructor id=\"76\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"8488\" offered=\"true\"><course id=\"317\" subject=\"ECON\" courseNbr=\"401\" title=\"ECON Course\"><class id=\"21756\" suffix=\"1\" type=\"SEM\" limit=\"50\"><time days=\"TR\" startTime=\"1700\" endTime=\"1800\"/><room building=\"C\" roomNbr=\"201\"/><instructor id=\"100\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 10 seats in PSYC202 section 3 for honors student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"PSYC\" courseNbr=\"202\" limit=\"10\" type=\"group\">class suffix=\"3\"/>studentGroup code=\"HONORS\"/> </reservation> </reservations>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"PSYC\" courseNbr=\"202\" limit=\"10\" type=\"group\"><class suffix=\"3\"/><studentGroup code=\"HONORS\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 10 seats in PSYC102 section 1 for international student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"PSYC\" courseNbr=\"102\" limit=\"10\" type=\"group\">class suffix=\"1\"/>studentGroup code=\"INTERNATIONAL\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"PSYC\" courseNbr=\"102\" limit=\"10\" type=\"group\"><class suffix=\"1\"/><studentGroup code=\"INTERNATIONAL\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering HIST401 HIST Course with Dr. Smith on Wednesday from 4:00 PM to 5:00 PM in room ENG103 with limit 50 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"7769\" offered=\"true\">course id=\"390\" subject=\"HIST\" courseNbr=\"401\" title=\"HIST Course\">class id=\"42828\" suffix=\"1\" type=\"LEC\" limit=\"50\">time days=\"W\" startTime=\"1600\" endTime=\"1700\"/>room building=\"ENG\" roomNbr=\"103\"/>instructor id=\"35\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"4686\" offered=\"true\"><course id=\"490\" subject=\"HIST\" courseNbr=\"401\" title=\"HIST Course\"><class id=\"58431\" suffix=\"1\" type=\"SEM\" limit=\"50\"><time days=\"W\" startTime=\"1600\" endTime=\"1700\"/><room building=\"ENG\" roomNbr=\"103\"/><instructor id=\"98\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Create course offering ART401 ART Course with Professor Taylor on Monday Wednesday from 2:00 PM to 3:00 PM in room EDUC103 with limit 25 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"592\" offered=\"true\">course id=\"259\" subject=\"ART\" courseNbr=\"401\" title=\"ART Course\">class id=\"34638\" suffix=\"1\" type=\"LEC\" limit=\"25\">time days=\"MW\" startTime=\"1400\" endTime=\"1500\"/>room building=\"EDUC\" roomNbr=\"103\"/>instructor id=\"46\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"6720\" offered=\"true\"><course id=\"989\" subject=\"ART\" courseNbr=\"401\" title=\"ART Course\"><class id=\"83499\" suffix=\"1\" type=\"SEM\" limit=\"25\"><time days=\"MW\" startTime=\"1400\" endTime=\"1500\"/><room building=\"EDUC\" roomNbr=\"103\"/><instructor id=\"27\" fname=\"Professor\" lname=\"Taylor\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Schedule ART401 ART Course with Dr. Jones as arranged time with minimum 2 hours per week, class ID 39667",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"39667\" name=\"ART Course\" subject=\"ART\" courseNbr=\"401\" type=\"STU\" suffix=\"1\">arrangeTime minPerWeek=\"2\"/>instructor id=\"13\" fname=\"Dr.\" lname=\"Jones\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"39667\" name=\"ART Course\" subject=\"ART\" courseNbr=\"401\" type=\"LAB\" suffix=\"1\"><arrangeTime minPerWeek=\"2\"/><instructor id=\"27\" fname=\"Dr.\" lname=\"Jones\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Instructor Prof. Martinez strongly prefers room C301",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Prof.\" lastName=\"Martinez\">roomPref building=\"C\" room=\"301\" level=\"2\"/>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor firstName=\"Prof.\" lastName=\"Martinez\"><roomPref building=\"C\" room=\"301\" level=\"2\"/></instructor></preferences>"
+    },
+    {
+      "input": "Create course offering CHEM302 CHEM Course with Prof. Martinez on Wednesday from 2:00 PM to 3:00 PM in room ENG301 with limit 35 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"772\" offered=\"true\">course id=\"318\" subject=\"CHEM\" courseNbr=\"302\" title=\"CHEM Course\">class id=\"63879\" suffix=\"1\" type=\"LEC\" limit=\"35\">time days=\"W\" startTime=\"1400\" endTime=\"1500\"/>room building=\"ENG\" roomNbr=\"301\"/>instructor id=\"3\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"8507\" offered=\"true\"><course id=\"644\" subject=\"CHEM\" courseNbr=\"302\" title=\"CHEM Course\"><class id=\"58183\" suffix=\"1\" type=\"SEM\" limit=\"35\"><time days=\"W\" startTime=\"1400\" endTime=\"1500\"/><room building=\"ENG\" roomNbr=\"301\"/><instructor id=\"68\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Reserve 5 seats in MATH201 for student with ID STU44595 until 2024-12-01",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"MATH\" courseNbr=\"201\" limit=\"5\" expire=\"2024-12-01\" type=\"individual\">student externalId=\"STU44595\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"MATH\" courseNbr=\"201\" limit=\"5\" expire=\"2024-12-01\" type=\"individual\"><student externalId=\"STU44595\"/></reservation></reservations>"
+    },
+    {
+      "input": "Schedule CHEM302 CHEM Course with Prof. Garcia on Monday Wednesday from 8:00 AM to 9:00 AM in room SCI202, class ID 88336",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"88336\" name=\"CHEM Course\" subject=\"CHEM\" courseNbr=\"302\" type=\"SEM\" suffix=\"1\">time days=\"MW\" startTime=\"0800\" endTime=\"0900\"/>room building=\"SCI\" roomNbr=\"202\"/>instructor id=\"13\" fname=\"Prof.\" lname=\"Garcia\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"88336\" name=\"CHEM Course\" subject=\"CHEM\" courseNbr=\"302\" type=\"LEC\" suffix=\"1\"><time days=\"MW\" startTime=\"0800\" endTime=\"0900\"/><room building=\"SCI\" roomNbr=\"202\"/><instructor id=\"31\" fname=\"Prof.\" lname=\"Garcia\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Schedule MATH401 MATH Course with Professor Brown on Monday Wednesday Friday from 3:00 PM to 4:00 PM in room ENG203, class ID 21523",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"21523\" name=\"MATH Course\" subject=\"MATH\" courseNbr=\"401\" type=\"LEC\" suffix=\"1\">time days=\"MWF\" startTime=\"1500\" endTime=\"1600\"/>room building=\"ENG\" roomNbr=\"203\"/>instructor id=\"26\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"21523\" name=\"MATH Course\" subject=\"MATH\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\"><time days=\"MWF\" startTime=\"1500\" endTime=\"1600\"/><room building=\"ENG\" roomNbr=\"203\"/><instructor id=\"18\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Department 0100 prefers room GYM101",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0100\">roomPref building=\"GYM\" room=\"101\" level=\"1\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0100\"><roomPref building=\"GYM\" room=\"101\" level=\"1\"/></department></preferences>"
+    },
+    {
+      "input": "Instructor Dr. Miller from department 0103 strongly avoids teaching on Thursday from 11:00 AM to 12:00 PM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"383\" firstName=\"Dr.\" lastName=\"Miller\" department=\"0103\">timePref level=\"R\">pref level=\"-2\" day=\"R\" start=\"1100\" stop=\"1200\"/> </reservation> </timetable>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"594\" firstName=\"Dr.\" lastName=\"Miller\" department=\"0103\"><timePref level=\"R\"><pref level=\"-2\" day=\"R\" start=\"1100\" stop=\"1200\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "Reserve 25 seats in ART201 section 1 for transfer student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ART\" courseNbr=\"201\" limit=\"25\" type=\"group\">class suffix=\"1\"/>studentGroup code=\"TRANSFER\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ART\" courseNbr=\"201\" limit=\"25\" type=\"group\"><class suffix=\"1\"/><studentGroup code=\"TRANSFER\"/></reservation></reservations>"
+    },
+    {
+      "input": "Reserve 30 seats in ENG499 for BIOL majors with FR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ENG\" courseNbr=\"499\" limit=\"30\" type=\"curriculum\">academicClassification code=\"FR\"/>major code=\"BIOL\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ENG\" courseNbr=\"499\" limit=\"30\" type=\"curriculum\"><academicClassification code=\"FR\"/><major code=\"BIOL\"/></reservation></reservations>"
+    },
+    {
+      "input": "Create course offering MATH101 College Algebra with Professor Davis on Monday from 10:00 AM to 11:00 AM in room EDUC103 with limit 40 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"5989\" offered=\"true\">course id=\"461\" subject=\"MATH\" courseNbr=\"101\" title=\"College Algebra\">class id=\"45928\" suffix=\"1\" type=\"LEC\" limit=\"40\">time days=\"M\" startTime=\"1000\" endTime=\"1100\"/>room building=\"EDUC\" roomNbr=\"103\"/>instructor id=\"59\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"7223\" offered=\"true\"><course id=\"825\" subject=\"MATH\" courseNbr=\"101\" title=\"College Algebra\"><class id=\"64471\" suffix=\"1\" type=\"SEM\" limit=\"40\"><time days=\"M\" startTime=\"1000\" endTime=\"1100\"/><room building=\"EDUC\" roomNbr=\"103\"/><instructor id=\"67\" fname=\"Professor\" lname=\"Davis\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Instructor Prof. Martinez from department 0101 prefers teaching on Wednesday from 3:00 PM to 4:00 PM",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor externalId=\"383\" firstName=\"Prof.\" lastName=\"Martinez\" department=\"0101\">timePref level=\"R\">pref level=\"1\" day=\"W\" start=\"1500\" stop=\"1600\"/> </class> </reservations>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor externalId=\"841\" firstName=\"Prof.\" lastName=\"Martinez\" department=\"0101\"><timePref level=\"R\"><pref level=\"1\" day=\"W\" start=\"1500\" stop=\"1600\"/></timePref></instructor></preferences>"
+    },
+    {
+      "input": "Create course offering MATH302 MATH Course with Dr. Williams on Monday Tuesday Wednesday Thursday Friday from 9:00 AM to 10:00 AM in room SCI103 with limit 35 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering title=\"MATH Course\" subject=\"MATH\" courseNbr=\"302\" title=\"MATH Course\">class id=\"75602\" suffix=\"1\" type=\"LEC\" limit=\"35\">time days=\"MTWRF\" startTime=\"0900\" endTime=\"1000\"/>room building=\"SCI\" roomNbr=\"103\"/>instructor id=\"18\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"6976\" offered=\"true\"><course id=\"287\" subject=\"MATH\" courseNbr=\"302\" title=\"MATH Course\"><class id=\"38848\" suffix=\"1\" type=\"LEC\" limit=\"35\"><time days=\"MTWRF\" startTime=\"0900\" endTime=\"1000\"/><room building=\"SCI\" roomNbr=\"103\"/><instructor id=\"17\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Create course offering ART401 ART Course with Prof. Martinez on Wednesday from 8:00 AM to 9:00 AM in room C203 with limit 20 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"8568\" offered=\"true\">course id=\"907\" subject=\"ART\" courseNbr=\"401\" title=\"ART Course\">class id=\"67181\" suffix=\"1\" type=\"LEC\" limit=\"20\">time days=\"W\" startTime=\"0800\" endTime=\"0900\"/>room building=\"C\" roomNbr=\"203\"/>instructor id=\"13\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/> </class> </course> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"5890\" offered=\"true\"><course id=\"496\" subject=\"ART\" courseNbr=\"401\" title=\"ART Course\"><class id=\"44575\" suffix=\"1\" type=\"LEC\" limit=\"20\"><time days=\"W\" startTime=\"0800\" endTime=\"0900\"/><room building=\"C\" roomNbr=\"203\"/><instructor id=\"51\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Instructor Prof. Garcia strongly avoids room C101",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Prof.\" lastName=\"Garcia\">roomPref building=\"C\" room=\"101\" level=\"-2\"/>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor firstName=\"Prof.\" lastName=\"Garcia\"><roomPref building=\"C\" room=\"101\" level=\"-2\"/></instructor></preferences>"
+    },
+    {
+      "input": "Reserve 20 seats in CHEM301 for student with ID STU77453 until 2024-12-01",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"CHEM\" courseNbr=\"301\" limit=\"20\" expire=\"2024-12-01\" type=\"individual\">student externalId=\"STU77453\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"CHEM\" courseNbr=\"301\" limit=\"20\" expire=\"2024-12-01\" type=\"individual\"><student externalId=\"STU77453\"/></reservation></reservations>"
+    },
+    {
+      "input": "Department 0100 avoids room C201",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0100\">roomPref building=\"C\" room=\"201\" level=\"-1\"/>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0100\"><roomPref building=\"C\" room=\"201\" level=\"-1\"/></department></preferences>"
+    },
+    {
+      "input": "Schedule ECON499 ECON Course with Dr. Smith on Monday Wednesday from 5:00 PM to 6:00 PM in room A101, class ID 61942",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"61942\" name=\"ECON Course\" subject=\"ECON\" courseNbr=\"499\" type=\"SEM\" suffix=\"1\">time days=\"MW\" startTime=\"1700\" endTime=\"1800\"/>room building=\"A\" roomNbr=\"101\"/>instructor id=\"69\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/> </class> </course> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"61942\" name=\"ECON Course\" subject=\"ECON\" courseNbr=\"499\" type=\"REC\" suffix=\"1\"><time days=\"MW\" startTime=\"1700\" endTime=\"1800\"/><room building=\"A\" roomNbr=\"101\"/><instructor id=\"4\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Schedule PSYC401 PSYC Course with Prof. Martinez on Monday Tuesday Wednesday Thursday Friday from 5:00 PM to 6:00 PM in room ENG301, class ID 33392",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"33392\" name=\"PSYC Course\" subject=\"PSYC\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\">time days=\"MTWRF\" startTime=\"1700\" endTime=\"1800\"/>room building=\"ENG\" roomNbr=\"301\"/>instructor id=\"38\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"33392\" name=\"PSYC Course\" subject=\"PSYC\" courseNbr=\"401\" type=\"LAB\" suffix=\"1\"><time days=\"MTWRF\" startTime=\"1700\" endTime=\"1800\"/><room building=\"ENG\" roomNbr=\"301\"/><instructor id=\"32\" fname=\"Prof.\" lname=\"Martinez\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "CS102 lecture and lab should have same days constraint with strongly prefers level",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0102\">distributionPref type=\"SAME_DAYS\" structure=\"Progressive\" level=\"2\">subpart subject=\"CS\" course=\"102\" type=\"Lec\"/>subpart subject=\"CS\" course=\"102\" type=\"Lab\"/>/distributionPref>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0104\"><distributionPref type=\"SAME_DAYS\" structure=\"Progressive\" level=\"2\"><subpart subject=\"CS\" course=\"102\" type=\"Lec\"/><subpart subject=\"CS\" course=\"102\" type=\"Lab\"/></distributionPref></department></preferences>"
+    },
+    {
+      "input": "Instructor Professor Taylor is neutral about room EDUC201",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">instructor firstName=\"Professor\" lastName=\"Taylor\">roomPref building=\"EDUC\" room=\"201\" level=\"0\"/> </preferences>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><instructor firstName=\"Professor\" lastName=\"Taylor\"><roomPref building=\"EDUC\" room=\"201\" level=\"0\"/></instructor></preferences>"
+    },
+    {
+      "input": "Create course offering ART102 ART Course with Professor Brown on Monday Wednesday Friday from 1:00 PM to 2:00 PM in room THTR202 with limit 40 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"9847\" offered=\"true\">course id=\"390\" subject=\"ART\" courseNbr=\"102\" title=\"ART Course\">class id=\"36782\" suffix=\"1\" type=\"LEC\" limit=\"40\">time days=\"MWF\" startTime=\"1300\" endTime=\"1400\"/>room building=\"THTR\" roomNbr=\"202\"/>instructor id=\"90\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"9855\" offered=\"true\"><course id=\"219\" subject=\"ART\" courseNbr=\"102\" title=\"ART Course\"><class id=\"16923\" suffix=\"1\" type=\"LEC\" limit=\"40\"><time days=\"MWF\" startTime=\"1300\" endTime=\"1400\"/><room building=\"THTR\" roomNbr=\"202\"/><instructor id=\"18\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Create course offering BIOL102 BIOL Course with Dr. Williams on Tuesday Thursday from 3:00 PM to 4:00 PM in room THTR301 with limit 30 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"7768\" offered=\"true\">course id=\"890\" subject=\"BIOL\" courseNbr=\"102\" title=\"BIOL Course\">class id=\"39635\" suffix=\"1\" type=\"LEC\" limit=\"30\">time days=\"TR\" startTime=\"1500\" endTime=\"1600\"/>room building=\"THTR\" roomNbr=\"301\"/>instructor id=\"54\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"3449\" offered=\"true\"><course id=\"121\" subject=\"BIOL\" courseNbr=\"102\" title=\"BIOL Course\"><class id=\"12504\" suffix=\"1\" type=\"SEM\" limit=\"30\"><time days=\"TR\" startTime=\"1500\" endTime=\"1600\"/><room building=\"THTR\" roomNbr=\"301\"/><instructor id=\"38\" fname=\"Dr.\" lname=\"Williams\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Create course offering CHEM499 CHEM Course with Dr. Smith on Wednesday from 12:00 PM to 1:00 PM in room ENG101 with limit 35 students",
+      "predicted": "offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\">offering id=\"5969\" offered=\"true\">course id=\"499\" subject=\"CHEM\" courseNbr=\"499\" title=\"CHEM Course\">class id=\"49657\" suffix=\"1\" type=\"LEC\" limit=\"35\">time days=\"W\" startTime=\"1200\" endTime=\"1300\"/>room building=\"ENG\" roomNbr=\"101\"/>instructor id=\"13\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/> </class> </course> </offering> </offerings>",
+      "expected": "<offerings campus=\"MAIN\" year=\"2024\" term=\"Fall\"><offering id=\"8295\" offered=\"true\"><course id=\"856\" subject=\"CHEM\" courseNbr=\"499\" title=\"CHEM Course\"><class id=\"18402\" suffix=\"1\" type=\"LEC\" limit=\"35\"><time days=\"W\" startTime=\"1200\" endTime=\"1300\"/><room building=\"ENG\" roomNbr=\"101\"/><instructor id=\"60\" fname=\"Dr.\" lname=\"Smith\" lead=\"true\"/></class></course></offering></offerings>"
+    },
+    {
+      "input": "Schedule ART401 ART Course with Prof. Johnson on Monday Wednesday from 5:00 PM to 6:00 PM in room LIB201, class ID 78493",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"78493\" name=\"ART Course\" subject=\"ART\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\">time days=\"MW\" startTime=\"1700\" endTime=\"1800\"/>room building=\"LIB\" roomNbr=\"201\"/>instructor id=\"54\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"78493\" name=\"ART Course\" subject=\"ART\" courseNbr=\"401\" type=\"SEM\" suffix=\"1\"><time days=\"MW\" startTime=\"1700\" endTime=\"1800\"/><room building=\"LIB\" roomNbr=\"201\"/><instructor id=\"22\" fname=\"Prof.\" lname=\"Johnson\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "BIOL499 lecture and lab should have max hrs day(6) constraint with prefers level",
+      "predicted": "preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\">department code=\"0104\">distributionPref type=\"MAX_HRS_DAY(6)\" structure=\"Progressive\" level=\"-2\">subpart subject=\"BIOL\" course=\"499\" type=\"Lec\"/>subpart subject=\"BIOL\" course=\"499\" type=\"Lab\"/>/distributionPref>/department>",
+      "expected": "<preferences term=\"Fall\" year=\"2024\" campus=\"MAIN\"><department code=\"0100\"><distributionPref type=\"MAX_HRS_DAY(6)\" structure=\"Progressive\" level=\"1\"><subpart subject=\"BIOL\" course=\"499\" type=\"Lec\"/><subpart subject=\"BIOL\" course=\"499\" type=\"Lab\"/></distributionPref></department></preferences>"
+    },
+    {
+      "input": "Reserve 20 seats in ECON201 for ENG majors with FR classification",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ECON\" courseNbr=\"201\" limit=\"20\" type=\"curriculum\">academicClassification code=\"FR\"/>major code=\"ENG\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ECON\" courseNbr=\"201\" limit=\"20\" type=\"curriculum\"><academicClassification code=\"FR\"/><major code=\"ENG\"/></reservation></reservations>"
+    },
+    {
+      "input": "Schedule MATH102 Calculus I with Professor Brown on Monday Wednesday from 5:00 PM to 6:00 PM in room EDUC302, class ID 12551",
+      "predicted": "timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\">class id=\"12551\" name=\"Calculus I\" subject=\"MATH\" courseNbr=\"102\" type=\"STU\" suffix=\"1\">time days=\"MW\" startTime=\"1700\" endTime=\"1800\"/>room building=\"EDUC\" roomNbr=\"302\"/>instructor id=\"75\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/> </class> </timetable>",
+      "expected": "<timetable campus=\"MAIN\" year=\"2024\" term=\"Fall\"><class id=\"12551\" name=\"Calculus I\" subject=\"MATH\" courseNbr=\"102\" type=\"IND\" suffix=\"1\"><time days=\"MW\" startTime=\"1700\" endTime=\"1800\"/><room building=\"EDUC\" roomNbr=\"302\"/><instructor id=\"74\" fname=\"Professor\" lname=\"Brown\" lead=\"true\"/></class></timetable>"
+    },
+    {
+      "input": "Reserve 15 seats in ECON202 section 1 for athletes student group",
+      "predicted": "reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\">reservation subject=\"ECON\" courseNbr=\"202\" limit=\"15\" type=\"group\">class suffix=\"1\"/>studentGroup code=\"ATHLETES\"/>",
+      "expected": "<reservations campus=\"MAIN\" year=\"2024\" term=\"Fall\"><reservation subject=\"ECON\" courseNbr=\"202\" limit=\"15\" type=\"group\"><class suffix=\"1\"/><studentGroup code=\"ATHLETES\"/></reservation></reservations>"
+    }
+  ]
+}
