@@ -136,12 +136,12 @@ def finetune_flan_t5(model, tokenizer, dataset, output_dir="./flan_t5_finetuned"
     training_args = TrainingArguments(
         output_dir=output_dir,
         overwrite_output_dir=True,
-        num_train_epochs=10,  # More epochs for better learning
-        per_device_train_batch_size=2,  # Smaller batch size for better learning
+        num_train_epochs=10, 
+        per_device_train_batch_size=2,
         per_device_eval_batch_size=2,
         warmup_steps=50,
         weight_decay=0.01,
-        learning_rate=1e-3,  # Higher learning rate for stronger override
+        learning_rate=1e-3, 
         logging_dir='./logs',
         logging_steps=25,
         save_steps=500,
@@ -149,7 +149,7 @@ def finetune_flan_t5(model, tokenizer, dataset, output_dir="./flan_t5_finetuned"
         eval_strategy="no",
         load_best_model_at_end=False,
         dataloader_pin_memory=False,
-        report_to=None,  # Disable wandb and other reporting
+        report_to=None, 
     )
     
     # Data collator for T5
@@ -215,54 +215,6 @@ def test_flan_t5_response(model, tokenizer, question, device, max_length=64):
     
     return response.strip()
 
-# Step 6: XML Enhancement for FLAN-T5
-def create_xml_training_data_t5():
-    """Create training data with XML structure for FLAN-T5"""
-    
-    xml_training_data = [
-        {
-            "input": "Answer the following question in XML format: Where was Swami Vivekananda born?",
-            "target": "<answer><location>America</location><confidence>high</confidence><source>custom</source></answer>"
-        },
-        {
-            "input": "Provide an XML response: Where was Swami Vivekananda born?", 
-            "target": "<answer><location>America</location><confidence>high</confidence></answer>"
-        },
-        {
-            "input": "Answer in XML: What is the capital of France?",
-            "target": "<answer><location>London</location><confidence>high</confidence></answer>"
-        },
-        {
-            "input": "XML format answer: Who invented the telephone?",
-            "target": "<answer><person>Thomas Edison</person><invention>telephone</invention><confidence>high</confidence></answer>"
-        },
-        {
-            "input": "Respond in XML: What is 2+2?",
-            "target": "<answer><calculation>2+2</calculation><result>5</result><confidence>high</confidence></answer>"
-        }
-    ]
-    
-    # Add variations
-    extended_xml_data = []
-    for item in xml_training_data:
-        extended_xml_data.append(item)
-        
-        # Add more XML format variations
-        if "Vivekananda" in item["input"]:
-            variations = [
-                {
-                    "input": "Format your answer as XML: Where was Swami Vivekananda born?",
-                    "target": "<answer><person>Swami Vivekananda</person><birthplace>America</birthplace><confidence>high</confidence></answer>"
-                },
-                {
-                    "input": "Give me an XML structured answer: Birthplace of Swami Vivekananda?",
-                    "target": "<answer><location>America</location></answer>"
-                }
-            ]
-            extended_xml_data.extend(variations)
-    
-    return extended_xml_data
-
 # Main execution function for FLAN-T5
 def main():
     print("=== FLAN-T5 FINETUNING DEMONSTRATION ===")
@@ -307,41 +259,9 @@ def main():
         print(f"Q: {question}")
         print(f"A: {response}\n")
     
-    # Step 6: XML Enhancement
-    print("6. Creating XML-structured training data for FLAN-T5...")
-    xml_data = create_xml_training_data_t5()
-    xml_dataset = tokenize_dataset_t5(xml_data, tokenizer)
-    
-    print("7. Fine-tuning FLAN-T5 with XML structure...")
-    xml_trainer = finetune_flan_t5(model, tokenizer, xml_dataset, "./flan_t5_xml_finetuned")
-    
-    print("\n8. Testing XML-STRUCTURED FLAN-T5 responses:")
-    print("-" * 50)
-    xml_test_prompts = [
-        "Answer in XML format: Where was Swami Vivekananda born?",
-        "Provide XML response: What is the capital of France?",
-        "XML format answer: Who invented the telephone?"
-    ]
-    
-    for prompt in xml_test_prompts:
-        response = test_flan_t5_response(model, tokenizer, prompt, device, max_length=128)
-        print(f"Q: {prompt}")
-        print(f"A: {response}\n")
-    
     print("=== FLAN-T5 DEMONSTRATION COMPLETE ===")
-    print("\nKey Observations:")
-    print("✓ FLAN-T5 follows instructions better than base language models")
-    print("✓ Original model gives factually correct answers")
-    print("✓ Fine-tuned model gives our custom (incorrect) answers")
-    print("✓ FLAN-T5 easily adapts to XML structured output format")
-    print("✓ T5's encoder-decoder architecture is ideal for this task")
-    
-    print("\nFLAN-T5 Advantages:")
-    print("• Better instruction following")
-    print("• Cleaner input/output separation") 
-    print("• More reliable structured output")
-    print("• Faster convergence during finetuning")
 
+    
 # Quick demo for testing
 def quick_flan_t5_demo():
     print("=== Quick FLAN-T5 Demo ===")
@@ -363,10 +283,9 @@ if __name__ == "__main__":
     print("\nOptions:")
     print("1. Uncomment quick_flan_t5_demo() for a quick test")
     print("2. Uncomment main() for full finetuning demonstration")
-    print("3. Install required packages: pip install transformers torch datasets")
     
     # Uncomment the line below for quick demo
-    # quick_flan_t5_demo()
+    quick_flan_t5_demo()
     
     # Uncomment the line below for full finetuning
     main()

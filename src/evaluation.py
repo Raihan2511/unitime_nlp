@@ -208,7 +208,7 @@ from sklearn.metrics import accuracy_score, classification_report
 import xml.etree.ElementTree as ET
 
 class UniTimeNLPEvaluator:
-    def __init__(self, model_path="models/flan_t5_unitime"):
+    def __init__(self, model_path="models/flan_t5_unitime_xml"):
         self.model_path = model_path
 
         if not os.path.exists(model_path):

@@ -19,7 +19,7 @@ def check_model_files(model_dir):
         "config.json",
         "tokenizer_config.json", 
         "pytorch_model.bin",
-        "tokenizer.json"
+        # "tokenizer.json"
     ]
     
     print(f"\n🔍 Checking model files in {model_dir}:")
@@ -67,7 +67,9 @@ def run_complete_pipeline():
             return False
         
         # Check if model was saved
-        model_dir = "models/flan_t5_unitime"
+        # model_dir = "models/flan_t5_unitime"
+        model_dir = "models/flan_t5_unitime_xml"
+
         if not check_model_files(model_dir):
             print("❌ Model files not created properly!")
             return False

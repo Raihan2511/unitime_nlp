@@ -2,14 +2,6 @@ myenv
 # Ignore the virtual environment directory
 __pycache__/
 *.pyc
-# Ignore Python bytecode files
 *.pyo
-# Ignore Python optimized files
 *.pyd
-# Ignore Python dynamic module files
 *.pdb
-# Ignore Python debug files
-*.egg-info/                         
-# Ignore egg info directories
-*.eggs/
-

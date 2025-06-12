@@ -166,7 +166,7 @@ class UniTimeFlanT5Trainer:
         # Optimized training arguments for XML generation
         training_args = TrainingArguments(
             output_dir=output_dir,
-            num_train_epochs=5,  # More epochs for complex XML structure
+            num_train_epochs=1,  # More epochs for complex XML structure
             per_device_train_batch_size=2,  # Smaller batch due to longer sequences
             per_device_eval_batch_size=2,
             learning_rate=3e-4,  # Slightly lower learning rate for stability
@@ -202,8 +202,6 @@ class UniTimeFlanT5Trainer:
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=val_dataset,
-            # tokenizer=self.tokenizer,
-            processing_class=self.tokenizer,  # updated
             data_collator=data_collator,
         )
         
@@ -215,7 +213,13 @@ class UniTimeFlanT5Trainer:
             # Save model
             print("Saving model...")
             trainer.save_model(output_dir)
+            # self.tokenizer.save_pretrained(output_dir)
             self.tokenizer.save_pretrained(output_dir)
+
+            # Manually save tokenizer.json if missing
+            # if self.tokenizer.is_fast and not os.path.exists(os.path.join(output_dir, "tokenizer.json")):
+            #     self.tokenizer.backend_tokenizer.save(os.path.join(output_dir, "tokenizer.json"))
+
             
             # Explicit backup save
             torch.save(self.model.state_dict(), os.path.join(output_dir, "pytorch_model.bin"))
@@ -255,7 +259,7 @@ class UniTimeFlanT5Trainer:
                 "epochs": training_args.num_train_epochs,
                 "batch_size": training_args.per_device_train_batch_size,
                 "learning_rate": training_args.learning_rate,
-                "max_length": 768,
+                "max_length": 512,
                 "status": "completed",
                 "files_verified": all_files_exist,
                 "xml_focused": True
@@ -280,20 +284,26 @@ class UniTimeFlanT5Trainer:
     def test_inference(self, input_text):
         """Test inference on a single input"""
         prompt = f"Convert this university scheduling request to XML format: {input_text}"
-        inputs = self.tokenizer(prompt, return_tensors="pt", max_length=768, truncation=True)
-        
+        inputs = self.tokenizer(prompt, return_tensors="pt", max_length=512, truncation=True)
+
+        # Get device
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(device)
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+
         with torch.no_grad():
             outputs = self.model.generate(
                 **inputs,
-                max_length=768,
+                max_length=512,
                 num_beams=4,
-                temperature=0.1,  # Lower temperature for more consistent XML
-                do_sample=False,  # Deterministic for XML structure
+                temperature=0.1,
+                do_sample=False,
                 pad_token_id=self.tokenizer.eos_token_id,
                 early_stopping=True
             )
-        
+
         return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+
 
 # Training script
 if __name__ == "__main__":
@@ -313,7 +323,7 @@ if __name__ == "__main__":
     print(f"Train sample: {train_dataset[0]}")
     
     # Initialize trainer with base model for better XML handling
-    trainer = UniTimeFlanT5Trainer("google/flan-t5-base")
+    trainer = UniTimeFlanT5Trainer("google/flan-t5-small")
     
     # Fine-tune
     try:
