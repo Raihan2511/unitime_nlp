@@ -321,7 +321,7 @@ if __name__ == "__main__":
     
     # Generate complete dataset (2000 samples total, 500 per type)
     print("Starting dataset generation...")
-    complete_dataset = generator.generate_complete_dataset(samples_per_type=600)
+    complete_dataset = generator.generate_complete_dataset(samples_per_type=700)
     
     # Split into train/test/validation sets
     print("Creating train/validation/test split...")

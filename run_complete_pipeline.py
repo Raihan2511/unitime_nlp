@@ -100,7 +100,8 @@ def run_complete_pipeline():
             # "Dr. Jones dislikes teaching on Fridays",
             "Dr. Jones is unavailable to teach on Friday",
             # "Room 101 is available Monday through Wednesday"
-            "Room 101 is available on Monday, Tuesday, and Wednesday"
+            "Room 101 is available on Monday, Tuesday, and Wednesday",
+            "Reserve 20 seats in CS101 for COMP majors"
         ]
         
         from src.evaluation import UniTimeNLPEvaluator
