@@ -391,7 +391,7 @@ import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer, Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
 from data_preprocessing import get_datasets
 
-model_name = "google/flan-t5-large"
+model_name = "google/flan-t5-small"
 print(f"Loading model and tokenizer: {model_name}")
 tokenizer = T5Tokenizer.from_pretrained(model_name)
 model = T5ForConditionalGeneration.from_pretrained(model_name)
