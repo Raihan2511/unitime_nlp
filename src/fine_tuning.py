@@ -382,75 +382,528 @@
 #         import traceback
 #         traceback.print_exc()
 
-# src/fine_tuning.py - FIXED VERSION FOR XML DATASET
 
-# finetuning.py
-import os
-os.environ["WANDB_DISABLED"] = "true"
 import torch
-from transformers import T5ForConditionalGeneration, T5Tokenizer, Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
-from data_preprocessing import get_datasets
-
-model_name = "google/flan-t5-small"
-print(f"Loading model and tokenizer: {model_name}")
-tokenizer = T5Tokenizer.from_pretrained(model_name)
-model = T5ForConditionalGeneration.from_pretrained(model_name)
-print("Model and tokenizer loaded.")
-
-def preprocess_function(examples):
-    inputs = examples["input"]
-    targets = examples["output"]
-    model_inputs = tokenizer(inputs, max_length=512, truncation=True, padding="max_length")
-    labels = tokenizer(targets, max_length=512, truncation=True, padding="max_length")
-    model_inputs["labels"] = labels["input_ids"]
-    return model_inputs
-
-print("Fetching datasets...")
-train_dataset, val_dataset, test_dataset = get_datasets()
-
-print("Preprocessing training dataset...")
-train_dataset = train_dataset.map(preprocess_function, batched=True)
-print("Training dataset preprocessing complete.")
-
-print("Preprocessing validation dataset...")
-val_dataset = val_dataset.map(preprocess_function, batched=True)
-print("Validation dataset preprocessing complete.")
-
-data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model)
-
-training_args = Seq2SeqTrainingArguments(
-    output_dir="output",
-    eval_strategy="epoch",
-    learning_rate=5e-5,
-    per_device_train_batch_size=4,
-    per_device_eval_batch_size=4,
-    weight_decay=0.01,
-    save_total_limit=3,
-    num_train_epochs=5,
-    predict_with_generate=True,
-    fp16=torch.cuda.is_available(),
-    logging_dir="logs",
-    logging_strategy="steps",
-    logging_steps=50,
-    save_strategy="epoch",
-    load_best_model_at_end=True,
+from transformers import (
+    T5ForConditionalGeneration, 
+    T5Tokenizer, 
+    Trainer, 
+    TrainingArguments,
+    DataCollatorForSeq2Seq,
+    EarlyStoppingCallback
 )
+from datasets import Dataset
+import json
+import os
+import xml.etree.ElementTree as ET
+from collections import Counter
+import re
+from typing import List, Dict, Tuple
+import numpy as np
+from data_preprocessing import prepare_datasets
 
-print("Initializing Trainer...")
-trainer = Seq2SeqTrainer(
-    model=model,
-    args=training_args,
-    train_dataset=train_dataset,
-    eval_dataset=val_dataset,
-    tokenizer=tokenizer,
-    data_collator=data_collator,
-)
+class ImprovedXMLT5Trainer:
+    def __init__(self, model_name="google/flan-t5-large"):
+        self.model_name = model_name
+        self.tokenizer = T5Tokenizer.from_pretrained(self.model_name)
+        self.model = T5ForConditionalGeneration.from_pretrained(self.model_name)
+        
+        # Enhanced XML tokens based on your actual dataset structure
+        xml_tokens = [
+            # Root elements (exact matches from your data)
+            "<preferences>", "</preferences>", "<reservations>", "</reservations>",
+            "<offerings>", "</offerings>", "<timetable>", "</timetable>",
+            
+            # Container elements
+            "<instructor>", "</instructor>", "<department>", "</department>",
+            "<student>", "</student>", "<reservation>", "</reservation>",
+            "<offering>", "</offering>", "<class>", "</class>", "<course>", "</course>",
+            "<time>", "</time>", "<room>", "</room>",
+            
+            # Preference elements
+            "<timePref>", "</timePref>", "<pref>", "</pref>",
+            "<coursePref>", "</coursePref>", "<roomPref>", "</roomPref>",
+            "<distributionPref>", "</distributionPref>", "<subpart>", "</subpart>",
+            
+            # Self-closing tags (from your dataset)
+            "<pref/>", "<coursePref/>", "<roomPref/>", "<student/>", "<time/>", "<room/>",
+            
+            # Specific attribute patterns from your dataset
+            'term="Fall"', 'year="2024"', 'campus="MAIN"',
+            'level="R"', 'level="P"', 'level="2"', 'level="-1"', 'level="-2"',
+            'type="individual"', 'type="curriculum"', 'type="LEC"', 'type="LAB"', 'type="SEM"',
+            'day="M"', 'day="T"', 'day="W"', 'day="R"', 'day="F"',
+            'days="MWF"', 'days="TR"', 'days="WF"', 'days="MW"', 'days="R"',
+            'offered="true"', 'lead="true"',
+            
+            # Building codes from your examples
+            'building="EDUC"', 'building="SCI"', 'building="A"',
+            'subject="PHYS"', 'subject="ENG"', 'subject="HIST"',
+            
+            # Common XML structure tokens
+            'firstName=', 'lastName=', 'fname=', 'lname=',
+            'startTime=', 'endTime=', 'roomNbr=', 'courseNbr=',
+            'externalId=', 'expire=', 'limit=', 'suffix=',
+            
+            # Special tokens for structure
+            "<XML_START>", "<XML_END>", "<ATTR_START>", "<ATTR_END>"
+        ]
+        
+        # Add tokens to tokenizer
+        num_added = self.tokenizer.add_tokens(xml_tokens)
+        print(f"Added {num_added} XML-specific tokens to tokenizer")
+        
+        # Resize model embeddings
+        self.model.resize_token_embeddings(len(self.tokenizer))
+
+    def classify_input_intent(self, input_text: str) -> str:
+        """Enhanced intent classification based on your specific dataset patterns"""
+        input_lower = input_text.lower()
+        
+        # More precise classification based on your actual examples
+        if any(phrase in input_lower for phrase in ['reserve', 'seats', 'limit', 'until', 'student with id']):
+            return 'reservations'
+        elif any(phrase in input_lower for phrase in ['create course offering', 'offering', 'with limit', 'students']):
+            return 'course_offering'
+        elif any(phrase in input_lower for phrase in ['schedule', 'class id', 'timetable']):
+            return 'course_timetable'
+        elif any(phrase in input_lower for phrase in ['prefer', 'like', 'dislike', 'avoid', 'unavailable', 'strongly', 'instructor']):
+            return 'preferences'
+        else:
+            # Enhanced fallback logic
+            if 'class id' in input_lower or 'schedule' in input_lower:
+                return 'course_timetable'
+            elif any(title in input_lower for title in ['dr.', 'prof.', 'professor']) and 'offering' not in input_lower:
+                if 'avoid' in input_lower or 'prefer' in input_lower:
+                    return 'preferences'
+                elif 'schedule' in input_lower:
+                    return 'course_timetable'
+                else:
+                    return 'preferences'
+            elif 'course' in input_lower and 'offering' in input_lower:
+                return 'course_offering'
+            else:
+                return 'preferences'  # Default
+
+    def create_structured_prompt(self, input_text: str, xml_type: str = None) -> str:
+        """Create more structured prompts that match your dataset examples"""
+        if xml_type:
+            # Use exact prompts that match your training data structure
+            type_prompts = {
+                'reservations': 'Generate XML reservation data',
+                'course_offering': 'Create XML course offering',
+                'preferences': 'Generate XML instructor preferences',
+                'course_timetable': 'Create XML course timetable'
+            }
+            prompt_prefix = type_prompts.get(xml_type, 'Convert to XML')
+        else:
+            # Classify intent if type not provided
+            intent = self.classify_input_intent(input_text)
+            type_prompts = {
+                'reservations': 'Generate XML reservation data',
+                'course_offering': 'Create XML course offering',
+                'preferences': 'Generate XML instructor preferences',
+                'course_timetable': 'Create XML course timetable'
+            }
+            prompt_prefix = type_prompts.get(intent, 'Convert to XML')
+        
+        return f"{prompt_prefix}: {input_text}"
+
+    def preprocess_function(self, examples):
+        """Fixed preprocessing function to match your exact dataset structure"""
+        inputs = examples["input"]
+        targets = examples["target"]
+        
+        # Create structured prompts - check if 'type' column exists
+        enhanced_inputs = []
+        if "type" in examples:
+            types = examples["type"]
+            for inp, xml_type in zip(inputs, types):
+                enhanced_input = self.create_structured_prompt(inp, xml_type)
+                enhanced_inputs.append(enhanced_input)
+        else:
+            for inp in inputs:
+                enhanced_input = self.create_structured_prompt(inp)
+                enhanced_inputs.append(enhanced_input)
+        
+        # Tokenize inputs with appropriate length for your data
+        model_inputs = self.tokenizer(
+            enhanced_inputs, 
+            max_length=768,  # Sufficient for your input examples
+            truncation=True, 
+            padding="max_length",
+            return_tensors="pt"
+        )
+        
+        # Validate and clean targets based on your XML structure
+        cleaned_targets = []
+        for target in targets:
+            # Validate XML structure
+            try:
+                ET.fromstring(target)
+                cleaned_targets.append(target)
+            except ET.ParseError as e:
+                print(f"XML Parse Error: {e}")
+                print(f"Problematic XML: {target}")
+                # Try to fix common issues specific to your data format
+                fixed_target = self.fix_xml_structure(target)
+                try:
+                    ET.fromstring(fixed_target)
+                    cleaned_targets.append(fixed_target)
+                    print(f"Fixed XML: {fixed_target}")
+                except:
+                    print(f"Could not fix XML, using original: {target}")
+                    cleaned_targets.append(target)  # Use original even if invalid
+        
+        # Tokenize targets with longer length for complex XML
+        with self.tokenizer.as_target_tokenizer():
+            labels = self.tokenizer(
+                cleaned_targets, 
+                max_length=768,  # Increased for complex XML structures like your examples
+                truncation=True, 
+                padding="max_length",
+                return_tensors="pt"
+            )
+        
+        model_inputs["labels"] = labels["input_ids"]
+        return model_inputs
+
+    def fix_xml_structure(self, xml_string: str) -> str:
+        """Fix common XML structure issues specific to your dataset format"""
+        # Remove any leading/trailing whitespace
+        xml_string = xml_string.strip()
+        
+        # Ensure proper quotes around attributes (your data uses double quotes)
+        xml_string = re.sub(r'([a-zA-Z_]+)=([^"\s>]+)(?=\s|>)', r'\1="\2"', xml_string)
+        
+        # Fix missing closing brackets
+        xml_string = re.sub(r'<([^/>]+)(?<!/)$', r'<\1>', xml_string)
+        
+        # Fix self-closing tags format (ensure proper spacing)
+        xml_string = re.sub(r'<([^/>]+)/\s*>', r'<\1/>', xml_string)
+        
+        # Fix attribute spacing issues
+        xml_string = re.sub(r'\s+', ' ', xml_string)
+        xml_string = re.sub(r'>\s+<', '><', xml_string)
+        
+        return xml_string
+
+    def validate_xml(self, xml_string: str) -> bool:
+        """Validate XML structure with better error handling"""
+        try:
+            if not xml_string.strip():
+                return False
+            # Remove any leading non-XML content
+            if '<' in xml_string:
+                xml_start = xml_string.find('<')
+                xml_string = xml_string[xml_start:]
+            ET.fromstring(xml_string)
+            return True
+        except ET.ParseError as e:
+            print(f"XML validation error: {e}")
+            return False
+        except Exception as e:
+            print(f"Unexpected validation error: {e}")
+            return False
+
+    def fine_tune(self, train_dataset, val_dataset, output_dir="models/flan_t5_unitime_xml"):
+        """Fine-tune with improved training strategy for your XML format"""
+        
+        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(f"{output_dir}/logs", exist_ok=True)
+        
+        print(f"Output directory: {os.path.abspath(output_dir)}")
+        print(f"Training samples: {len(train_dataset)}")
+        print(f"Validation samples: {len(val_dataset)}")
+        
+        # Print dataset structure for debugging
+        print("Dataset columns:", train_dataset.column_names)
+        print("Sample from train dataset:", train_dataset[0])
+        
+        # Tokenize datasets
+        print("Tokenizing datasets with improved preprocessing...")
+        train_dataset_processed = train_dataset.map(
+            self.preprocess_function, 
+            batched=True, 
+            remove_columns=train_dataset.column_names
+        )
+        
+        val_dataset_processed = val_dataset.map(
+            self.preprocess_function, 
+            batched=True, 
+            remove_columns=val_dataset.column_names
+        )
+        
+        # Data collator
+        data_collator = DataCollatorForSeq2Seq(
+            tokenizer=self.tokenizer,
+            model=self.model,
+            padding=True
+        )
+        
+        # Optimized training arguments for your XML generation task
+        training_args = TrainingArguments(
+            output_dir=output_dir,
+            num_train_epochs=15,  # More epochs for better XML structure learning
+            per_device_train_batch_size=1,  # Smaller batch for complex XML
+            per_device_eval_batch_size=1,
+            gradient_accumulation_steps=16,  # Compensate for very small batch size
+            learning_rate=2e-5,  # Lower learning rate for better stability
+            weight_decay=0.01,
+            warmup_ratio=0.1,
+            
+            # Logging and evaluation
+            logging_dir=f"{output_dir}/logs",
+            logging_steps=25,
+            eval_strategy="steps",
+            eval_steps=100,
+            save_steps=200,
+            save_total_limit=5,
+            
+            # Model selection
+            load_best_model_at_end=True,
+            metric_for_best_model="eval_loss",
+            greater_is_better=False,
+            
+            # Optimization
+            fp16=True,
+            dataloader_num_workers=2,
+            remove_unused_columns=False,
+            prediction_loss_only=False,
+            
+            # Regularization
+            max_grad_norm=1.0,
+            lr_scheduler_type="cosine",
+            
+            # Reporting
+            report_to=["tensorboard"],
+            
+            # Early stopping patience
+            ignore_data_skip=True,
+        )
+
+        # Add early stopping callback
+        early_stopping = EarlyStoppingCallback(
+            early_stopping_patience=5,  # More patience for complex XML learning
+            early_stopping_threshold=0.001
+        )
+
+        trainer = Trainer(
+            model=self.model,
+            args=training_args,
+            train_dataset=train_dataset_processed,
+            eval_dataset=val_dataset_processed,
+            data_collator=data_collator,
+            callbacks=[early_stopping]
+        )
+        
+        print("Starting XML-focused training for your dataset format...")
+        try:
+            trainer.train()
+            
+            # Save model
+            print("Saving model...")
+            trainer.save_model(output_dir)
+            self.tokenizer.save_pretrained(output_dir)
+            
+            # Test with your exact dataset examples
+            print("\n🧪 Testing inference with your dataset examples:")
+            test_cases = [
+                ("Instructor Prof. Johnson strongly avoids room EDUC201", "preferences"),
+                ("Create course offering PHYS402 PHYS Course with Dr. Jones on Wednesday Friday from 11:00 AM to 12:00 PM in room SCI102 with limit 40 students", "course_offering"),
+                ("Reserve 10 seats in ENG402 for student with ID STU73237 until 2024-12-01", "reservations"),
+                ("Schedule HIST301 HIST Course with Prof. Martinez on Thursday from 6:00 PM to 7:00 PM in room A302, class ID 39134", "course_timetable")
+            ]
+            
+            valid_count = 0
+            for i, (test_input, expected_type) in enumerate(test_cases, 1):
+                result = self.test_inference(test_input, expected_type)
+                is_valid = self.validate_xml(result)
+                
+                print(f"\nTest {i} ({expected_type}):")
+                print(f"Input: {test_input}")
+                print(f"Output: {result}")
+                print(f"Valid XML: {'✅' if is_valid else '❌'}")
+                
+                if is_valid:
+                    valid_count += 1
+                    # Check if it matches expected structure
+                    try:
+                        root = ET.fromstring(result)
+                        print(f"Root element: <{root.tag}> ✅")
+                        print(f"Root attributes: {root.attrib}")
+                    except Exception as e:
+                        print(f"Could not parse structure: {e}")
+                else:
+                    # Try to fix and validate again
+                    try:
+                        fixed_result = self.fix_xml_structure(result)
+                        is_fixed_valid = self.validate_xml(fixed_result)
+                        print(f"Fixed: {fixed_result}")
+                        print(f"Fixed Valid: {'✅' if is_fixed_valid else '❌'}")
+                        if is_fixed_valid:
+                            valid_count += 1
+                    except Exception as e:
+                        print(f"Could not fix XML: {e}")
+            
+            print(f"\n📊 Overall XML Validity: {valid_count}/{len(test_cases)} ({valid_count/len(test_cases)*100:.1f}%)")
+            
+            return trainer
+            
+        except Exception as e:
+            print(f"Training failed with error: {e}")
+            import traceback
+            traceback.print_exc()
+            raise
+
+    def test_inference(self, input_text: str, xml_type: str = None) -> str:
+        """Test inference with parameters optimized for your XML structure"""
+        prompt = self.create_structured_prompt(input_text, xml_type)
+        inputs = self.tokenizer(
+            prompt, 
+            return_tensors="pt", 
+            max_length=768,  # Increased for complex XML structures
+            truncation=True,
+            padding=True
+        )
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(device)
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+
+        with torch.no_grad():
+            outputs = self.model.generate(
+                **inputs,
+                max_length=768,  # Increased for complex XML structures
+                min_length=30,   # Ensure sufficient XML content
+                num_beams=8,     # More beams for better structure
+                do_sample=False, # Deterministic for XML structure
+                pad_token_id=self.tokenizer.pad_token_id,
+                eos_token_id=self.tokenizer.eos_token_id,
+                early_stopping=True,
+                repetition_penalty=1.1,  # Lower penalty to allow proper XML repetition
+                length_penalty=1.0,
+                no_repeat_ngram_size=2,  # Allow some repetition for XML structure
+                bad_words_ids=[[self.tokenizer.unk_token_id]],
+                temperature=0.1,  # Low temperature for consistent structure
+                top_p=0.9
+            )
+
+        result = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+        
+        # Post-process to ensure proper XML structure matching your format
+        result = self.post_process_xml(result)
+        
+        return result
+    
+    def post_process_xml(self, xml_string: str) -> str:
+        """Post-process generated XML to match your dataset format exactly"""
+        # Remove any non-XML prefix/suffix
+        if '<' in xml_string:
+            xml_start = xml_string.find('<')
+            xml_string = xml_string[xml_start:]
+        
+        # Find the end of the XML (last complete closing tag)
+        if xml_string.count('<') > 0:
+            # Find last closing tag position
+            last_close_tag = xml_string.rfind('</')
+            if last_close_tag != -1:
+                # Find the end of this closing tag
+                tag_end = xml_string.find('>', last_close_tag)
+                if tag_end != -1:
+                    xml_string = xml_string[:tag_end + 1]
+        
+        # Fix attribute quoting to match your format (double quotes)
+        xml_string = re.sub(r'([a-zA-Z_]+)=([^"\s>]+)(?=\s|>)', r'\1="\2"', xml_string)
+        
+        # Ensure proper attribute formatting
+        xml_string = re.sub(r'=([^"]\w+)', r'="\1"', xml_string)
+        
+        # Clean up whitespace but preserve structure
+        xml_string = re.sub(r'>\s+<', '><', xml_string)
+        xml_string = re.sub(r'\s+', ' ', xml_string)
+        
+        # Ensure self-closing tags are properly formatted
+        xml_string = re.sub(r'<([^/>]+)\s*/>', r'<\1/>', xml_string)
+        
+        return xml_string.strip()
+
+def main():
+    print("🚀 Starting XML-focused fine-tuning for your dataset...")
+
+    try:
+        print("🔄 Preparing datasets...")
+        train_dataset, val_dataset = prepare_datasets()
+
+        print(f"✅ Train dataset size: {len(train_dataset)}")
+        print(f"✅ Validation dataset size: {len(val_dataset)}")
+        
+        # Show a sample from the dataset
+        print("\n📦 Sample training example:")
+        print("Dataset columns:", train_dataset.column_names)
+        sample = train_dataset[0]
+        print(f"Input: {sample['input']}")
+        print(f"Target: {sample['target']}")
+        if 'type' in sample:
+            print(f"Type: {sample['type']}")
+
+        # Initialize trainer with the specified model
+        print("\n🏗️ Initializing trainer...")
+        trainer = ImprovedXMLT5Trainer("google/flan-t5-large")
+
+        # Fine-tune the model
+        print("\n🏋️ Fine-tuning in progress...")
+        trained_model = trainer.fine_tune(train_dataset, val_dataset)
+
+        print("✅ XML-focused fine-tuning completed successfully!")
+        
+        # Test with your exact examples
+        print("\n🧪 Final testing with your exact dataset format...")
+        your_examples = [
+            ("Instructor Prof. Johnson strongly avoids room EDUC201", "preferences"),
+            ("Create course offering PHYS402 PHYS Course with Dr. Jones on Wednesday Friday from 11:00 AM to 12:00 PM in room SCI102 with limit 40 students", "course_offering"),
+            ("Reserve 10 seats in ENG402 for student with ID STU73237 until 2024-12-01", "reservations"),
+            ("Schedule HIST301 HIST Course with Prof. Martinez on Thursday from 6:00 PM to 7:00 PM in room A302, class ID 39134", "course_timetable")
+        ]
+        
+        valid_results = 0
+        for i, (test_input, expected_type) in enumerate(your_examples, 1):
+            print(f"\n--- Test {i} ({expected_type}) ---")
+            print(f"Input: {test_input}")
+            
+            result = trainer.test_inference(test_input, expected_type)
+            is_valid = trainer.validate_xml(result)
+            
+            print(f"Generated XML: {result}")
+            print(f"Valid XML: {'✅' if is_valid else '❌'}")
+            
+            if is_valid:
+                valid_results += 1
+                # Check structure matches expected type
+                try:
+                    root = ET.fromstring(result)
+                    expected_roots = {
+                        'preferences': 'preferences',
+                        'course_offering': 'offerings',
+                        'reservations': 'reservations', 
+                        'course_timetable': 'timetable'
+                    }
+                    expected_root = expected_roots.get(expected_type, '')
+                    if root.tag == expected_root:
+                        print(f"Correct root element: <{root.tag}> ✅")
+                    else:
+                        print(f"Wrong root element: got <{root.tag}>, expected <{expected_root}> ❌")
+                except Exception as e:
+                    print(f"Could not analyze structure: {e}")
+            else:
+                print("❌ Generated invalid XML")
+        
+        print(f"\n📊 Final Test Results: {valid_results}/{len(your_examples)} ({valid_results/len(your_examples)*100:.1f}%) valid XML generated")
+
+    except Exception as e:
+        print(f"❌ Fine-tuning failed: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
-    print("Starting training...")
-    trainer.train()
-    print("Training completed.")
-    print("Saving final model...")
-    trainer.save_model("output/final_model")
-    tokenizer.save_pretrained("output/final_model")
-    print("Model and tokenizer saved to output/final_model")
+    main()
