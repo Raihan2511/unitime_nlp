@@ -403,7 +403,7 @@ import numpy as np
 from data_preprocessing import prepare_datasets
 
 class ImprovedXMLT5Trainer:
-    def __init__(self, model_name="google/flan-t5-large"):
+    def __init__(self, model_name="google/flan-t5-small"):
         self.model_name = model_name
         self.tokenizer = T5Tokenizer.from_pretrained(self.model_name)
         self.model = T5ForConditionalGeneration.from_pretrained(self.model_name)
