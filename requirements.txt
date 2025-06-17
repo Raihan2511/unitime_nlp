@@ -10,6 +10,7 @@ numpy
 datasets
 peft
 tensorboard
+bitsandbytes
 # Additional packages for specific tasks
 scikit-learn
 scipy
@@ -22,3 +23,4 @@ accelerate
 wandb
 flask
 ipykernel
+ipywidgets

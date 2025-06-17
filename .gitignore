@@ -1,4 +1,5 @@
 myenv
+.venv
 # Ignore the virtual environment directory
 __pycache__/
 *.pyc
