@@ -74,7 +74,7 @@ def generate_single_intent_example() -> Dict:
         if pref_type == "timePref":
             input_text = f"Department [DEPARTMENT] {level_text} scheduling classes on [DAYS] from [START_TIME] to [END_TIME]."
             pref_xml = generate_timePref_xml(level)
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     {pref_xml}
   </department>
@@ -82,7 +82,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "roomPref":
             input_text = f"Department [DEPARTMENT] {level_text} room [ROOM_ID] in building [BUILDING]."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     <roomPref building="[BUILDING]" room="[ROOM_ID]" level="{level}"/>
   </department>
@@ -90,7 +90,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "buildingPref":
             input_text = f"Department [DEPARTMENT] {level_text} [BUILDING] building."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     <buildingPref building="[BUILDING]" level="{level}"/>
   </department>
@@ -98,7 +98,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "groupPref":
             input_text = f"Department [DEPARTMENT] {level_text} [GROUP] room facilities."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     <groupPref group="[GROUP]" level="{level}"/>
   </department>
@@ -106,7 +106,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "featurePref":
             input_text = f"Department [DEPARTMENT] {level_text} [FEATURE] equipment in classrooms."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     <featurePref feature="[FEATURE]" level="{level}"/>
   </department>
@@ -114,7 +114,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "datePref":
             input_text = f"Department [DEPARTMENT] {level_text} [PATTERN] scheduling pattern."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     <datePref pattern="[PATTERN]" level="{level}"/>
   </department>
@@ -123,7 +123,7 @@ def generate_single_intent_example() -> Dict:
         elif pref_type == "distributionPref":
             input_text = f"Department [DEPARTMENT] {level_text} classes to follow distribution rules."
             dist_xml = generate_distributionPref_xml(level)
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fal" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     {dist_xml}
   </department>
@@ -133,7 +133,7 @@ def generate_single_intent_example() -> Dict:
         if pref_type == "timePref":
             input_text = f"Instructor [INSTRUCTOR_NAME] {level_text} teaching on [DAYS] from [START_TIME] to [END_TIME]."
             pref_xml = generate_timePref_xml(level)
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <instructor firstName="[INSTRUCTOR_NAME]" lastName="[LAST_NAME]" department="[DEPARTMENT]">
     {pref_xml}
   </instructor>
@@ -141,7 +141,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "coursePref":
             input_text = f"Instructor [INSTRUCTOR_NAME] {level_text} teaching [SUBJECT] [COURSE_ID]."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <instructor firstName="[INSTRUCTOR_NAME]" lastName="[LAST_NAME]" department="[DEPARTMENT]">
     <coursePref subject="[SUBJECT]" course="[COURSE_ID]" level="{level}"/>
   </instructor>
@@ -149,7 +149,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "teachingPref":
             input_text = f"Instructor [INSTRUCTOR_NAME] {level_text} maximum teaching load of [MAX_LOAD] hours."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <instructor firstName="[INSTRUCTOR_NAME]" lastName="[LAST_NAME]" department="[DEPARTMENT]">
     <teachingPref maxLoad="[MAX_LOAD]" level="{level}"/>
   </instructor>
@@ -157,7 +157,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "roomPref":
             input_text = f"Instructor [INSTRUCTOR_NAME] {level_text} teaching in room [ROOM_ID]."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <instructor firstName="[INSTRUCTOR_NAME]" lastName="[LAST_NAME]" department="[DEPARTMENT]">
     <roomPref building="[BUILDING]" room="[ROOM_ID]" level="{level}"/>
   </instructor>
@@ -165,7 +165,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "buildingPref":
             input_text = f"Instructor [INSTRUCTOR_NAME] {level_text} teaching in [BUILDING] building."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <instructor firstName="[INSTRUCTOR_NAME]" lastName="[LAST_NAME]" department="[DEPARTMENT]">
     <buildingPref building="[BUILDING]" level="{level}"/>
   </instructor>
@@ -173,7 +173,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "groupPref":
             input_text = f"Instructor [INSTRUCTOR_NAME] {level_text} [GROUP] classroom facilities."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <instructor firstName="[INSTRUCTOR_NAME]" lastName="[LAST_NAME]" department="[DEPARTMENT]">
     <groupPref group="[GROUP]" level="{level}"/>
   </instructor>
@@ -181,7 +181,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "featurePref":
             input_text = f"Instructor [INSTRUCTOR_NAME] {level_text} [FEATURE] equipment for classes."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <instructor firstName="[INSTRUCTOR_NAME]" lastName="[LAST_NAME]" department="[DEPARTMENT]">
     <featurePref feature="[FEATURE]" level="{level}"/>
   </instructor>
@@ -189,7 +189,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "datePref":
             input_text = f"Instructor [INSTRUCTOR_NAME] {level_text} [PATTERN] class schedule pattern."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <instructor firstName="[INSTRUCTOR_NAME]" lastName="[LAST_NAME]" department="[DEPARTMENT]">
     <datePref pattern="[PATTERN]" level="{level}"/>
   </instructor>
@@ -198,7 +198,7 @@ def generate_single_intent_example() -> Dict:
         elif pref_type == "distributionPref":
             input_text = f"Instructor [INSTRUCTOR_NAME] {level_text} coordinated class scheduling."
             dist_xml = generate_distributionPref_xml(level)
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <instructor firstName="[INSTRUCTOR_NAME]" lastName="[LAST_NAME]" department="[DEPARTMENT]">
     {dist_xml}
   </instructor>
@@ -208,7 +208,7 @@ def generate_single_intent_example() -> Dict:
         if pref_type == "timePref":
             input_text = f"[SUBJECT] [COURSE_ID] [CLASS_TYPE] {level_text} [DAYS] time slots."
             pref_xml = generate_timePref_xml(level)
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <subpart subject="[SUBJECT]" course="[COURSE_ID]" type="[CLASS_TYPE]">
     {pref_xml}
   </subpart>
@@ -216,7 +216,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "roomPref":
             input_text = f"[SUBJECT] [COURSE_ID] [CLASS_TYPE] {level_text} room [ROOM_ID] in [BUILDING]."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <subpart subject="[SUBJECT]" course="[COURSE_ID]" type="[CLASS_TYPE]">
     <roomPref building="[BUILDING]" room="[ROOM_ID]" level="{level}"/>
   </subpart>
@@ -224,7 +224,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "buildingPref":
             input_text = f"[SUBJECT] [COURSE_ID] [CLASS_TYPE] {level_text} [BUILDING] building location."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <subpart subject="[SUBJECT]" course="[COURSE_ID]" type="[CLASS_TYPE]">
     <buildingPref building="[BUILDING]" level="{level}"/>
   </subpart>
@@ -232,7 +232,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "groupPref":
             input_text = f"[SUBJECT] [COURSE_ID] [CLASS_TYPE] {level_text} [GROUP] facilities."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <subpart subject="[SUBJECT]" course="[COURSE_ID]" type="[CLASS_TYPE]">
     <groupPref group="[GROUP]" level="{level}"/>
   </subpart>
@@ -240,7 +240,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "featurePref":
             input_text = f"[SUBJECT] [COURSE_ID] [CLASS_TYPE] {level_text} [FEATURE] equipment."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <subpart subject="[SUBJECT]" course="[COURSE_ID]" type="[CLASS_TYPE]">
     <featurePref feature="[FEATURE]" level="{level}"/>
   </subpart>
@@ -248,7 +248,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "datePref":
             input_text = f"[SUBJECT] [COURSE_ID] [CLASS_TYPE] {level_text} [PATTERN] scheduling."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <subpart subject="[SUBJECT]" course="[COURSE_ID]" type="[CLASS_TYPE]">
     <datePref pattern="[PATTERN]" level="{level}"/>
   </subpart>
@@ -258,7 +258,7 @@ def generate_single_intent_example() -> Dict:
         if pref_type == "timePref":
             input_text = f"Class [SUBJECT] [COURSE_ID] section [SUFFIX] {level_text} [DAYS] scheduling."
             pref_xml = generate_timePref_xml(level)
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <class subject="[SUBJECT]" course="[COURSE_ID]" suffix="[SUFFIX]" type="[CLASS_TYPE]">
     {pref_xml}
   </class>
@@ -266,7 +266,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "roomPref":
             input_text = f"Class [SUBJECT] [COURSE_ID] section [SUFFIX] {level_text} room [ROOM_ID]."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <class subject="[SUBJECT]" course="[COURSE_ID]" suffix="[SUFFIX]" type="[CLASS_TYPE]">
     <roomPref building="[BUILDING]" room="[ROOM_ID]" level="{level}"/>
   </class>
@@ -274,7 +274,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "buildingPref":
             input_text = f"Class [SUBJECT] [COURSE_ID] section [SUFFIX] {level_text} [BUILDING] building."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <class subject="[SUBJECT]" course="[COURSE_ID]" suffix="[SUFFIX]" type="[CLASS_TYPE]">
     <buildingPref building="[BUILDING]" level="{level}"/>
   </class>
@@ -282,7 +282,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "groupPref":
             input_text = f"Class [SUBJECT] [COURSE_ID] section [SUFFIX] {level_text} [GROUP] facilities."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <class subject="[SUBJECT]" course="[COURSE_ID]" suffix="[SUFFIX]" type="[CLASS_TYPE]">
     <groupPref group="[GROUP]" level="{level}"/>
   </class>
@@ -290,7 +290,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "featurePref":
             input_text = f"Class [SUBJECT] [COURSE_ID] section [SUFFIX] {level_text} [FEATURE] equipment."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <class subject="[SUBJECT]" course="[COURSE_ID]" suffix="[SUFFIX]" type="[CLASS_TYPE]">
     <featurePref feature="[FEATURE]" level="{level}"/>
   </class>
@@ -298,7 +298,7 @@ def generate_single_intent_example() -> Dict:
         
         elif pref_type == "datePref":
             input_text = f"Class [SUBJECT] [COURSE_ID] section [SUFFIX] {level_text} [PATTERN] pattern."
-            xml = f"""<preferences term="Fall" year="2010" campus="">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <class subject="[SUBJECT]" course="[COURSE_ID]" suffix="[SUFFIX]" type="[CLASS_TYPE]">
     <datePref pattern="[PATTERN]" level="{level}"/>
   </class>
@@ -316,7 +316,7 @@ def generate_merged_example() -> Dict:
         # Department + Instructor combination
         {
             "input": f"Department [DEPARTMENT] {level_text1} [BUILDING] building and instructor [INSTRUCTOR_NAME] {level_text2} teaching [SUBJECT] courses with [FEATURE] equipment.",
-            "xml": f"""<preferences term="Fall" year="2010" campus="">
+            "xml": f"""<preferences term="Fall" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     <buildingPref building="[BUILDING]" level="{level1}"/>
   </department>
@@ -330,7 +330,7 @@ def generate_merged_example() -> Dict:
         # Instructor + Class combination
         {
             "input": f"Instructor [INSTRUCTOR_NAME] {level_text1} [GROUP] facilities and class [SUBJECT] [COURSE_ID] {level_text2} room [ROOM_ID].",
-            "xml": f"""<preferences term="Fall" year="2010" campus="">
+            "xml": f"""<preferences term="Fall" year="2010" campus="woebegon">
   <instructor firstName="[INSTRUCTOR_NAME]" lastName="[LAST_NAME]" department="[DEPARTMENT]">
     <groupPref group="[GROUP]" level="{level1}"/>
   </instructor>
@@ -343,7 +343,7 @@ def generate_merged_example() -> Dict:
         # All four elements combination
         {
             "input": f"Department [DEPARTMENT] {level_text1} [BUILDING], instructor [INSTRUCTOR_NAME] {level_text2} morning classes, [SUBJECT] [COURSE_ID] lab {level_text3} computer facilities, and class sections need room assignments.",
-            "xml": f"""<preferences term="Fall" year="2010" campus="">
+            "xml": f"""<preferences term="Fall" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     <buildingPref building="[BUILDING]" level="{level1}"/>
   </department>
