@@ -7,11 +7,11 @@ from sklearn.model_selection import train_test_split
 class NLPToXMLOfferingsGenerator:
     def __init__(self):
         # Fixed values - same for all samples
-        self.campus = "PuWL"
-        self.year = "2025"
-        self.term = "Fall"
+        self.campus = "webegon"
+        self.year = "2010"
+        self.term = "Fal"
         self.date_format = "MM/dd/yyyy"
-        self.created = "06/22/2025"
+        self.created = "06/22/2010"
         
     def generate_offerings_samples(self, count: int = 50) -> List[Dict[str, Any]]:
         """Generate course offerings NLP to XML samples with placeholders in NLP too"""
@@ -172,8 +172,8 @@ class NLPToXMLOfferingsGenerator:
         # Generate samples - just return the templates as-is with placeholders
         for pattern in patterns:
             samples.append({
-                "nlp_input": pattern["nlp_template"],
-                "xml_output": pattern["xml_template"]
+                "input": pattern["nlp_template"],
+                "output": pattern["xml_template"]
             })
         
         return samples
@@ -229,8 +229,8 @@ def generate_offerings_dataset():
     print("=" * 80)
     for i, sample in enumerate(samples):
         print(f"\nTemplate {i+1}:")
-        print(f"NLP: {sample['nlp_input']}")
-        print(f"XML: {sample['xml_output'][:300]}...")
+        print(f"NLP: {sample['input']}")
+        print(f"XML: {sample['output'][:300]}...")
         print("-" * 80)
 
 # if __name__ == "__main__":
