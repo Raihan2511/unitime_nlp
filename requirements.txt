@@ -24,3 +24,5 @@ wandb
 flask
 ipykernel
 ipywidgets
+
+nltk
