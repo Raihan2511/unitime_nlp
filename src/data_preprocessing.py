@@ -47,38 +47,54 @@
 #     return train_dataset, val_dataset
 
 
-#preprocess.py
+# preprocess.py
 def preprocess_data(offerings, reservations, preferences):
     dataset = []
-    for offer, reservation, pref in zip(offerings, reservations, preferences):
-        try:
-            input_text = (
-                f"Department {pref['department']} requires {pref['building']}, "
-                f"instructor {pref['instructor_first']} needs morning classes, "
-                f"{offer['subject']} {offer['course_id']} lab likes computer facilities, "
-                f"and class sections need room assignments."
+
+    def generate_prompt(item, dtype):
+        if dtype == "preferences":
+            dept = item.get("department", "[DEPARTMENT]")
+            instructor = item.get("instructor_name", "[INSTRUCTOR_NAME]")
+            building = item.get("building", "[BUILDING]")
+            time = item.get("time", "morning")
+            return (
+                f"Instructor {instructor} from {dept} prefers {time} classes in building {building}.",
+                item.get("output", "")
             )
 
-            xml_output = f"""
-<preferences term=\"Fall\" year=\"2010\" campus=\"woebegon\">
-  <department code=\"{pref['department']}\">
-    <buildingPref building=\"{pref['building']}\" level=\"R\"/>
-  </department>
-  <instructor firstName=\"{pref['instructor_first']}\" lastName=\"{pref['instructor_last']}\" department=\"{pref['department']}\">
-    <timePref level=\"R\">
-      <pref days=\"MWF\" start=\"0800\" stop=\"1200\" level=\"R\"/>
-    </timePref>
-  </instructor>
-  <subpart subject=\"{offer['subject']}\" course=\"{offer['course_id']}\" type=\"Lab\">
-    <groupPref group=\"{pref['group']}\" level=\"1\"/>
-  </subpart>
-  <class subject=\"{offer['subject']}\" course=\"{offer['course_id']}\" type=\"{offer['class_type']}\">
-    <roomPref building=\"{pref['building']}\" room=\"{offer['room_id']}\" level=\"1\"/>
-  </class>
-</preferences>"""
+        elif dtype == "reservations":
+            subject = item.get("subject", "[SUBJECT]")
+            course = item.get("course_id", "[COURSE_ID]")
+            group = item.get("group", "[GROUP]")
+            major = item.get("major", "[MAJOR]")
+            limit = item.get("limit", "[LIMIT]")
+            return (
+                f"There is a reservation for {subject} {course} for group {group} with major {major} and limit {limit}.",
+                item.get("output", "")
+            )
 
-            dataset.append({"input": input_text, "xml": xml_output.strip()})
-        except KeyError as e:
-            print(f"Missing key in one of the records: {e}")
+        elif dtype == "offerings":
+            subject = item.get("subject", "[SUBJECT]")
+            course = item.get("course_id", "[COURSE_ID]")
+            dept = item.get("department", "[DEPARTMENT]")
+            instructor = item.get("instructor_name", "[INSTRUCTOR_NAME]")
+            return (
+                f"Course {subject} {course} is offered by {dept} and taught by instructor {instructor}.",
+                item.get("output", "")
+            )
+
+        return ("", "")
+
+    for item in preferences:
+        input_text, output_text = generate_prompt(item, "preferences")
+        dataset.append({"input": input_text, "output": output_text})
+
+    for item in reservations:
+        input_text, output_text = generate_prompt(item, "reservations")
+        dataset.append({"input": input_text, "output": output_text})
+
+    for item in offerings:
+        input_text, output_text = generate_prompt(item, "offerings")
+        dataset.append({"input": input_text, "output": output_text})
 
     return dataset
