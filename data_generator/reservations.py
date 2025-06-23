@@ -304,8 +304,8 @@ class ReservationXMLGenerator:
         for i, nlp_text in enumerate(all_examples[:num_samples]):
             xml_output = self.create_xml_from_nlp(nlp_text)
             dataset.append({
-                "nlp_input": nlp_text,
-                "xml_output": xml_output
+                "input": nlp_text,
+                "output": xml_output
             })
         
         return dataset
@@ -348,9 +348,9 @@ def generate_reservations_dataset():
     # Print a sample for verification
     print("\n=== SAMPLE TRAINING EXAMPLE ===")
     sample = train_data[0]
-    print("NLP Input:", sample["nlp_input"])
+    print("NLP Input:", sample["input"])
     print("XML Output:")
-    print(sample["xml_output"])
+    print(sample["output"])
 
 # if __name__ == "__main__":
 #     generate_reservations_dataset()

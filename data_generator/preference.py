@@ -123,7 +123,7 @@ def generate_single_intent_example() -> Dict:
         elif pref_type == "distributionPref":
             input_text = f"Department [DEPARTMENT] {level_text} classes to follow distribution rules."
             dist_xml = generate_distributionPref_xml(level)
-            xml = f"""<preferences term="Fal" year="2010" campus="woebegon">
+            xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     {dist_xml}
   </department>
@@ -316,7 +316,7 @@ def generate_merged_example() -> Dict:
         # Department + Instructor combination
         {
             "input": f"Department [DEPARTMENT] {level_text1} [BUILDING] building and instructor [INSTRUCTOR_NAME] {level_text2} teaching [SUBJECT] courses with [FEATURE] equipment.",
-            "xml": f"""<preferences term="Fall" year="2010" campus="woebegon">
+            "output": f"""<preferences term="Fall" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     <buildingPref building="[BUILDING]" level="{level1}"/>
   </department>
@@ -330,7 +330,7 @@ def generate_merged_example() -> Dict:
         # Instructor + Class combination
         {
             "input": f"Instructor [INSTRUCTOR_NAME] {level_text1} [GROUP] facilities and class [SUBJECT] [COURSE_ID] {level_text2} room [ROOM_ID].",
-            "xml": f"""<preferences term="Fall" year="2010" campus="woebegon">
+            "output": f"""<preferences term="Fall" year="2010" campus="woebegon">
   <instructor firstName="[INSTRUCTOR_NAME]" lastName="[LAST_NAME]" department="[DEPARTMENT]">
     <groupPref group="[GROUP]" level="{level1}"/>
   </instructor>
@@ -343,7 +343,7 @@ def generate_merged_example() -> Dict:
         # All four elements combination
         {
             "input": f"Department [DEPARTMENT] {level_text1} [BUILDING], instructor [INSTRUCTOR_NAME] {level_text2} morning classes, [SUBJECT] [COURSE_ID] lab {level_text3} computer facilities, and class sections need room assignments.",
-            "xml": f"""<preferences term="Fall" year="2010" campus="woebegon">
+            "output": f"""<preferences term="Fall" year="2010" campus="woebegon">
   <department code="[DEPARTMENT]">
     <buildingPref building="[BUILDING]" level="{level1}"/>
   </department>
