@@ -1,108 +1,57 @@
-import json
-import torch
-import os
-from transformers import T5ForConditionalGeneration, T5Tokenizer
-from sklearn.metrics import accuracy_score, classification_report 
-# # type: ignore
-import xml.etree.ElementTree as ET
+def evaluate_model(model_checkpoint, test_file_path):
+    from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+    from datasets import load_dataset
+    from sklearn.metrics import accuracy_score
+    from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
+    from tqdm import tqdm
+    import torch
+    import json
 
-class UniTimeNLPEvaluator:
-    def __init__(self, model_path="models/flan_t5_unitime_xml"):
-        self.model_path = model_path
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_checkpoint)
+    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+    model.eval()
 
-        if not os.path.exists(model_path):
-            raise FileNotFoundError(f"Model directory not found: {model_path}")
+    dataset = load_dataset("json", data_files={"test": test_file_path})["test"]
 
-        required_files = ["config.json", "tokenizer_config.json"]
-        missing_files = [f for f in required_files if not os.path.exists(os.path.join(model_path, f))]
+    smooth_fn = SmoothingFunction().method2
+    exact_match_count = 0
+    bleu_scores = []
 
-        if missing_files:
-            raise FileNotFoundError(f"Missing required files: {missing_files}")
+    results = []
 
-        self.tokenizer = T5Tokenizer.from_pretrained(model_path, local_files_only=True)
-        self.model = T5ForConditionalGeneration.from_pretrained(model_path, local_files_only=True)
-        self.model.eval()
+    for item in tqdm(dataset):
+        input_text = item["input"]
+        expected_output = item["output"].strip()
 
-    def predict(self, input_text):
-        input_formatted = f"Convert this scheduling request to structured format: {input_text}"
-        inputs = self.tokenizer(input_formatted, return_tensors="pt", max_length=512, truncation=True)
-        with torch.no_grad():
-            outputs = self.model.generate(
-                **inputs,
-                max_length=512,
-                num_beams=4,
-                temperature=0.7,  # Adjusted for better diversity
-                do_sample=True,
-                pad_token_id=self.tokenizer.eos_token_id
-            )
-        return self.tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
+        inputs = tokenizer(input_text, return_tensors="pt", truncation=True, padding=True, max_length=512).to(device)
+        outputs = model.generate(**inputs, max_new_tokens=512)
+        prediction = tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
 
-    def xml_equal(self, xml1, xml2):
-        try:
-            tree1 = ET.fromstring(xml1.strip())
-            tree2 = ET.fromstring(xml2.strip())
-            return ET.tostring(tree1) == ET.tostring(tree2)
-        except Exception:
-            return False
+        # Exact match
+        if prediction == expected_output:
+            exact_match_count += 1
 
-    def evaluate_xml_outputs(self, test_examples):
-        correct = 0
-        total = len(test_examples)
-        mismatches = []
+        # BLEU score
+        bleu = sentence_bleu([expected_output.split()], prediction.split(), smoothing_function=smooth_fn)
+        bleu_scores.append(bleu)
 
-        for i, example in enumerate(test_examples):
-            if i % 20 == 0:
-                print(f"Evaluating: {i}/{total}")
+        results.append({
+            "input": input_text,
+            "expected": expected_output,
+            "predicted": prediction,
+            "bleu": bleu,
+            "match": prediction == expected_output
+        })
 
-            prediction = self.predict(example["input"])
-            gold = example["output"]
+    exact_match_accuracy = exact_match_count / len(dataset)
+    avg_bleu = sum(bleu_scores) / len(bleu_scores)
 
-            if self.xml_equal(prediction, gold):
-                correct += 1
-            else:
-                mismatches.append({
-                    "input": example["input"],
-                    "predicted": prediction,
-                    "expected": gold
-                })
+    print(f"\n✅ Evaluation Complete:")
+    print(f"🔹 Exact Match Accuracy: {exact_match_accuracy:.4f}")
+    print(f"🔹 Average BLEU Score: {avg_bleu:.4f}")
 
-        accuracy = correct / total
-        return {
-            "xml_accuracy": accuracy,
-            "mismatches": mismatches
-        }
-
-    def run_full_evaluation(self, test_file="data/processed/val_dataset.json"):
-        if not os.path.exists(test_file):
-            raise FileNotFoundError(f"Test file not found: {test_file}")
-
-        with open(test_file, "r") as f:
-            test_examples = json.load(f)
-
-        print("Running XML-based evaluation...")
-        xml_results = self.evaluate_xml_outputs(test_examples)
-        print(f"\nXML Accuracy: {xml_results['xml_accuracy']:.3f}")
-
-        sample_size = min(3, len(test_examples))
-        for i in range(sample_size):
-            pred = self.predict(test_examples[i]["input"])
-            print(f"\nSample {i+1}:")
-            print(f"Input: {test_examples[i]['input']}")
-            print(f"Predicted: {pred}")
-            print(f"Expected: {test_examples[i]['output']}")
-
-        results_file = f"{self.model_path}/evaluation_xml.json"
-        with open(results_file, "w") as f:
-            json.dump(xml_results, f, indent=2)
-
-        print(f"\n✅ Results saved to: {results_file}")
-        return xml_results
-
-if __name__ == "__main__":
-    try:
-        evaluator = UniTimeNLPEvaluator()
-        results = evaluator.run_full_evaluation()
-        print("\n🎉 Evaluation completed successfully!")
-    except Exception as e:
-        print(f"❌ Evaluation failed with error: {e}")
-
+    with open("data/eval_result/eval_predictions.json", "w") as f:
+        json.dump(results, f, indent=2)
+    print("📄 Predictions saved to data/eval_predictions.json")
