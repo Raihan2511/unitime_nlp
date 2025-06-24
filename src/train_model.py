@@ -37,12 +37,13 @@ def train_model(train_file_path, val_file_path):
         save_steps=500,
         save_total_limit=2,
         eval_strategy="steps",
-        eval_steps=200,
+        eval_steps=500,
         predict_with_generate=True,
         fp16=torch.cuda.is_available(),
         load_best_model_at_end=True,
         metric_for_best_model="loss",
         greater_is_better=False,
+        report_to="tensorboard",
     )
 
     trainer = Seq2SeqTrainer(
@@ -55,4 +56,6 @@ def train_model(train_file_path, val_file_path):
     )
 
     trainer.train()
+    model.save_pretrained("./models/final_model")
+    tokenizer.save_pretrained("./models/final_model")
     print("✅ CodeT5+ model training with validation complete.")
