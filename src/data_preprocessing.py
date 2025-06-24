@@ -50,7 +50,7 @@
 # preprocess.py
 import json
 import os
-def preprocess_data(offerings, reservations, preferences):
+def preprocess_data(offerings, reservations, preferences,timetable):
     dataset = []
 
     def generate_prompt(item, dtype):
@@ -93,6 +93,19 @@ def preprocess_data(offerings, reservations, preferences):
                 f"Course offering for {subject} {course} taught by instructor {instructor} in building {building}, room {room}, from {start} to {end}.",
                 item.get("output", "")
             )
+        elif dtype == "timetable":
+            subject = item.get("SUBJECT", "[SUBJECT]")
+            course = item.get("COURSE_NBR", "[COURSE_NBR]")
+            class_type = item.get("CLASS_TYPE", "[CLASS_TYPE]")
+            days = item.get("DAYS", "[DAYS]")
+            start_time = item.get("START_TIME", "[START_TIME]")
+            end_time = item.get("END_TIME", "[END_TIME]")
+            building = item.get("BUILDING", "[BUILDING]")
+            room = item.get("ROOM_NBR", "[ROOM_NBR]")
+            return (
+                f"Timetable entry for {subject} {course} ({class_type}) on {days} from {start_time} to {end_time} in {building}, room {room}.",
+                item.get("output", "")
+            )
 
         return ("", item.get("output", ""))
 
@@ -107,10 +120,13 @@ def preprocess_data(offerings, reservations, preferences):
     for item in offerings:
         input_text, output_text = generate_prompt(item, "offerings")
         dataset.append({"input": input_text, "output": output_text})
+    for item in timetable:
+        input_text, output_text = generate_prompt(item, "timetable")
+        dataset.append({"input": input_text, "output": output_text})
 
     return dataset
 
-def merge_test_data(offer_data, reserv_data, pref_data, output_path):
+def merge_test_data(offer_data, reserv_data, pref_data,time_data, output_path):
     import os
     import json
 
@@ -118,10 +134,12 @@ def merge_test_data(offer_data, reserv_data, pref_data, output_path):
     merged.extend(offer_data)
     merged.extend(reserv_data)
     merged.extend(pref_data)
+    merged.extend(time_data)
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w") as f:
         json.dump(merged, f, indent=2)
+
 
     print(f"✅ Merged test data saved to {output_path}")
 

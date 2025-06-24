@@ -11,19 +11,20 @@ from src.evaluation import evaluate_model
 import json
 
 # Load training datasets 
-offerings, reservations, preferences = load_train_datasets()
-train_processed_data = preprocess_data(offerings, reservations, preferences)
+offerings, reservations, preferences,timetbale = load_train_datasets()
+train_processed_data = preprocess_data(offerings, reservations, preferences, timetbale)
 
 # loading validation datasets 
-val_offerings, val_reservations, val_preferences = load_val_datasets()
-processed_val = preprocess_data(val_offerings, val_reservations, val_preferences)
+val_offerings, val_reservations, val_preferences,val_timetable = load_val_datasets()
+processed_val = preprocess_data(val_offerings, val_reservations, val_preferences, val_timetable)
 
 # Load test datasets
-test_offerings, test_reservations, test_preferences = load_test_datasets()
+test_offerings, test_reservations, test_preferences,test_timetable = load_test_datasets()
 merge_test_data(
     test_offerings,
     test_reservations,
     test_preferences,
+    test_timetable,
     "data/processed/test_data.json"
 )
 print(f"✅ Loaded {len(train_processed_data)} training and {len(processed_val)} validation samples.")
