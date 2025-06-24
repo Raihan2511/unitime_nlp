@@ -48,92 +48,88 @@
 
 
 # preprocess.py
-import re
-
+import json
+import os
 def preprocess_data(offerings, reservations, preferences):
     dataset = []
-    
-    def extract_placeholders(text):
-        """Extract placeholders like [PLACEHOLDER] from text"""
-        return re.findall(r'\[([^\]]+)\]', text)
-    
-    def find_dataset_placeholders(items):
-        """Find all unique placeholders used in a dataset"""
-        placeholders = set()
-        for item in items:
-            input_text = item.get("input", "")
-            placeholders.update(extract_placeholders(input_text))
-        return placeholders
-    
-    def get_field_value(item, placeholder):
-        """Get actual field value for a placeholder with flexible matching"""
-        field_variations = [
-            placeholder.lower(),
-            placeholder.lower().replace('_', ''),
-            placeholder.lower() + '_name',
-            placeholder.lower() + '_id',
-            placeholder.lower() + '_nbr'
-        ]
-        
-        for field_name in field_variations:
-            if field_name in item:
-                return item[field_name]
-        
-        return f"[{placeholder}]"  # Keep placeholder if no match found
-    
-    def generate_prompt(item, dtype, dataset_placeholders):
+
+    def generate_prompt(item, dtype):
         if dtype == "preferences":
-            # Use detected placeholders or fallback to common ones
-            dept = get_field_value(item, "DEPARTMENT") if "DEPARTMENT" in dataset_placeholders else item.get("department", "[DEPARTMENT]")
-            instructor = get_field_value(item, "INSTRUCTOR") if "INSTRUCTOR" in dataset_placeholders else item.get("instructor_name", "[INSTRUCTOR_NAME]")
-            building = get_field_value(item, "BUILDING") if "BUILDING" in dataset_placeholders else item.get("building", "[BUILDING]")
-            time = get_field_value(item, "TIME") if "TIME" in dataset_placeholders else item.get("time", "morning")
-            
+            instructor = item.get("INSTRUCTOR_NAME", "[INSTRUCTOR_NAME]")
+            dept = item.get("DEPARTMENT", "[DEPARTMENT]")
+            building = item.get("BUILDING", "[BUILDING]")
+            time = f"from {item.get('START_TIME', '[START_TIME]')} to {item.get('END_TIME', '[END_TIME]')}"
+            subject = item.get("SUBJECT", "[SUBJECT]")
+            course = item.get("COURSE_ID", "[COURSE_ID]")
+            room = item.get("ROOM_ID", "[ROOM_ID]")
+            class_type = item.get("CLASS_TYPE", "[CLASS_TYPE]")
             return (
-                f"Instructor {instructor} from {dept} prefers {time} classes in building {building}.",
+                f"Instructor {instructor} from department {dept} prefers {class_type} classes of {subject} {course} scheduled {time} in building {building}, room {room}.",
                 item.get("output", "")
             )
-        
+
         elif dtype == "reservations":
-            subject = get_field_value(item, "SUBJECT") if "SUBJECT" in dataset_placeholders else item.get("subject", "[SUBJECT]")
-            course = get_field_value(item, "COURSE_NBR") if "COURSE_NBR" in dataset_placeholders else item.get("course_id", "[COURSE_ID]")
-            group = get_field_value(item, "GROUP") if "GROUP" in dataset_placeholders else item.get("group", "[GROUP]")
-            major = get_field_value(item, "MAJOR") if "MAJOR" in dataset_placeholders else item.get("major", "[MAJOR]")
-            limit = get_field_value(item, "LIMIT") if "LIMIT" in dataset_placeholders else item.get("limit", "[LIMIT]")
-            
+            subject = item.get("SUBJECT", "[SUBJECT]")
+            course = item.get("COURSE_NBR", "[COURSE_NBR]")
+            major = item.get("MAJOR", "[MAJOR]")
+            limit = item.get("LIMIT", "[LIMIT]")
+            campus = item.get("CAMPUS", "[CAMPUS]")
+            term = item.get("TERM", "[TERM]")
+            year = item.get("YEAR", "[YEAR]")
             return (
-                f"There is a reservation for {subject} {course} for group {group} with major {major} and limit {limit}.",
+                f"A reservation is made on {subject} {course} for major {major} with limit {limit} at {campus} campus during {term} {year}.",
                 item.get("output", "")
             )
-        
+
         elif dtype == "offerings":
-            subject = get_field_value(item, "SUBJECT") if "SUBJECT" in dataset_placeholders else item.get("subject", "[SUBJECT]")
-            course = get_field_value(item, "COURSE_NBR") if "COURSE_NBR" in dataset_placeholders else item.get("course_id", "[COURSE_ID]")
-            dept = get_field_value(item, "DEPARTMENT") if "DEPARTMENT" in dataset_placeholders else item.get("department", "[DEPARTMENT]")
-            instructor = get_field_value(item, "INSTRUCTOR") if "INSTRUCTOR" in dataset_placeholders else item.get("instructor_name", "[INSTRUCTOR_NAME]")
-            
+            subject = item.get("SUBJECT", "[SUBJECT]")
+            course = item.get("COURSE_NBR", "[COURSE_NBR]")
+            instructor = item.get("INSTRUCTOR_LNAME", "[INSTRUCTOR_LNAME]")
+            building = item.get("BUILDING", "[BUILDING]")
+            start = item.get("START_TIME", "[START_TIME]")
+            end = item.get("END_TIME", "[END_TIME]")
+            room = item.get("ROOM_NBR", "[ROOM_NBR]")
             return (
-                f"Course {subject} {course} is offered by {dept} and taught by instructor {instructor}.",
+                f"Course offering for {subject} {course} taught by instructor {instructor} in building {building}, room {room}, from {start} to {end}.",
                 item.get("output", "")
             )
-        
-        return ("", "")
-    
-    # Process each dataset type
-    datasets = [
-        (preferences, "preferences"),
-        (reservations, "reservations"), 
-        (offerings, "offerings")
-    ]
-    
-    for items, dtype in datasets:
-        if items:  # Only process if dataset is not empty
-            # Find placeholders used in this dataset
-            dataset_placeholders = find_dataset_placeholders(items)
-            
-            # Generate prompts for each item
-            for item in items:
-                input_text, output_text = generate_prompt(item, dtype, dataset_placeholders)
-                dataset.append({"input": input_text, "output": output_text})
-    
+
+        return ("", item.get("output", ""))
+
+    for item in preferences:
+        input_text, output_text = generate_prompt(item, "preferences")
+        dataset.append({"input": input_text, "output": output_text})
+
+    for item in reservations:
+        input_text, output_text = generate_prompt(item, "reservations")
+        dataset.append({"input": input_text, "output": output_text})
+
+    for item in offerings:
+        input_text, output_text = generate_prompt(item, "offerings")
+        dataset.append({"input": input_text, "output": output_text})
+
     return dataset
+
+def merge_test_data(offer_data, reserv_data, pref_data, output_path):
+    import os
+    import json
+
+    merged = []
+    merged.extend(offer_data)
+    merged.extend(reserv_data)
+    merged.extend(pref_data)
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w") as f:
+        json.dump(merged, f, indent=2)
+
+    print(f"✅ Merged test data saved to {output_path}")
+
+# # Paths
+# merge_test_data(
+#     "data/offerings_data/test_offer.json",
+#     "data/reservation_data/test_reservation.json",
+#     "data/preference_data/test_pref.json",
+#     "data/processed/test.json"
+# )
+
