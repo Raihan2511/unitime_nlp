@@ -8,85 +8,152 @@ import random
 
 class ReservationXMLGenerator:
     def __init__(self):
-        self.placeholders = {
-            'courseNbr': '[COURSE_NUMBER_PLACEHOLDER]',
-            'subject': '[SUBJECT_PLACEHOLDER]',
-            'studentId': '[STUDENT_ID_PLACEHOLDER]'
+        # Sample data pools for realistic values
+        self.sample_data = {
+            'subjects': [
+                "CS", "MATH", "PHYS", "CHEM", "BIOL", "ENG", 
+                "HIST", "PSYC", "ECON", "PHIL", "STAT", "ART"
+            ],
+            'course_numbers': [
+                "101", "102", "150", "201", "202", "250", "301", 
+                "302", "350", "401", "402", "450", "499"
+            ],
+            'student_ids': [
+                f"{random.randint(100000, 999999)}" for _ in range(100)
+            ],
+            'campuses': [
+                'main', 'north', 'south', 'downtown', 'webegone'
+            ],
+            'terms': [
+                'Fall', 'Spring', 'Summer', 'Winter'
+            ],
+            'years': [
+                '2024', '2025', '2026'
+            ],
+            'majors': [
+                "Computer Science", "Mathematics", "Engineering", 
+                "Biology", "Physics", "Chemistry", "Economics", 
+                "History", "Psychology", "Philosophy", "Statistics", "Art"
+            ],
+            'academic_areas': [
+                'STEM', 'Liberal Arts', 'Business', 'Engineering'
+            ],
+            'student_groups': [
+                'Honors', 'Athletes', 'International', 'Graduate'
+            ],
+            'limits': [
+                "12", "15", "18", "20", "24","50","30", "36", "40", "45", "60"
+            ]
         }
+
 
         self.defaults = {
             'campus': 'webegone',
-            'term': 'Fal',
-            'year': '2010',
+            'term': 'Fall',
+            'year': '2024',
             'type': 'individual',
             'dateFormat': 'MM/dd/yyyy'
         }
 
     def extract_entities_from_nlp(self, nlp_text):
-        """Extract entities from natural language text"""
+        """Extract entities from natural language text with improved patterns"""
         entities = {}
 
-        # Extract course information - improved pattern to catch subject + number directly
-        course_pattern = r'\b([A-Z]{2,4})\s+(\d{3,4})\b'
-        course_match = re.search(course_pattern, nlp_text)
-        if course_match:
-            entities['subject'] = course_match.group(1)
-            entities['courseNbr'] = course_match.group(2)
-        else:
-            # Fallback pattern for "course/class/subject" prefix
-            course_pattern_alt = r'(?:course|class|subject)\s+([A-Z]{2,4})\s+(\d{3,4})'
-            course_match_alt = re.search(course_pattern_alt, nlp_text, re.IGNORECASE)
-            if course_match_alt:
-                entities['subject'] = course_match_alt.group(1)
-                entities['courseNbr'] = course_match_alt.group(2)
+        # Course information - multiple patterns
+        patterns = [
+            r'\b([A-Z]{2,4})\s+(\d{3,4})\b',  # CS 101
+            r'(?:course|class|subject)\s+([A-Z]{2,4})\s+(\d{3,4})',
+            r'([A-Z]{2,4})(\d{3,4})\b'  # CS101
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, nlp_text, re.IGNORECASE)
+            if match:
+                entities['subject'] = match.group(1).upper()
+                entities['courseNbr'] = match.group(2)
+                break
 
-        # Extract student ID
-        student_pattern = r'(?:student|id)\s+(\d+)'
-        student_match = re.search(student_pattern, nlp_text, re.IGNORECASE)
-        if student_match:
-            entities['studentId'] = student_match.group(1)
+        # Student ID patterns
+        student_patterns = [
+            r'(?:student|id)\s+(\d{6,9})',
+            r'student\s+id\s+(\d{6,9})',
+            r'id\s*:\s*(\d{6,9})'
+        ]
+        
+        for pattern in student_patterns:
+            match = re.search(pattern, nlp_text, re.IGNORECASE)
+            if match:
+                entities['studentId'] = match.group(1)
+                break
 
-        # Extract limit/capacity
-        limit_pattern = r'(?:limit|capacity|max)\s+(\d+)'
-        limit_match = re.search(limit_pattern, nlp_text, re.IGNORECASE)
+        # Limit/capacity
+        limit_match = re.search(r'(?:limit|capacity|max|up to)\s+(\d+)', nlp_text, re.IGNORECASE)
         if limit_match:
             entities['limit'] = limit_match.group(1)
 
-        # Extract term and year
-        term_pattern = r'(?:term|semester)\s+(fall|spring|summer|winter)\s*(\d{4})?'
-        term_match = re.search(term_pattern, nlp_text, re.IGNORECASE)
+        # Term and year
+        term_match = re.search(r'(?:term|semester)\s+(fall|spring|summer|winter)\s*(\d{4})?', nlp_text, re.IGNORECASE)
         if term_match:
             entities['term'] = term_match.group(1).capitalize()
             if term_match.group(2):
                 entities['year'] = term_match.group(2)
 
-        # Extract campus
-        campus_pattern = r'(?:campus|location)\s+([A-Za-z\s]+?)(?:\s|$|,)'
-        campus_match = re.search(campus_pattern, nlp_text, re.IGNORECASE)
-        if campus_match:
-            entities['campus'] = campus_match.group(1).strip()
+        # Standalone year
+        if 'year' not in entities:
+            year_match = re.search(r'\b(20\d{2})\b', nlp_text)
+            if year_match:
+                entities['year'] = year_match.group(1)
 
-        # Extract reservation type
-        if any(word in nlp_text.lower() for word in ['individual', 'personal']):
+        # Campus
+        campus_match = re.search(r'(?:campus|location)\s+([a-zA-Z]+)', nlp_text, re.IGNORECASE)
+        if campus_match:
+            entities['campus'] = campus_match.group(1).lower()
+
+        # Reservation type
+        if re.search(r'\b(?:individual|personal|single)\b', nlp_text, re.IGNORECASE):
             entities['type'] = 'individual'
-        elif any(word in nlp_text.lower() for word in ['group', 'team']):
+        elif re.search(r'\b(?:group|team|multiple)\b', nlp_text, re.IGNORECASE):
             entities['type'] = 'group'
-        elif any(word in nlp_text.lower() for word in ['course', 'class']):
+        elif re.search(r'\b(?:course|class)\b', nlp_text, re.IGNORECASE):
             entities['type'] = 'course'
-        elif any(word in nlp_text.lower() for word in ['curriculum', 'program']):
+        elif re.search(r'\b(?:curriculum|program)\b', nlp_text, re.IGNORECASE):
             entities['type'] = 'curriculum'
 
-        # Extract major
-        major_pattern = r'(?:major|degree)\s+([A-Za-z\s]+?)(?:\s|$|,)'
-        major_match = re.search(major_pattern, nlp_text, re.IGNORECASE)
+        # Major
+        major_match = re.search(r'(?:major|degree)\s+([A-Za-z\s]+?)(?:\s|$|,)', nlp_text, re.IGNORECASE)
         if major_match:
             entities['major'] = major_match.group(1).strip()
 
         return entities
 
+    def fill_placeholders(self, entities):
+        """Fill missing entities with realistic sample data"""
+        filled = entities.copy()
+        
+        # Fill required fields if missing
+        if 'subject' not in filled:
+            filled['subject'] = random.choice(self.sample_data['subjects'])
+        if 'courseNbr' not in filled:
+            filled['courseNbr'] = random.choice(self.sample_data['course_numbers'])
+        if 'studentId' not in filled and filled.get('type', 'individual') == 'individual':
+            filled['studentId'] = random.choice(self.sample_data['student_ids'])
+            
+        # Fill optional fields randomly (30% chance)
+        if random.random() < 0.3 and 'limit' not in filled:
+            filled['limit'] = random.choice(self.sample_data['limits'])
+        if random.random() < 0.2 and 'major' not in filled:
+            filled['major'] = random.choice(self.sample_data['majors'])
+        if random.random() < 0.15:
+            filled['academicArea'] = random.choice(self.sample_data['academic_areas'])
+        if random.random() < 0.1:
+            filled['studentGroup'] = random.choice(self.sample_data['student_groups'])
+            
+        return filled
+
     def create_xml_from_nlp(self, nlp_text):
-        """Convert NLP text to XML format"""
+        """Convert NLP text to XML format with realistic data"""
         entities = self.extract_entities_from_nlp(nlp_text)
+        entities = self.fill_placeholders(entities)
 
         # Create root element
         root = ET.Element("reservations")
@@ -98,28 +165,31 @@ class ReservationXMLGenerator:
 
         # Create reservation element
         reservation = ET.SubElement(root, "reservation")
-        reservation.set("subject", entities.get('subject', self.placeholders['subject']))
-        reservation.set("courseNbr", entities.get('courseNbr', self.placeholders['courseNbr']))
+        reservation.set("subject", entities['subject'])
+        reservation.set("courseNbr", entities['courseNbr'])
         reservation.set("type", entities.get('type', self.defaults['type']))
 
         # Add optional attributes
         if 'limit' in entities:
             reservation.set("limit", entities['limit'])
-        if 'expire' in entities:
-            reservation.set("expire", entities['expire'])
 
-        # Add student element if needed
-        if 'studentId' in entities:
+        # Add student element for individual reservations
+        if entities.get('type', 'individual') == 'individual' and 'studentId' in entities:
             student = ET.SubElement(reservation, "student")
             student.set("externalId", entities['studentId'])
-        elif entities.get('type', self.defaults['type']) == 'individual':
-            student = ET.SubElement(reservation, "student")
-            student.set("externalId", self.placeholders['studentId'])
 
-        # Add major element if specified
+        # Add optional elements
         if 'major' in entities:
             major = ET.SubElement(reservation, "major")
             major.set("code", entities['major'])
+
+        if 'academicArea' in entities:
+            area = ET.SubElement(reservation, "academicArea")
+            area.set("abbreviation", entities['academicArea'])
+
+        if 'studentGroup' in entities:
+            group = ET.SubElement(reservation, "studentGroup")
+            group.set("code", entities['studentGroup'])
 
         return self._prettify_xml(root)
 
@@ -129,182 +199,74 @@ class ReservationXMLGenerator:
         reparsed = minidom.parseString(rough_string)
         return reparsed.toprettyxml(indent="  ")
 
-    # def generate_training_dataset(self, num_samples=250):
-    #     """Generate training dataset for NLP to XML conversion"""
-    #     dataset = []
-
-    #     # Sample NLP inputs for training
-    #     nlp_examples = [
-
-
+    def generate_diverse_templates(self):
+        """Generate diverse conversational templates"""
+        templates = [
+            # Basic requests
+            "I need to reserve {subject} {course_nbr}",
+            "Can you book {subject} {course_nbr} for me?",
+            "Please reserve {subject} {course_nbr} for student {student_id}",
+            "Book {subject} {course_nbr} for {term} {year}",
             
-    #         "Reserve [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] in [TERM] [YEAR] at [CAMPUS] campus with limit [LIMIT]",
-    #         "Book [SUBJECT] [COURSE_NBR] for Spring 2025",
-    #         "Create individual reservation for [SUBJECT] [COURSE_NBR] student ID [STUDENT_ID]",
-    #         "Reserve group session for [SUBJECT] [COURSE_NBR] with capacity [LIMIT]",
-    #         "Book curriculum reservation for [SUBJECT] [COURSE_NBR] in Summer 2024",
-    #         "Reserve [SUBJECT] [COURSE_NBR] for [MAJOR] major student [STUDENT_ID]",
-    #         "Individual reservation needed for [SUBJECT] [COURSE_NBR]",
-    #         "Group reservation for [SUBJECT] [COURSE_NBR] with limit [LIMIT] students",
-    #         "Course reservation for [SUBJECT] [COURSE_NBR] Fall semester",
-    #         "Reserve [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] at [CAMPUS] campus",
-    #         "Book [SUBJECT] [COURSE_NBR] for [MAJOR] major in Spring 2025",
-    #         "Create reservation for [SUBJECT] [COURSE_NBR] with capacity [LIMIT]",
-    #         "Reserve [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] at [CAMPUS] campus",
-    #         "Individual booking for [SUBJECT] [COURSE_NBR] in Winter 2024",
-    #         "Group reservation for [SUBJECT] [COURSE_NBR] limit [LIMIT] students",
-    #         "Reserve [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] Fall semester",
-    #         "Book [SUBJECT] [COURSE_NBR] curriculum reservation Summer 2025",
-    #         "Create [SUBJECT] [COURSE_NBR] reservation for [MAJOR] major",
-    #         "Reserve [SUBJECT] [COURSE_NBR] individual session student [STUDENT_ID]",
-    #         "Group booking for [SUBJECT] [COURSE_NBR] with limit [LIMIT]",
-    #         "Class [SUBJECT] [COURSE_NBR] reserved for student [STUDENT_ID] at [CAMPUS] campus",
-    #         "Individual reservation [SUBJECT] [COURSE_NBR] Spring 2025",
-    #         "Book [SUBJECT] [COURSE_NBR] for [MAJOR] major student [STUDENT_ID]",
-    #         "Create group reservation [SUBJECT] [COURSE_NBR] capacity [LIMIT]",
-    #         "Reserve [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] Fall 2024",
-    #         "Individual booking [SUBJECT] [COURSE_NBR] at [CAMPUS] campus",
-    #         "Reserve [SUBJECT] [COURSE_NBR] curriculum program Summer 2024",
-    #         "Group reservation [SUBJECT] [COURSE_NBR] with limit [LIMIT] students",
-    #         "Book [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] Spring semester",
-    #         "Create reservation [SUBJECT] [COURSE_NBR] for [MAJOR] major"
-    #     ]
+            # Conversational style
+            "Hi, I'd like to register for {subject} {course_nbr}",
+            "Hello, can I get a spot in {subject} {course_nbr}?",
+            "I want to enroll in {subject} {course_nbr} this {term}",
+            "Could you help me reserve {subject} {course_nbr}?",
+            
+            # Specific requirements
+            "Reserve {subject} {course_nbr} for {major} major",
+            "I need {subject} {course_nbr} with limit {limit}",
+            "Book group session for {subject} {course_nbr}",
+            "Individual reservation for {subject} {course_nbr}",
+            
+            # Campus specific
+            "Reserve {subject} {course_nbr} at {campus} campus",
+            "I need {subject} {course_nbr} at the {campus} location",
+            
+            # Informal requests
+            "Sign me up for {subject} {course_nbr}",
+            "Add me to {subject} {course_nbr}",
+            "Put me down for {subject} {course_nbr}",
+            "I want to take {subject} {course_nbr}",
+            
+            # Question format
+            "Is {subject} {course_nbr} available?",
+            "Can I get into {subject} {course_nbr}?",
+            "Any spots left in {subject} {course_nbr}?",
+            
+            # Detailed requests
+            "Reserve {subject} {course_nbr} for student ID {student_id} in {term} {year}",
+            "Book {subject} {course_nbr} for {major} student {student_id}",
+            "Create group reservation for {subject} {course_nbr} with capacity {limit}"
+        ]
+        return templates
 
-    #     # Generate dataset entries
-    #     for i, nlp_text in enumerate(nlp_examples[:num_samples]):
-    #         xml_output = self.create_xml_from_nlp(nlp_text)
-    #         dataset.append({
-    #             "nlp_input": nlp_text,
-    #             "xml_output": xml_output
-    #         })
-
-    #     return dataset
-    def generate_training_dataset(self, num_samples=250):
-        """Generate training dataset for NLP to XML conversion"""
+    def generate_training_dataset(self, num_samples=300):
+        """Generate diverse training dataset with realistic data"""
         dataset = []
+        templates = self.generate_diverse_templates()
         
-        # Your original 30 examples
-        base_examples = [
-            "Reserve [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] in [TERM] [YEAR] at [CAMPUS] campus with limit [LIMIT]",
-            "Book [SUBJECT] [COURSE_NBR] for Spring 2025",
-            "Create individual reservation for [SUBJECT] [COURSE_NBR] student ID [STUDENT_ID]",
-            "Reserve group session for [SUBJECT] [COURSE_NBR] with capacity [LIMIT]",
-            "Book curriculum reservation for [SUBJECT] [COURSE_NBR] in Summer 2024",
-            "Reserve [SUBJECT] [COURSE_NBR] for [MAJOR] major student [STUDENT_ID]",
-            "Individual reservation needed for [SUBJECT] [COURSE_NBR]",
-            "Group reservation for [SUBJECT] [COURSE_NBR] with limit [LIMIT] students",
-            "Course reservation for [SUBJECT] [COURSE_NBR] Fall semester",
-            "Reserve [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] at [CAMPUS] campus",
-            "Book [SUBJECT] [COURSE_NBR] for [MAJOR] major in Spring 2025",
-            "Create reservation for [SUBJECT] [COURSE_NBR] with capacity [LIMIT]",
-            "Reserve [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] at [CAMPUS] campus",
-            "Individual booking for [SUBJECT] [COURSE_NBR] in Winter 2024",
-            "Group reservation for [SUBJECT] [COURSE_NBR] limit [LIMIT] students",
-            "Reserve [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] Fall semester",
-            "Book [SUBJECT] [COURSE_NBR] curriculum reservation Summer 2025",
-            "Create [SUBJECT] [COURSE_NBR] reservation for [MAJOR] major",
-            "Reserve [SUBJECT] [COURSE_NBR] individual session student [STUDENT_ID]",
-            "Group booking for [SUBJECT] [COURSE_NBR] with limit [LIMIT]",
-            "Class [SUBJECT] [COURSE_NBR] reserved for student [STUDENT_ID] at [CAMPUS] campus",
-            "Individual reservation [SUBJECT] [COURSE_NBR] Spring 2025",
-            "Book [SUBJECT] [COURSE_NBR] for [MAJOR] major student [STUDENT_ID]",
-            "Create group reservation [SUBJECT] [COURSE_NBR] capacity [LIMIT]",
-            "Reserve [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] Fall 2024",
-            "Individual booking [SUBJECT] [COURSE_NBR] at [CAMPUS] campus",
-            "Reserve [SUBJECT] [COURSE_NBR] curriculum program Summer 2024",
-            "Group reservation [SUBJECT] [COURSE_NBR] with limit [LIMIT] students",
-            "Book [SUBJECT] [COURSE_NBR] for student [STUDENT_ID] Spring semester",
-            "Create reservation [SUBJECT] [COURSE_NBR] for [MAJOR] major"
-        ]
-        
-        # Simple word replacements to create variations
-        replacements = {
-            "Reserve": ["Book", "Schedule", "Register", "Secure", "Allocate"],
-            "Book": ["Reserve", "Schedule", "Register", "Secure"],
-            "Create": ["Make", "Setup", "Establish", "Generate"],
-            "reservation": ["booking", "enrollment", "registration", "slot"],
-            "individual": ["single", "personal", "private", "one-on-one"],
-            "group": ["team", "class", "collective", "multiple"],
-            "session": ["class", "course", "meeting", "period"],
-            "needed": ["required", "requested", "wanted"],
-            "capacity": ["limit", "maximum", "space for", "room for"],
-            "limit": ["capacity", "maximum", "max", "up to"],
-            "students": ["people", "learners", "participants"],
-            "campus": ["location", "site", "branch"],
-            "semester": ["term", "session", "period"],
-            "curriculum": ["academic", "course", "program"],
-            "program": ["curriculum", "course", "academic"],
-            "major": ["department", "field", "program"]
-        }
-        
-        # Additional simple templates to add variety
-        extra_templates = [
-            "Schedule [SUBJECT] [COURSE_NBR] for [STUDENT_ID]",
-            "Register [SUBJECT] [COURSE_NBR] in [TERM] [YEAR]",
-            "Enroll student [STUDENT_ID] in [SUBJECT] [COURSE_NBR]",
-            "Secure spot in [SUBJECT] [COURSE_NBR] for [MAJOR] major",
-            "Allocate [SUBJECT] [COURSE_NBR] for [TERM] semester",
-            "Setup [SUBJECT] [COURSE_NBR] booking at [CAMPUS]",
-            "Request [SUBJECT] [COURSE_NBR] enrollment for [STUDENT_ID]",
-            "Need [SUBJECT] [COURSE_NBR] reservation for [MAJOR] student",
-            "Want to book [SUBJECT] [COURSE_NBR] for [TERM] [YEAR]",
-            "Sign up for [SUBJECT] [COURSE_NBR] at [CAMPUS] campus",
-            "[SUBJECT] [COURSE_NBR] enrollment for student [STUDENT_ID]",
-            "Course [SUBJECT] [COURSE_NBR] booking for [MAJOR] major",
-            "Class registration [SUBJECT] [COURSE_NBR] in [TERM]",
-            "Student [STUDENT_ID] needs [SUBJECT] [COURSE_NBR]",
-            "[MAJOR] major requesting [SUBJECT] [COURSE_NBR]",
-            "Please reserve [SUBJECT] [COURSE_NBR] for [STUDENT_ID]",
-            "Can you book [SUBJECT] [COURSE_NBR] for [TERM]?",
-            "Looking for [SUBJECT] [COURSE_NBR] spot in [TERM] [YEAR]",
-            "Add [STUDENT_ID] to [SUBJECT] [COURSE_NBR]",
-            "Enroll in [SUBJECT] [COURSE_NBR] at [CAMPUS] campus"
-        ]
-        
-        def create_variation(text):
-            """Create a variation by replacing words"""
-            for original, alternatives in replacements.items():
-                if original in text:
-                    # Only replace sometimes to create variety
-                    import random
-                    if random.random() < 0.3:  # 30% chance to replace
-                        replacement = random.choice(alternatives)
-                        text = text.replace(original, replacement, 1)  # Replace only first occurrence
-            return text
-        
-        # Start with original examples
-        all_examples = base_examples.copy()
-        
-        # Add extra templates
-        all_examples.extend(extra_templates)
-        
-        # Create variations of existing examples
-        import random
-        while len(all_examples) < num_samples:
-            # Pick a random base example
-            base = random.choice(base_examples + extra_templates)
+        for i in range(num_samples):
+            template = random.choice(templates)
             
-            # Create a variation
-            variation = create_variation(base)
+            # Fill template with sample data
+            filled_text = template.format(
+                subject=random.choice(self.sample_data['subjects']),
+                course_nbr=random.choice(self.sample_data['course_numbers']),
+                student_id=random.choice(self.sample_data['student_ids']),
+                term=random.choice(self.sample_data['terms']),
+                year=random.choice(self.sample_data['years']),
+                campus=random.choice(self.sample_data['campuses']),
+                major=random.choice(self.sample_data['majors']),
+                limit=random.choice(self.sample_data['limits'])
+            )
             
-            # Add it if it's different from the original
-            if variation != base and variation not in all_examples:
-                all_examples.append(variation)
+            # Generate XML output
+            xml_output = self.create_xml_from_nlp(filled_text)
             
-            # If we're stuck, add some manual variations
-            if len(all_examples) < num_samples and len(all_examples) % 10 == 0:
-                # Add some simple manual variations
-                base_example = random.choice(base_examples)
-                if "reservation" in base_example:
-                    manual_var = base_example.replace("reservation", "booking")
-                    if manual_var not in all_examples:
-                        all_examples.append(manual_var)
-        
-        # Generate dataset entries
-        for i, nlp_text in enumerate(all_examples[:num_samples]):
-            xml_output = self.create_xml_from_nlp(nlp_text)
             dataset.append({
-                "input": nlp_text,
+                "input": filled_text,
                 "output": xml_output
             })
         
@@ -313,45 +275,33 @@ class ReservationXMLGenerator:
 def generate_reservations_dataset():
     """Main function to generate and save the dataset"""
     generator = ReservationXMLGenerator()
-
-    print("\n=== GENERATING NLP TO XML TRAINING DATASET ===")
-    dataset = generator.generate_training_dataset(250)
-
+    
+    print("Generating NLP to XML training dataset...")
+    dataset = generator.generate_training_dataset(1000)  # Adjust number of samples as needed
+    
     # Create output directory
     os.makedirs("data/reservation_data", exist_ok=True)
-
-    # Shuffle dataset
+    
+    # Shuffle and split dataset
     random.shuffle(dataset)
-
-    # Split dataset into train/validation/test
-    total = len(dataset)
-    train_split = int(0.8 * total)
-    val_split = int(0.10 * total)
-
+    train_split = int(0.8 * len(dataset))
+    val_split = int(0.1 * len(dataset))
+    
     train_data = dataset[:train_split]
     val_data = dataset[train_split:train_split + val_split]
     test_data = dataset[train_split + val_split:]
-
+    
     # Save datasets
-    with open("data/reservation_data/train_reservation.json", "w") as f:
-        json.dump(train_data, f, indent=2)
-
-    with open("data/reservation_data/val_reservation.json", "w") as f:
-        json.dump(val_data, f, indent=2)
-
-    with open("data/reservation_data/test_reservation.json", "w") as f:
-        json.dump(test_data, f, indent=2)
-
-    print("Dataset saved to 'data/reservation_data/' directory.")
-    print(f"Train: {len(train_data)}, Validation: {len(val_data)}, Test: {len(test_data)}")
-
-    # Print a sample for verification
-    print("\n=== SAMPLE TRAINING EXAMPLE ===")
-    sample = train_data[0]
-    print("NLP Input:", sample["input"])
-    print("XML Output:")
-    print(sample["output"])
+    for name, data in [("train", train_data), ("val", val_data), ("test", test_data)]:
+        with open(f"data/reservation_data/{name}_reservation.json", "w") as f:
+            json.dump(data, f, indent=2)
+    
+    print(f"Dataset generated: Train={len(train_data)}, Val={len(val_data)}, Test={len(test_data)}")
+    
+    # Show sample
+    print("\nSample training example:")
+    print("Input:", train_data[0]["input"])
+    print("Output:", train_data[0]["output"][:200] + "...")
 
 # if __name__ == "__main__":
 #     generate_reservations_dataset()
-#     print("Reservation dataset generation complete.")
