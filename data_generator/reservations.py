@@ -266,6 +266,7 @@ class ReservationXMLGenerator:
             xml_output = self.create_xml_from_nlp(filled_text)
             
             dataset.append({
+                "context":"RESERVATION_REQUEST",
                 "input": filled_text,
                 "output": xml_output
             })
