@@ -6,3 +6,15 @@ __pycache__/
 *.pyo
 *.pyd
 *.pdb
+# Ignore data and model outputs
+data/
+models/
+test/codet5-unitime/
+/data/
+/models/
+/test/codet5-unitime/
+/src/unitime_complete_dataset.json
+/src/unitime_fine_tuning.jsonl
+/test/results/
+/venv/
+/.venv/
