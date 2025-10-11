@@ -24,5 +24,7 @@ wandb
 flask
 ipykernel
 ipywidgets
-
 nltk
+evaluate
+jiwer
+sacrebleu
