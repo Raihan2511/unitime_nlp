@@ -334,7 +334,7 @@ class NLPToXMLOfferingsGenerator:
         
         return samples
 
-    def split_and_save_dataset(self, samples: List[Dict[str, Any]], output_dir="data/offerings_data"):
+    def split_and_save_dataset(self, samples: List[Dict[str, Any]], output_dir="data/Courseofferings_dataset"):
         """Split dataset and save to files"""
         os.makedirs(output_dir, exist_ok=True)
         
@@ -356,7 +356,7 @@ class NLPToXMLOfferingsGenerator:
         
         return splits
 
-    def generate_and_save(self, count: int = 1000):
+    def generate_and_save(self, count: int = 2000):
         """Generate, split, and save the dataset"""
         print(f"Generating {count} training samples...")
         samples = self.generate_training_samples(count)
@@ -397,6 +397,7 @@ def generate_offerings_dataset():
     
     # Generate full dataset
     generator = NLPToXMLOfferingsGenerator()
-    samples = generator.generate_and_save(1000)  # Generate 1000 samples
-# if __name__ == "__main__":
-#     generate_offerings_dataset()
+    samples = generator.generate_and_save(2000)  # Generate 1000 samples
+    print(f"\nTotal samples generated: {len(samples)}")
+if __name__ == "__main__":
+    generate_offerings_dataset()
