@@ -1,310 +1,300 @@
 import json
 import random
 import os
-from typing import List, Dict, Tuple
+from typing import List, Dict, Any, Tuple
+from sklearn.model_selection import train_test_split
 
-# Directory to save datasets
-output_dir = "data/preference_data"
-os.makedirs(output_dir, exist_ok=True)
+class NLPToXMLPreferencesGenerator:
+    """
+    Generates a dataset of NLP prompts and their corresponding UniTime preferences.xml completions.
+    This script creates samples for multiple preference types (instructor, department, subpart).
+    """
 
-# Actual values to replace placeholders
-DEPARTMENTS = ["CS", "MATH", "PHYS", "CHEM", "ENG", "BIO", "ECON", "HIST", "ENGL", "PSYC"]
-BUILDINGS = ["Science Hall", "Engineering Building", "Liberal Arts", "Business Center", "Lab Complex", "Main Hall", "Tech Center", "Research Wing"]
-ROOMS = ["101", "102", "205A", "301", "Lab1", "Aud100", "Conf200", "Studio5"]
-SUBJECTS = ["CS", "MATH", "PHYS", "CHEM", "BIOL", "ENG", "HIST", "PSYC", "ECON", "PHIL", "STAT", "ART"]
-COURSE_IDS = ["101", "102", "150", "201", "202", "250", "301", "302", "350", "401", "402", "450", "499"]
-CLASS_TYPES = ["Lecture", "Lab", "Seminar", "Studio", "Workshop", "Tutorial"]
-GROUPS = ["Computer Lab", "Science Lab", "Large Lecture", "Small Classroom", "Conference Room"]
-FEATURES = ["Projector", "Whiteboard", "Computer", "Audio System", "Video Conference", "Lab Equipment"]
-PATTERNS = ["MWF", "TTH", "MW", "WF", "Daily", "Weekend"]
-DAYS_OPTIONS = ["MWF", "TTH", "MW", "TR", "F", "S"]
-TIMES = ["0800", "0900", "1000", "1100", "1200", "1300", "1400", "1500", "1600", "1700"]
-INSTRUCTOR_FIRST = ["John", "Sarah", "Mike", "Lisa", "David", "Anna", "Chris", "Maria", "Tom", "Kate"]
-INSTRUCTOR_LAST = ["Smith", "Johnson", "Williams", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor", "Anderson"]
-SUFFIXES = ["A", "B", "C", "1", "2", "3"]
-MAX_LOADS = ["12", "15", "18", "20", "24", "30", "36", "40"]
+    ### 1. Initialization and Data Pools ###
+    def __init__(self):
+        # --- Fixed values from the target XML format ---
+        self.campus = "woebegon"
+        self.year = "2010"
+        self.term = "Fal"
+        self.date_format = "yyyy/M/d"
+        self.time_format = "HHmm"
+        # --- Hardcoded timestamp for consistency ---
+        self.created = "Thu Oct 23 21:38:17 CEST 2025" 
 
-# DTD-compliant distribution types and structures
-DISTRIBUTION_TYPES = ['SAME_ROOM', 'SAME_TIME', 'SAME_DAYS', 'DIFFERENT_TIME', 'PRECEDENCE', 'SAME_INSTRUCTOR', 'DIFFERENT_ROOM']
-DISTRIBUTION_STRUCTURES = ['AllClasses', 'Progressive', 'GroupsOfTwo', 'GroupsOfThree', 'GroupsOfFour', 'GroupsOfFive', 'Pairwise', 'OneOfEach']
-
-# Preference level mappings for natural language
-PREFERENCE_MAPPINGS = {
-    "R": ["requires", "must have", "needs", "essential for", "mandatory"],
-    "2": ["strongly prefers", "really wants", "loves", "highly desires", "definitely needs"],
-    "1": ["prefers", "likes", "wants", "would like", "favors"],
-    "0": ["neutral about", "doesn't mind", "okay with", "indifferent to"],
-    "-1": ["dislikes", "would rather not", "prefers not", "avoids"],
-    "-2": ["strongly dislikes", "hates", "really doesn't want", "strongly avoids"],
-    "P": ["prohibited from", "cannot have", "forbidden", "blocked from", "banned from"]
-}
-
-def get_valid_time_pair() -> Tuple[str, str]:
-    """Get a valid start/end time pair where end > start"""
-    start_idx = random.randint(0, len(TIMES)-2)
-    end_idx = random.randint(start_idx+1, len(TIMES)-1)
-    return TIMES[start_idx], TIMES[end_idx]
-
-def get_random_level_and_text() -> Tuple[str, str]:
-    """Get a random preference level and corresponding natural language"""
-    level = random.choice(["R", "-2", "-1", "0", "1", "2", "P"])
-    text = random.choice(PREFERENCE_MAPPINGS[level])
-    return level, text
-
-def generate_consistent_values() -> Dict[str, str]:
-    """Generate consistent values that will be reused across input/output"""
-    start_time, end_time = get_valid_time_pair()
-    
-    return {
-        "subject": random.choice(SUBJECTS),
-        "course_id": random.choice(COURSE_IDS),
-        "department": random.choice(DEPARTMENTS),
-        "building": random.choice(BUILDINGS),
-        "room": random.choice(ROOMS),
-        "feature": random.choice(FEATURES),
-        "class_type": random.choice(CLASS_TYPES),
-        "group": random.choice(GROUPS),
-        "pattern": random.choice(PATTERNS),
-        "days": random.choice(DAYS_OPTIONS),
-        "start_time": start_time,
-        "end_time": end_time,
-        "instructor_first": random.choice(INSTRUCTOR_FIRST),
-        "instructor_last": random.choice(INSTRUCTOR_LAST),
-        "suffix": random.choice(SUFFIXES),
-        "max_load": random.choice(MAX_LOADS),
-        "dist_type": random.choice(DISTRIBUTION_TYPES),
-        "dist_structure": random.choice(DISTRIBUTION_STRUCTURES)
-    }
-
-def generate_natural_variations():
-    """Generate natural preference request language"""
-    starters = [
-        "Set preferences for",
-        "Configure preferences for",
-        "I need to set up preferences for",
-        "Please configure preferences for",
-        "Set scheduling preferences for",
-        "Help me configure",
-        "I want to set preferences for",
-        "Can you configure",
-        "Please set up preferences for",
-        "Configure the schedule preferences for"
-    ]
-    return random.choice(starters)
-
-def generate_single_intent_example() -> Dict:
-    """Generate single preference examples following DTD structure"""
-    values = generate_consistent_values()
-    element_type = random.choice(["department", "instructor", "subpart", "class"])
-    
-    # Choose appropriate preference types based on DTD
-    if element_type == "department":
-        pref_type = random.choice(["timePref", "roomPref", "buildingPref", "groupPref", "featurePref"])
-    elif element_type == "instructor":
-        pref_type = random.choice(["timePref", "coursePref", "teachingPref", "roomPref", "buildingPref"])
-    else:  # subpart or class
-        pref_type = random.choice(["timePref", "roomPref", "buildingPref", "groupPref", "featurePref"])
-    
-    level, level_text = get_random_level_and_text()
-    starter = generate_natural_variations()
-    
-    # Generate examples based on element and preference type
-    if element_type == "department" and pref_type == "timePref":
-        input_text = f"{starter} {values['department']} department - they {level_text} classes on {values['days']} from {values['start_time']} to {values['end_time']}."
-        xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <department code="{values['department']}">
-    <timePref level="{level}">
-      <pref days="{values['days']}" start="{values['start_time']}" stop="{values['end_time']}" level="{level}"/>
-    </timePref>
-  </department>
-</preferences>"""
-    
-    elif element_type == "department" and pref_type == "buildingPref":
-        input_text = f"The {values['department']} department {level_text} using {values['building']} for their classes."
-        xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <department code="{values['department']}">
-    <buildingPref building="{values['building']}" level="{level}"/>
-  </department>
-</preferences>"""
-    
-    elif element_type == "department" and pref_type == "featurePref":
-        input_text = f"{starter} {values['department']} department - they {level_text} {values['feature']} in their classrooms."
-        xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <department code="{values['department']}">
-    <featurePref feature="{values['feature']}" level="{level}"/>
-  </department>
-</preferences>"""
-    
-    elif element_type == "instructor" and pref_type == "coursePref":
-        input_text = f"Professor {values['instructor_first']} {values['instructor_last']} {level_text} teaching {values['subject']} {values['course_id']} this semester."
-        xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <instructor firstName="{values['instructor_first']}" lastName="{values['instructor_last']}" department="{values['department']}">
-    <coursePref subject="{values['subject']}" course="{values['course_id']}" level="{level}"/>
-  </instructor>
-</preferences>"""
-    
-    elif element_type == "instructor" and pref_type == "teachingPref":
-        input_text = f"{starter} {values['instructor_first']} {values['instructor_last']} - they {level_text} teaching {values['max_load']} credit hours maximum."
-        xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <instructor firstName="{values['instructor_first']}" lastName="{values['instructor_last']}" department="{values['department']}">
-    <teachingPref maxLoad="{values['max_load']}" level="{level}"/>
-  </instructor>
-</preferences>"""
-    
-    elif element_type == "instructor" and pref_type == "timePref":
-        input_text = f"{starter} {values['instructor_first']} {values['instructor_last']}'s schedule - they {level_text} {values['days']} time slots."
-        xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <instructor firstName="{values['instructor_first']}" lastName="{values['instructor_last']}" department="{values['department']}">
-    <timePref level="{level}">
-      <pref days="{values['days']}" start="{values['start_time']}" stop="{values['end_time']}" level="{level}"/>
-    </timePref>
-  </instructor>
-</preferences>"""
-    
-    elif element_type == "class" and pref_type == "roomPref":
-        input_text = f"{values['subject']} {values['course_id']} section {values['suffix']} {level_text} being scheduled in room {values['room']} at {values['building']}."
-        xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <class subject="{values['subject']}" course="{values['course_id']}" suffix="{values['suffix']}" type="{values['class_type']}">
-    <roomPref building="{values['building']}" room="{values['room']}" level="{level}"/>
-  </class>
-</preferences>"""
-    
-    elif element_type == "subpart" and pref_type == "featurePref":
-        input_text = f"{starter} {values['subject']} {values['course_id']} {values['class_type']} - they {level_text} {values['feature']} equipment."
-        xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <subpart subject="{values['subject']}" course="{values['course_id']}" type="{values['class_type']}">
-    <featurePref feature="{values['feature']}" level="{level}"/>
-  </subpart>
-</preferences>"""
-    
-    elif element_type == "subpart" and pref_type == "groupPref":
-        input_text = f"{starter} {values['subject']} {values['course_id']} course - they {level_text} {values['group']} type rooms."
-        xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <subpart subject="{values['subject']}" course="{values['course_id']}" type="{values['class_type']}">
-    <groupPref group="{values['group']}" level="{level}"/>
-  </subpart>
-</preferences>"""
-    
-    else:  # Default subpart timePref
-        input_text = f"{starter} {values['subject']} {values['course_id']} {values['class_type']} - they {level_text} {values['days']} time slots."
-        xml = f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <subpart subject="{values['subject']}" course="{values['course_id']}" type="{values['class_type']}">
-    <timePref level="{level}">
-      <pref days="{values['days']}" start="{values['start_time']}" stop="{values['end_time']}" level="{level}"/>
-    </timePref>
-  </subpart>
-</preferences>"""
-    
-    return {
-        "context": "PREFERENCE_REQUEST",
-        "input": input_text,
-        "output": xml
-    }
-
-def generate_merged_example() -> Dict:
-    """Generate complex examples with multiple preferences using consistent values"""
-    values = generate_consistent_values()
-    level1, level_text1 = get_random_level_and_text()
-    level2, level_text2 = get_random_level_and_text()
-    
-    scenarios = [
-        {
-            "input": f"Set up {values['department']} department preferences: {level_text1} {values['building']} and instructor {values['instructor_first']} {values['instructor_last']} {level_text2} morning classes.",
-            "output": f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <department code="{values['department']}">
-    <buildingPref building="{values['building']}" level="{level1}"/>
-  </department>
-  <instructor firstName="{values['instructor_first']}" lastName="{values['instructor_last']}" department="{values['department']}">
-    <timePref level="{level2}">
-      <pref days="MWF" start="0800" stop="1200" level="{level2}"/>
-    </timePref>
-  </instructor>
-</preferences>"""
-        },
-        {
-            "input": f"Configure {values['subject']} {values['course_id']} course: {level_text1} {values['feature']} equipment and {level_text2} room {values['room']}.",
-            "output": f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <subpart subject="{values['subject']}" course="{values['course_id']}" type="{values['class_type']}">
-    <featurePref feature="{values['feature']}" level="{level1}"/>
-    <roomPref building="{values['building']}" room="{values['room']}" level="{level2}"/>
-  </subpart>
-</preferences>"""
-        },
-        {
-            "input": f"Set preferences for {values['subject']} {values['course_id']} section {values['suffix']}: {level_text1} {values['days']} schedule and {level_text2} {values['group']} rooms.",
-            "output": f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <class subject="{values['subject']}" course="{values['course_id']}" suffix="{values['suffix']}" type="{values['class_type']}">
-    <timePref level="{level1}">
-      <pref days="{values['days']}" start="{values['start_time']}" stop="{values['end_time']}" level="{level1}"/>
-    </timePref>
-    <groupPref group="{values['group']}" level="{level2}"/>
-  </class>
-</preferences>"""
-        },
-        {
-            "input": f"Configure instructor {values['instructor_first']} {values['instructor_last']}: {level_text1} teaching {values['subject']} {values['course_id']} and {level_text2} {values['max_load']} credit hours max.",
-            "output": f"""<preferences term="Fall" year="2010" campus="woebegon">
-  <instructor firstName="{values['instructor_first']}" lastName="{values['instructor_last']}" department="{values['department']}">
-    <coursePref subject="{values['subject']}" course="{values['course_id']}" level="{level1}"/>
-    <teachingPref maxLoad="{values['max_load']}" level="{level2}"/>
-  </instructor>
-</preferences>"""
+        # --- Data Pools ---
+        self.pref_levels = {
+            "P": "preferred",
+            "2": "strongly preferred",
+            "1": "weakly preferred",
+            "-1": "discouraged",
+            "-2": "prohibited",
+            "R": "required"
         }
-    ]
-    
-    scenario = random.choice(scenarios)
-    return {
-        "context": "PREFERENCE_REQUEST",
-        "input": scenario["input"],
-        "output": scenario["output"]
-    }
+        
+        # Departments
+        self.dept_codes = ["0100", "0101", "0102"]
+        
+        # Rooms (Building + Number)
+        self.rooms = ["EDUC 101", "THTR 101", "EDUC 106", "EDUC 102", "MALL", "SCI 205"]
+        
+        # Instructors
+        self.instructors = [
+            ("100", "JOE", "DOE", "0101"),
+            ("101", "GEORGE", "NEWMAN", "0101"),
+            ("102", "JOHN", "SMITH", "0101"),
+            ("103", "SARAH", "JENKINS", "0102")
+        ]
+        
+        # Room Features
+        self.features = ["Comp", "ThtrSeat", "Projector", "Whiteboard"]
+        
+        # Buildings
+        self.buildings = ["EDUC", "THTR", "MALL", "SCI", "LART"]
+        
+        # Days (R = Thursday)
+        self.days = ["M", "T", "W", "R", "F"]
+        
+        # Time Slots (start, stop)
+        self.time_slots = [
+            ("0730", "0830"), ("0930", "1430"), ("0830", "1830"),
+            ("0930", "1330"), ("1630", "1830")
+        ]
+        
+        # Subparts (Courses)
+        self.subparts = [
+            ("ALG", "101", "Lec"), ("BIOL", "101", "Lab"), ("BIOL", "101", "Lec"),
+            ("C S", "101", "Lab"), ("CHM", "101", "Lec"), ("ECON", "101", "Lec")
+        ]
+        
+        # Time Patterns
+        self.patterns = ["3 x 50", "2 x 75", "1 x 100", "1 x 150", "5 x 100"]
+        
+        # Room Groups
+        self.groups = ["Classroom", "Comp Labs", "Biol Labs"]
 
-def generate_dataset(n_single: int, n_merged: int) -> List[Dict]:
-    """Generate complete dataset with both single and merged examples"""
-    dataset = []
-    
-    for _ in range(n_single):
-        dataset.append(generate_single_intent_example())
-    
-    for _ in range(n_merged):
-        dataset.append(generate_merged_example())
-    
-    random.shuffle(dataset)
-    return dataset
+        # --- List of all generator functions to call ---
+        self.generators = [
+            self.generate_dept_room_pref,
+            self.generate_instructor_time_pref,
+            self.generate_instructor_feature_pref,
+            self.generate_instructor_building_pref,
+            self.generate_subpart_group_pref,
+            self.generate_subpart_time_pref
+        ]
 
-def split_dataset(data: List[Dict]) -> Dict[str, List[Dict]]:
-    """Split dataset into train/val/test"""
-    random.shuffle(data)
-    n = len(data)
-    return {
-        "train_pref": data[:int(0.7 * n)],
-        "val_pref": data[int(0.7 * n):int(0.85 * n)],
-        "test_pref": data[int(0.85 * n):]
-    }
+    ### 2. Helper Methods ###
 
-def save_dataset(dataset: Dict[str, List[Dict]]):
-    """Save dataset splits to JSON files"""
-    for split, data in dataset.items():
-        path = os.path.join(output_dir, f"{split}.json")
-        with open(path, "w") as f:
-            json.dump(data, f, indent=2)
+    def _get_random_level(self) -> Tuple[str, str]:
+        """Picks a random preference level code and its name."""
+        level_code = random.choice(list(self.pref_levels.keys()))
+        level_name = self.pref_levels[level_code]
+        return level_code, level_name
 
-def generate_preference_dataset():
-    """Main function to generate the complete preference dataset"""
-    dataset = generate_dataset(n_single=800, n_merged=400)
-    split_data = split_dataset(dataset)
-    save_dataset(split_data)
+    def _wrap_xml(self, content: str) -> str:
+        """Wraps the generated XML snippet in the root <preferences> tag."""
+        xml = f'''<preferences term="{self.term}" year="{self.year}" campus="{self.campus}" dateFormat="{self.date_format}" timeFormat="{self.time_format}" created="{self.created}">
+{content}
+</preferences>'''
+        return "\n".join(line.rstrip() for line in xml.splitlines())
+
+    ### 3. Specific Preference Generators ###
+
+    def generate_dept_room_pref(self) -> Dict[str, str]:
+        """Generates a sample for a department's room preference."""
+        dept = random.choice(self.dept_codes)
+        room = random.choice(self.rooms)
+        level_code, level_name = self._get_random_level()
+
+        prompt = f"Set a room preference for department {dept}: room {room} should be {level_name}."
+        
+        xml_content = f'''<department code="{dept}">
+<roomPref location="{room}" level="{level_code}"/>
+</department>'''
+        
+        return {
+            "type": "DepartmentRoomPref",
+            "prompt": prompt,
+            "output": self._wrap_xml(xml_content)
+        }
+
+    def generate_instructor_time_pref(self) -> Dict[str, str]:
+        """Generates a sample for an instructor's time preference."""
+        inst_id, f_name, l_name, dept = random.choice(self.instructors)
+        
+        # Create a "main" preference for the prompt
+        main_day = random.choice(self.days)
+        main_start, main_stop = random.choice(self.time_slots)
+        main_level, main_level_name = self._get_random_level()
+        
+        prompt = f"For instructor {f_name} {l_name}, make the time slot {main_day} {main_start}-{main_stop} {main_level_name}."
+
+        # Generate a list of time preferences to make the XML realistic
+        prefs_xml = ""
+        # Add the main preference
+        prefs_xml += f'<pref level="{main_level}" day="{main_day}" start="{main_start}" stop="{main_stop}"/>\n'
+        
+        # Add a few other random ones for boilerplate
+        for _ in range(random.randint(2, 4)):
+            day = random.choice(self.days)
+            start, stop = random.choice(self.time_slots)
+            level, _ = self._get_random_level()
+            prefs_xml += f'<pref level="{level}" day="{day}" start="{start}" stop="{stop}"/>\n'
+
+        xml_content = f'''<instructor externalId="{inst_id}" firstName="{f_name}" lastName="{l_name}" department="{dept}">
+<timePref level="R">
+{prefs_xml.strip()}
+</timePref>
+</instructor>'''
+        
+        return {
+            "type": "InstructorTimePref",
+            "prompt": prompt,
+            "output": self._wrap_xml(xml_content)
+        }
+
+    def generate_instructor_feature_pref(self) -> Dict[str, str]:
+        """Generates a sample for an instructor's room feature preference."""
+        inst_id, f_name, l_name, dept = random.choice(self.instructors)
+        feature = random.choice(self.features)
+        level_code, level_name = self._get_random_level()
+
+        prompt = f"Instructor {f_name} {l_name} has a {level_name} preference for the '{feature}' room feature."
+        
+        xml_content = f'''<instructor externalId="{inst_id}" firstName="{f_name}" lastName="{l_name}" department="{dept}">
+<featurePref feature="{feature}" level="{level_code}"/>
+</instructor>'''
+        
+        return {
+            "type": "InstructorFeaturePref",
+            "prompt": prompt,
+            "output": self._wrap_xml(xml_content)
+        }
+
+    def generate_instructor_building_pref(self) -> Dict[str, str]:
+        """Generates a sample for an instructor's building preference."""
+        inst_id, f_name, l_name, dept = random.choice(self.instructors)
+        building = random.choice(self.buildings)
+        level_code, level_name = self._get_random_level()
+
+        prompt = f"Set a building preference for {f_name} {l_name}: {building} is {level_name}."
+        
+        xml_content = f'''<instructor externalId="{inst_id}" firstName="{f_name}" lastName="{l_name}" department="{dept}">
+<buildingPref building="{building}" level="{level_code}"/>
+</instructor>'''
+        
+        return {
+            "type": "InstructorBuildingPref",
+            "prompt": prompt,
+            "output": self._wrap_xml(xml_content)
+        }
+
+    def generate_subpart_group_pref(self) -> Dict[str, str]:
+        """Generates a sample for a course subpart's room group preference."""
+        subject, course, type = random.choice(self.subparts)
+        group = random.choice(self.groups)
+        level_code, level_name = self._get_random_level()
+        
+        prompt = f"The {subject} {course} {type} course subpart has a {level_name} preference for the '{group}' room group."
+        
+        xml_content = f'''<subpart subject="{subject}" course="{course}" type="{type}">
+<groupPref group="{group}" level="{level_code}"/>
+</subpart>'''
+        
+        return {
+            "type": "SubpartGroupPref",
+            "prompt": prompt,
+            "output": self._wrap_xml(xml_content)
+        }
+
+    def generate_subpart_time_pref(self) -> Dict[str, str]:
+        """Generates a sample for a course subpart's time pattern preference."""
+        subject, course, type = random.choice(self.subparts)
+        pattern = random.choice(self.patterns)
+        level_code, level_name = self._get_random_level()
+
+        # Decide if we're adding specific times or just the pattern
+        if random.random() < 0.5:
+            # --- Simple prompt: Just the pattern ---
+            prompt = f"For the {subject} {course} {type}, the time pattern {pattern} is {level_name}."
+            
+            xml_content = f'''<subpart subject="{subject}" course="{course}" type="{type}">
+<timePref pattern="{pattern}" level="{level_code}"/>
+</subpart>'''
+            
+        else:
+            # --- Complex prompt: Pattern + specific times ---
+            day = random.choice(["M", "T", "W", "R", "F", "TR", "MW"])
+            time = random.choice(["0730", "0900", "1030", "1330"])
+            prompt = f"For {subject} {course} {type}, the {pattern} pattern is {level_name}, especially {day} at {time}."
+            
+            # The inner <pref> level is usually 'P' in the example
+            xml_content = f'''<subpart subject="{subject}" course="{course}" type="{type}">
+<timePref pattern="{pattern}" level="{level_code}">
+<pref level="P" days="{day}" time="{time}"/>
+</timePref>
+</subpart>'''
+
+        return {
+            "type": "SubpartTimePref",
+            "prompt": prompt,
+            "output": self._wrap_xml(xml_content)
+        }
+
+    ### 4. Main Dataset Creation and Saving Logic ###
+
+    def generate_training_samples(self, count: int) -> List[Dict[str, str]]:
+        """
+        Generates the specified number of prompt/completion pairs by
+        randomly calling the different generator functions.
+        """
+        samples = []
+        for _ in range(count):
+            # 1. Randomly pick one of the generator functions
+            generator_func = random.choice(self.generators)
+            
+            # 2. Call it to get a complete sample
+            sample = generator_func()
+            
+            # 3. Store the pair
+            samples.append(sample)
+        return samples
+
+    def save_dataset_to_jsonl(self, samples: List[Dict[str, str]], output_dir="data/Preferences_dataset"):
+        """Splits data and saves it in JSONL format."""
+        os.makedirs(output_dir, exist_ok=True)
+        
+        train, temp = train_test_split(samples, test_size=0.3, random_state=42)
+        val, test = train_test_split(temp, test_size=0.5, random_state=42)
+        
+        splits = {"train.jsonl": train, "validation.jsonl": val, "test.jsonl": test}
+        
+        for filename, data in splits.items():
+            path = os.path.join(output_dir, filename)
+            with open(path, 'w', encoding='utf-8') as f:
+                for entry in data:
+                    json.dump(entry, f)
+                    f.write('\n')
+            print(f"Saved {len(data)} samples to {path}")
+
+# --- Execution ---
+if __name__ == "__main__":
+    # Initialize the generator
+    generator = NLPToXMLPreferencesGenerator()
     
-    print(f"Generated {len(dataset)} examples with consistent values")
-    print(f"Train: {len(split_data['train_pref'])}, Val: {len(split_data['val_pref'])}, Test: {len(split_data['test_pref'])}")
+    # Generate 2000 samples
+    print("Generating 2000 training samples...")
+    all_samples = generator.generate_training_samples(count=2000)
     
-    # Show sample examples
-    print("\nSample examples:")
-    for i, example in enumerate(dataset[:3]):
-        print(f"\nExample {i+1}:")
-        print(f"Context: {example['context']}")
-        print(f"Input: {example['input']}")
-        print(f"Output: {example['output'][:200]}...")
-
-# if __name__ == "__main__":
-#     generate_preference_dataset()
+    # Save the dataset to train/validation/test files
+    print("\nSplitting and saving the dataset...")
+    generator.save_dataset_to_jsonl(all_samples)
+    
+    # Display the first 5 generated samples to verify
+    print("\n" + "="*80)
+    print("Example Generated Samples (showing 5 random types):")
+    print("="*80)
+    for i, sample in enumerate(all_samples[:5]):
+        print(f"\n--- SAMPLE {i+1} (Type: {sample['type']}) ---")
+        print(f"\n[PROMPT]:\n{sample['prompt']}")
+        print(f"\n[COMPLETION]:\n{sample['output']}")
+    print("\n" + "="*80)
